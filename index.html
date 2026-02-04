@@ -2,29 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>My Valentine ❤️</title>
+<title>For You ❤️</title>
 
 <style>
-  #start-screen {
-  text-align: center;
-}
-
-#noBtn {
-  margin-left: 20px;
-  position: relative;
-}
-
-#noBtn:hover {
-  position: absolute;
-  left: Math.random()*200 + "px";
-}
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Segoe UI,sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,sans-serif}
 
 body{
   height:100vh;
@@ -43,14 +24,13 @@ body{
   bottom:-20px;
   font-size:20px;
   animation:float 6s linear infinite;
-  opacity:0.8;
 }
 @keyframes float{
-  0%{transform:translateY(0);opacity:1}
-  100%{transform:translateY(-110vh);opacity:0}
+  from{transform:translateY(0);opacity:1}
+  to{transform:translateY(-110vh);opacity:0}
 }
 
-/* MAIN CARD */
+/* CARD */
 .container{
   position:relative;
   z-index:2;
@@ -62,16 +42,17 @@ body{
 }
 
 button{
-  padding:12px 30px;
+  padding:12px 28px;
   border:none;
   border-radius:30px;
   background:white;
   color:#ff0844;
-  cursor:pointer;
   font-size:1rem;
-  transition:0.3s;
+  cursor:pointer;
+  margin:10px;
+  transition:.3s;
 }
-button:hover{transform:scale(1.15)}
+button:hover{transform:scale(1.1)}
 
 .hidden{display:none}
 
@@ -83,7 +64,6 @@ button:hover{transform:scale(1.15)}
   height:180px;
   background:rgba(255,255,255,0.15);
   border-radius:15px;
-  overflow:hidden;
 }
 
 #boy,#girl{
@@ -94,25 +74,9 @@ button:hover{transform:scale(1.15)}
 #boy{left:10px}
 #girl{right:10px}
 
-#block{
-  position:absolute;
-  bottom:10px;
-  left:45%;
-  width:30px;
-  height:30px;
-  background:white;
-  border-radius:5px;
-}
-
 /* REWARD */
-.pops{
-  font-size:32px;
-  animation:pop 1s infinite alternate;
-}
-@keyframes pop{
-  from{transform:scale(1)}
-  to{transform:scale(1.2)}
-}
+.pops{font-size:32px;animation:pop 1s infinite alternate}
+@keyframes pop{to{transform:scale(1.2)}}
 
 .love-text{
   font-size:3rem;
@@ -120,7 +84,6 @@ button:hover{transform:scale(1.15)}
   animation:glow 1.5s infinite alternate;
 }
 @keyframes glow{
-  from{text-shadow:0 0 10px pink}
   to{text-shadow:0 0 35px red}
 }
 </style>
@@ -135,128 +98,88 @@ button:hover{transform:scale(1.15)}
 <div class="hearts"></div>
 
 <div class="container">
-  <div id="start-screen">
+
+<!-- START SCREEN -->
+<div id="start-screen">
   <h1>Will you be my Valentine? 💖</h1>
-
-  <div style="margin-top:30px">
-    <button onclick="startValentine()">YES ❤️</button>
-    <button id="noBtn">NO 💔</button>
-  </div>
+  <button onclick="startValentine()">YES ❤️</button>
+  <button id="noBtn">NO 💔</button>
 </div>
-<div>
+
+<!-- MAIN CONTENT -->
+<div id="main" class="hidden">
   <h1>❤️ Happy Valentine’s Day ❤️</h1>
-  <p style="margin:15px 0 30px">I made something special for you</p>
+  <p style="margin:15px 0">Tap to reach me</p>
 
-  <button onclick="startSurprise()">Open Surprise</button>
-
-  <div id="message" class="hidden">
-    <h2>You Mean Everything To Me 💖</h2>
-    <p style="margin-top:15px">
-      Every moment with you feels magical.<br>
-      Now play this little game ❤️
-    </p>
-  </div>
-
-  <div id="game" class="hidden">
-    <h3 style="margin-top:20px">Reach her 💕</h3>
-
-    <div id="game-area">
-      <div id="boy">🧑‍🦱</div>
-      <div id="girl">👩‍🦰</div>
-      <div id="block"></div>
-    </div>
-
-    <p style="margin-top:10px">Tap the screen to move ❤️</p>
-
-  </div>
-
-  <div id="reward" class="hidden">
-    <div class="pops">🍫 🍦 🍫 🍦 🍫 🍦 🍫 🍦</div>
-    <div class="love-text">LOVE YOU SO MUCH ❤️</div>
-    <div id="countdown" style="margin-top:15px;font-size:1.2rem;">
-  Redirecting in 6...
-</div>
-
+  <div id="game-area">
+    <div id="boy">🧑‍🦱</div>
+    <div id="girl">👩‍🦰</div>
   </div>
 </div>
+
+<!-- REWARD -->
+<div id="reward" class="hidden">
+  <div class="pops">🍫 🍦 🍫 🍦 🍫 🍦</div>
+  <div class="love-text">LOVE YOU SO MUCH ❤️</div>
+  <div id="countdown" style="margin-top:15px">Redirecting in 6...</div>
+</div>
+
+</div>
+
 <script>
-  <script>
-function startValentine(){
-  document.getElementById("start-screen").classList.add("hidden");
-  document.getElementById("main-content").classList.remove("hidden");
-}
-
-const noBtn = document.getElementById("noBtn");
-noBtn.addEventListener("mouseover", () => {
-  const x = Math.random() * 200 - 100;
-  const y = Math.random() * 100 - 50;
-  noBtn.style.transform = `translate(${x}px, ${y}px)`;
-});
-</script>
-
-/* MUSIC + SURPRISE */
-function startSurprise(){
-  document.getElementById("message").classList.remove("hidden");
-  document.getElementById("game").classList.remove("hidden");
-  document.getElementById("bg-music").play();
-}
-
 /* HEARTS */
-const heartsBox=document.querySelector(".hearts");
-function createHeart(){
+setInterval(()=>{
   const h=document.createElement("span");
   h.innerHTML="❤️";
   h.style.left=Math.random()*100+"vw";
   h.style.fontSize=(Math.random()*20+10)+"px";
   h.style.animationDuration=(Math.random()*3+3)+"s";
-  heartsBox.appendChild(h);
+  document.querySelector(".hearts").appendChild(h);
   setTimeout(()=>h.remove(),6000);
+},250);
+
+/* START */
+function startValentine(){
+  document.getElementById("start-screen").classList.add("hidden");
+  document.getElementById("main").classList.remove("hidden");
+  document.getElementById("bg-music").play();
 }
-setInterval(createHeart,250);
 
-/* TAP GAME LOGIC */
-let taps = 0;
-let maxTaps = 100;
-let boyPos = 10;
-let solved = false;
+/* NO BUTTON RUN */
+const noBtn=document.getElementById("noBtn");
+noBtn.onmouseover=()=>{
+  noBtn.style.transform=`translate(${Math.random()*200-100}px,${Math.random()*100-50}px)`
+}
 
-// 🔗 Your YouTube SHORTS link
-const ytLink = "https://youtube.com/shorts/IP-dbNvNFe4?si=jIM4dihaZcWCuBiB";
+/* TAP GAME */
+let taps=0;
+const maxTaps=100;
+let boyPos=10;
+const ytLink="https://youtube.com/shorts/IP-dbNvNFe4?si=jIM4dihaZcWCuBiB";
 
-document.body.addEventListener("click", () => {
-  if (solved) return;
-
+document.body.addEventListener("click",()=>{
+  if(document.getElementById("main").classList.contains("hidden"))return;
   taps++;
-  const boy = document.getElementById("boy");
+  boyPos+=1.5;
+  document.getElementById("boy").style.left=boyPos+"px";
 
-  boyPos += 1.5;
-  boy.style.left = boyPos + "px";
-
-  if (taps >= maxTaps) {
-    solved = true;
-
-    document.getElementById("game").classList.add("hidden");
+  if(taps>=maxTaps){
+    document.getElementById("main").classList.add("hidden");
     document.getElementById("reward").classList.remove("hidden");
 
-    // ⏳ COUNTDOWN
-    let timeLeft = 6;
-    const cd = document.getElementById("countdown");
-
-    const timer = setInterval(() => {
-      timeLeft--;
-      cd.textContent = "Redirecting in " + timeLeft + "...";
-
-      if (timeLeft === 0) {
+    let t=6;
+    const cd=document.getElementById("countdown");
+    const timer=setInterval(()=>{
+      t--;
+      cd.textContent="Redirecting in "+t+"...";
+      if(t===0){
         clearInterval(timer);
-        window.location.href = ytLink;
+        window.location.href=ytLink;
       }
-    }, 1000);
+    },1000);
   }
 });
 </script>
-
-
-
 
 </body>
 </html>
