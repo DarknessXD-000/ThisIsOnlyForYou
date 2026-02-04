@@ -150,6 +150,10 @@ button:hover{transform:scale(1.15)}
   <div id="reward" class="hidden">
     <div class="pops">🍫 🍦 🍫 🍦 🍫 🍦 🍫 🍦</div>
     <div class="love-text">LOVE YOU SO MUCH ❤️</div>
+    <div id="countdown" style="margin-top:15px;font-size:1.2rem;">
+  Redirecting in 6...
+</div>
+
   </div>
 </div>
 <script>
@@ -179,22 +183,41 @@ let maxTaps = 100;
 let boyPos = 10;
 let solved = false;
 
+// 🔗 Your YouTube SHORTS link
+const ytLink = "https://youtube.com/shorts/IP-dbNvNFe4?si=jIM4dihaZcWCuBiB";
+
 document.body.addEventListener("click", () => {
   if (solved) return;
 
   taps++;
   const boy = document.getElementById("boy");
 
-  boyPos += 1.5; // smooth slow move
+  boyPos += 1.5;
   boy.style.left = boyPos + "px";
 
   if (taps >= maxTaps) {
     solved = true;
+
     document.getElementById("game").classList.add("hidden");
     document.getElementById("reward").classList.remove("hidden");
+
+    // ⏳ COUNTDOWN
+    let timeLeft = 6;
+    const cd = document.getElementById("countdown");
+
+    const timer = setInterval(() => {
+      timeLeft--;
+      cd.textContent = "Redirecting in " + timeLeft + "...";
+
+      if (timeLeft === 0) {
+        clearInterval(timer);
+        window.location.href = ytLink;
+      }
+    }, 1000);
   }
 });
 </script>
+
 
 
 
