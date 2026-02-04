@@ -24,7 +24,7 @@
             overflow: hidden;
         }
 
-        /* Floating Animation Elements */
+        /* Floating Background Hearts */
         .floating-elements { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
         .heart { position: absolute; color: white; opacity: 0.6; animation: floatUp 8s infinite ease-in; }
 
@@ -90,7 +90,7 @@
         }
         .emoji { position: absolute; bottom: 15px; font-size: 50px; transition: 0.2s; }
 
-        /* Heartbeat Animation */
+        /* Final Screen Visuals */
         .big-heart {
             font-size: 80px;
             display: inline-block;
@@ -103,6 +103,7 @@
         }
 
         .highlight { color: var(--dark-pink); font-weight: 600; }
+        #status { margin-top: 20px; font-weight: bold; color: var(--dark-pink); font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -113,20 +114,19 @@
     <div class="step active" id="step1">
         <div style="font-size: 40px;">💌</div>
         <h1>Hey Sweetie...</h1>
-        <p>There's a little secret I've been hiding. Do you want to find out what it is?</p>
-        <button class="btn" onclick="go(2)">Show me! ✨</button>
+        <p>I’ve been waiting for the right moment to tell you something special. You ready?</p>
+        <button class="btn" onclick="go(2)">Yes, tell me! ✨</button>
     </div>
 
     <div class="step" id="step2">
-        <h1>Before that...</h1>
-        <p>I just wanted to say that <span class="highlight">you make everything better</span> just by being you.</p>
-        <p>Ready for the big question?</p>
-        <button class="btn" onclick="go(3)">Yes, I'm ready! ❤️</button>
+        <h1>Did you know?</h1>
+        <p>In a room full of art, <span class="highlight">I'd still stare at you.</span> You're my favorite kind of beautiful.</p>
+        <button class="btn" onclick="go(3)">Aww, next? ❤️</button>
     </div>
 
     <div class="step" id="step3">
-        <h1>My Valentine?</h1>
-        <p>Will you make me the happiest person and be mine this Valentine's Day?</p>
+        <h1>The Big Question...</h1>
+        <p>Will you make me the luckiest person and be my Valentine?</p>
         <div style="height: 120px; position: relative;">
             <button class="btn" onclick="celebrate()">YES! ❤️</button>
             <button class="btn btn-no" id="noBtn" onmouseover="moveNo()">No 💔</button>
@@ -134,13 +134,13 @@
     </div>
 
     <div class="step" id="step4">
-        <h1>Bring Us Together!</h1>
-        <p>Tap repeatedly to make me reach you!</p>
+        <h1>Help me reach you!</h1>
+        <p>Tap fast to bring us together!</p>
         <div id="game-box">
             <div class="emoji" id="boy" style="left: 10px;">👦</div>
             <div class="emoji" id="girl" style="right: 10px;">👧</div>
         </div>
-        <p id="tapCount" style="font-size: 0.8rem; opacity: 0.7;">Taps needed: 20</p>
+        <p style="font-size: 0.8rem; opacity: 0.7;">Keep tapping...</p>
     </div>
 
     <div class="step" id="step5">
@@ -149,8 +149,8 @@
         <p class="highlight" style="font-size: 1.1rem; font-style: italic;">
             "In a world full of temporary things, <br>you are my forever feeling."
         </p>
-        <p>I promise to cherish every moment with you. ❤️</p>
-        <p id="status" style="margin-top: 15px; font-weight: bold; color: var(--dark-pink);">Opening our world in 5s...</p>
+        <p>You’re my favorite person, my favorite place, and my favorite thought. ❤️</p>
+        <p id="status">Redirecting to our chat in 10s...</p>
     </div>
 </div>
 
@@ -176,8 +176,8 @@
     // 3. Moving No Button
     function moveNo() {
         const btn = document.getElementById('noBtn');
-        const x = Math.random() * 250 - 125;
-        const y = Math.random() * 150 - 75;
+        const x = Math.random() * 240 - 120;
+        const y = Math.random() * 140 - 70;
         btn.style.transform = `translate(${x}px, ${y}px)`;
     }
 
@@ -204,16 +204,15 @@
         }
     });
 
-    // 6. Instagram Redirect
+    // 6. Instagram Redirect with 10s Countdown
     function startRedirect() {
-        let time = 5;
+        let time = 10; // Set to 10 seconds as requested
         const status = document.getElementById('status');
-        // REPLACE 'your_username' with your actual Instagram handle
         const instaLink = "https://www.instagram.com/direct/inbox/"; 
 
         const timer = setInterval(() => {
             time--;
-            status.innerText = "Taking you to Instagram in " + time + "s...";
+            status.innerText = "Taking you to our world in " + time + "s...";
             if(time <= 0) {
                 clearInterval(timer);
                 window.location.href = instaLink;
