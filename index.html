@@ -3,261 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Love Story ❤️</title>
+    <title>For My Forever Valentine ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         :root {
             --pink: #ff4d6d;
-            --dark: #2d3436;
-            --glass: rgba(255, 255, 255, 0.15);
+            --dark-pink: #c9184a;
+            --white: #ffffff;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
-        body { 
-            font-family: 'Poppins', sans-serif; 
-            background: #ffafbd; 
-            color: #fff;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom, #ffafbd, #ffc3a0, #ffafbd);
+            color: #4a4a4a;
             overflow-x: hidden;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #ffafbd; }
-        ::-webkit-scrollbar-thumb { background: var(--pink); border-radius: 10px; }
+        /* Background Hearts */
+        .bg-hearts {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
 
+        /* Sections */
         section {
-            height: 100vh;
+            min-height: 100vh;
+            width: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 40px;
+            padding: 50px 20px;
             text-align: center;
-            position: relative;
         }
 
-        .bg-fixed {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #ffafbd 0%, #ffc3a0 100%);
-            z-index: -2;
-        }
-
-        /* Floating Hearts Animation */
-        .heart-fly {
-            position: absolute;
-            animation: move linear infinite;
-            z-index: -1;
-            opacity: 0.5;
-        }
-        @keyframes move {
-            0% { transform: translateY(0) rotate(0); opacity: 0; }
-            50% { opacity: 0.8; }
-            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
-        }
-
-        /* Modern Typography */
-        h1 { font-family: 'Dancing Script', cursive; font-size: 4rem; text-shadow: 3px 3px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        p { font-size: 1.2rem; max-width: 600px; line-height: 1.6; opacity: 0.9; }
-
-        /* Glass Cards */
         .glass-card {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
             padding: 40px;
-            border-radius: 30px;
+            border-radius: 40px;
+            max-width: 500px;
+            width: 100%;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            transition: 0.3s;
+            animation: fadeIn 1.5s ease-out;
         }
-        .glass-card:hover { transform: translateY(-10px); border-color: #fff; }
+
+        h1 { font-family: 'Dancing Script', cursive; font-size: 3.5rem; color: var(--dark-pink); margin-bottom: 20px; }
+        p { font-size: 1.1rem; line-height: 1.8; color: #555; }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .scroll-hint {
+            margin-top: 30px;
+            font-size: 1.5rem;
+            animation: bounce 2s infinite;
+            color: var(--dark-pink);
+        }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
 
         /* Buttons */
         .btn {
-            background: #fff;
-            color: var(--pink);
-            padding: 15px 40px;
+            background: var(--pink);
+            color: white;
+            padding: 15px 35px;
             border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            margin-top: 30px;
-            display: inline-block;
-            transition: 0.3s;
-            cursor: pointer;
             border: none;
             font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 10px;
+            transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(255, 77, 109, 0.2);
         }
-        .btn:hover { background: var(--pink); color: #fff; transform: scale(1.1); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .btn:hover { background: var(--dark-pink); transform: scale(1.1); }
 
-        /* No Button Magic */
-        #noBtn { position: absolute; }
+        #noBtn { position: relative; background: #fff; color: var(--pink); }
 
-        /* Game Box */
-        .game-area {
-            width: 100%;
-            max-width: 400px;
-            height: 150px;
-            background: rgba(255,255,255,0.2);
+        /* Game Area */
+        .game-container {
+            margin-top: 30px;
+            background: rgba(255,255,255,0.3);
             border-radius: 20px;
-            margin: 30px auto;
+            height: 120px;
             position: relative;
             border: 2px dashed #fff;
             overflow: hidden;
         }
-        .character { position: absolute; bottom: 20px; font-size: 50px; transition: 0.1s; }
+        .emoji { position: absolute; bottom: 15px; font-size: 50px; transition: 0.2s; }
 
-        /* Scroll Down Indicator */
-        .scroll-down {
-            position: absolute;
-            bottom: 30px;
-            animation: bounce 2s infinite;
-            font-size: 2rem;
-        }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
+        /* Final Heart */
+        .beat { font-size: 80px; animation: heartbeat 1.2s infinite; display: inline-block; }
+        @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
 
-        .final-heart { font-size: 80px; animation: beat 1s infinite; display: inline-block; }
-        @keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-<div class="bg-fixed" id="heart-container"></div>
+<div class="bg-hearts" id="bg"></div>
 
-<section id="start">
+<section>
     <div class="glass-card">
-        <h1>Hi, Beautiful... ✨</h1>
-        <p>I wanted to take a moment to show you how much you mean to me. Just keep scrolling, I have a story to tell.</p>
-        <div class="scroll-down">↓</div>
+        <h1>Hey My Love... ✨</h1>
+        <p>I made something special just for you. Take a slow walk down this page... I have a few things to say.</p>
+        <div class="scroll-hint">Scroll Down ↓</div>
     </div>
 </section>
 
 <section>
     <div class="glass-card">
-        <h1>Your Smile... 😊</h1>
-        <p>Do you have any idea how much it lights up my world? One look at you, and all my stress just disappears.</p>
-        <p style="margin-top: 20px; font-style: italic;">"You're not just my favorite person, you're my favorite feeling."</p>
+        <h1>You're Rare 💎</h1>
+        <p>In a world where everything is moving so fast, you are my favorite kind of slow. Your presence is like a warm hug on a cold day.</p>
+        <div class="scroll-hint">Keep Scrolling ↓</div>
     </div>
-    <div class="scroll-down">↓</div>
 </section>
 
 <section>
     <div class="glass-card">
-        <h1>Our Bond 🌸</h1>
-        <p>From the random talks to the deep conversations, every second with you feels like a blessing. I wouldn't trade this for anything in the world.</p>
-        <div style="font-size: 40px; margin-top: 20px;">♾️ ❤️ ♾️</div>
+        <h1>Our Vibe 🌸</h1>
+        <p>Every laugh we share, every secret we keep, and every small moment with you is a memory I treasure. I'm so lucky to have you in my life.</p>
+        <div class="scroll-hint">Almost there ↓</div>
     </div>
-    <div class="scroll-down">↓</div>
 </section>
 
-<section>
+<section id="ask-section">
     <div class="glass-card">
-        <h1>Quick Question! 🧐</h1>
-        <p>Who loves who more?</p>
-        <button class="btn" onclick="alert('Liar! I love you more! ❤️')">Me</button>
-        <button class="btn" onclick="alert('Exactly! I love you the most! 🥰')">You</button>
-    </div>
-    <div class="scroll-down">↓</div>
-</section>
-
-<section id="proposal">
-    <div class="glass-card" style="position: relative; width: 450px;">
-        <h1>So... My Love?</h1>
-        <p>Will you make this Valentine's Day unforgettable by being mine?</p>
-        <div style="height: 100px; margin-top: 20px;">
-            <button class="btn" onclick="celebrate()">YES, OF COURSE! ❤️</button>
+        <h1>One Question... ❤️</h1>
+        <p>Will you be my Valentine and make me the luckiest person in the world?</p>
+        <div style="margin-top: 25px; min-height: 80px;">
+            <button class="btn" onclick="startCelebration()">YES! ❤️</button>
             <button class="btn" id="noBtn" onmouseover="moveNo()">No 💔</button>
         </div>
     </div>
 </section>
 
-<section id="game-section" style="display: none;">
-    <div class="glass-card">
-        <h1>Don't keep me waiting!</h1>
-        <p>Tap repeatedly to bring us together</p>
-        <div class="game-area">
-            <div class="character" id="boy" style="left: 10px;">👦</div>
-            <div class="character" id="girl" style="right: 10px;">👧</div>
+<div id="final-part" class="hidden">
+    <section>
+        <div class="glass-card">
+            <h1>Let's reach each other!</h1>
+            <p>Tap to bring us together</p>
+            <div class="game-container">
+                <div class="emoji" id="boy" style="left: 10px;">👦</div>
+                <div class="emoji" id="girl" style="right: 10px;">👧</div>
+            </div>
+            <p id="game-status" style="margin-top:10px; font-weight:bold;">Keep tapping anywhere!</p>
         </div>
-        <p id="tapsLeft">Keep clicking anywhere!</p>
-    </div>
-</section>
+    </section>
 
-<section id="final" style="display: none;">
-    <div class="glass-card">
-        <div class="final-heart">❤️</div>
-        <h1>Forever Yours.</h1>
-        <p style="font-size: 1.4rem; font-weight: 600; color: #fff;">"In a world full of temporary things, <br>you are my forever feeling."</p>
-        <p style="margin-top: 20px; opacity: 0.8;">You're my home, my heart, and my happiness.</p>
-        <p id="timer" style="margin-top: 20px; font-weight: bold; color: #fff; background: var(--pink); border-radius: 20px; padding: 10px;">Redirecting to our chat in 10s...</p>
-    </div>
-</section>
+    <section id="last-msg">
+        <div class="glass-card">
+            <div class="beat">❤️</div>
+            <h1>Forever Yours.</h1>
+            <p style="font-style: italic; font-weight: 600; font-size: 1.2rem; color: var(--dark-pink);">
+                "In a world full of temporary things, <br>you are my forever feeling."
+            </p>
+            <p style="margin-top: 20px;">Every heartbeat of mine says your name. ❤️</p>
+            <div id="redirect-timer" style="margin-top: 25px; font-weight: bold; background: var(--pink); color: white; padding: 10px; border-radius: 15px;">
+                Taking you to our world in 10s...
+            </div>
+        </div>
+    </section>
+</div>
 
 <script>
-    // 1. Generate Floating Hearts
-    function createHearts() {
-        const container = document.getElementById('heart-container');
-        for (let i = 0; i < 30; i++) {
-            const heart = document.createElement('div');
-            heart.className = 'heart-fly';
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.top = Math.random() * 100 + 'vh';
-            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
-            heart.style.animationDelay = (Math.random() * 5) + 's';
-            container.appendChild(heart);
-        }
+    // 1. Create Floating Hearts Background
+    const bg = document.getElementById('bg');
+    for (let i = 0; i < 25; i++) {
+        const heart = document.createElement('div');
+        heart.innerHTML = '❤️';
+        heart.style.position = 'absolute';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.top = Math.random() * 200 + 'vh'; // Long scroll background
+        heart.style.opacity = '0.4';
+        heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+        bg.appendChild(heart);
     }
-    createHearts();
 
-    // 2. No Button Logic
+    // 2. No Button Logic (Moves when hovered)
     function moveNo() {
         const btn = document.getElementById('noBtn');
-        const x = Math.random() * 300 - 150;
-        const y = Math.random() * 200 - 100;
+        const x = Math.random() * 200 - 100;
+        const y = Math.random() * 100 - 50;
         btn.style.transform = `translate(${x}px, ${y}px)`;
     }
 
-    // 3. Celebration & Show Game
-    function celebrate() {
+    // 3. Handle YES Click
+    function startCelebration() {
         confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-        document.getElementById('game-section').style.display = 'flex';
-        window.location.hash = "game-section";
+        document.getElementById('final-part').classList.remove('hidden');
+        
+        // Smooth scroll to game section
+        setTimeout(() => {
+            window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
+        }, 500);
     }
 
     // 4. Game Logic
     let taps = 0;
-    const goal = 25;
+    const goal = 20;
     document.body.addEventListener('click', () => {
-        const gameSec = document.getElementById('game-section');
-        if (gameSec.style.display === 'flex' && taps < goal) {
+        if (!document.getElementById('final-part').classList.contains('hidden') && taps < goal) {
             taps++;
-            let move = (taps / goal) * 75;
-            document.getElementById('boy').style.left = move + '%';
-            
+            const boy = document.getElementById('boy');
+            let pos = (taps / goal) * 78;
+            boy.style.left = pos + '%';
+
             if (taps >= goal) {
                 confetti({ particleCount: 200, spread: 100 });
-                showFinal();
+                document.getElementById('game-status').innerText = "Reached! ❤️";
+                startRedirect();
+                
+                // Final scroll to message
+                setTimeout(() => {
+                    document.getElementById('last-msg').scrollIntoView({ behavior: 'smooth' });
+                }, 800);
             }
         }
     });
 
-    // 5. Final Step & Redirect
-    function showFinal() {
-        document.getElementById('final').style.display = 'flex';
-        window.location.hash = "final";
-        
-        let timeLeft = 10;
-        const timerText = document.getElementById('timer');
-        const instaLink = "https://www.instagram.com/direct/inbox/";
+    // 5. Final Redirect Logic
+    function startRedirect() {
+        let time = 10;
+        const timerElement = document.getElementById('redirect-timer');
+        const instaLink = "https://www.instagram.com/direct/inbox/"; 
 
-        const interval = setInterval(() => {
-            timeLeft--;
-            timerText.innerText = `Taking you to our world in ${timeLeft}s...`;
-            if (timeLeft <= 0) {
-                clearInterval(interval);
+        const timer = setInterval(() => {
+            time--;
+            timerElement.innerText = "Taking you to our world in " + time + "s...";
+            if (time <= 0) {
+                clearInterval(timer);
                 window.location.href = instaLink;
             }
         }, 1000);
