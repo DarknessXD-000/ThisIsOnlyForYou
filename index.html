@@ -3,253 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Forever Valentine ❤️</title>
-
+    <title>For My Queen 👑</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #ff4d6d;
-            --secondary: #ff758f;
+            --pink: #ff4d6d;
+            --dark-pink: #c9184a;
             --glass: rgba(255, 255, 255, 0.2);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
 
         body {
+            background: linear-gradient(135deg, #ffafbd 0%, #ffc3a0 100%);
             height: 100vh;
-            overflow: hidden;
-            background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #fff;
-            perspective: 1000px;
+            overflow: hidden;
+            color: #4a4a4a;
         }
 
-        /* Animated Floating Hearts Background */
-        .hearts-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
-        .heart-particle {
+        /* Floating Bubbles Background */
+        .bg-elements { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .bubble {
             position: absolute;
-            color: var(--primary);
-            animation: floatUp linear forwards;
-            filter: drop-shadow(0 0 5px rgba(255,77,109,0.5));
+            bottom: -100px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: rise 10s infinite ease-in;
         }
 
-        @keyframes floatUp {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        @keyframes rise {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-110vh) scale(1.5); opacity: 0; }
         }
 
-        /* Glassmorphism Card */
+        /* Modern Glass Card */
         .container {
-            position: relative;
-            z-index: 10;
-            background: rgba(255, 255, 255, 0.15);
+            width: 90%;
+            max-width: 450px;
+            background: rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
-            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
             border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
-            width: 90%;
-            max-width: 400px;
+            padding: 40px 30px;
             text-align: center;
-            transition: 0.5s;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        h1 { font-size: 1.8rem; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+        h1 { font-family: 'Dancing Script', cursive; font-size: 2.5rem; color: var(--dark-pink); margin-bottom: 15px; }
+        p { font-size: 1rem; line-height: 1.6; margin-bottom: 25px; color: #555; }
 
-        .btn-group { margin-top: 30px; position: relative; height: 60px; }
-
-        button {
-            padding: 12px 35px;
+        .btn {
+            background: var(--pink);
+            color: white;
             border: none;
+            padding: 12px 30px;
             border-radius: 50px;
-            font-weight: bold;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.3);
+            margin: 10px;
         }
 
-        #yesBtn { background: #ff4d6d; color: white; font-size: 1.2rem; }
-        #yesBtn:hover { transform: scale(1.1); box-shadow: 0 0 20px #ff4d6d; }
+        .btn:hover { background: var(--dark-pink); transform: translateY(-3px); }
 
-        #noBtn {
-            background: #fff;
-            color: #ff4d6d;
-            position: absolute;
-            white-space: nowrap;
+        .btn-secondary { background: white; color: var(--pink); }
+
+        /* Step Logic */
+        .step { display: none; animation: fadeIn 0.8s forwards; }
+        .step.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-        .hidden { display: none; opacity: 0; transform: scale(0.8); }
 
         /* Game Area */
-        #game-area {
-            margin: 25px 0;
-            height: 120px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 20px;
-            position: relative;
-            overflow: hidden;
-            border: 2px dashed rgba(255,255,255,0.3);
-        }
-
-        #boy, #girl {
-            position: absolute;
-            bottom: 20px;
-            font-size: 50px;
-            transition: left 0.2s ease;
-        }
-        #boy { left: 10px; z-index: 5; }
-        #girl { right: 10px; }
-
-        .progress-container {
-            width: 100%;
-            height: 10px;
+        #game-box {
+            height: 150px;
             background: rgba(255,255,255,0.2);
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-        #progress-bar {
-            width: 0%;
-            height: 100%;
-            background: var(--primary);
-            border-radius: 5px;
-            transition: 0.3s;
-        }
-
-        /* Reward Screen */
-        .reward-icon { font-size: 60px; animation: bounce 1s infinite; }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-
-        .love-text {
-            font-size: 2.2rem;
-            font-weight: 900;
-            color: #fff;
-            text-shadow: 0 0 20px #ff0040;
+            border-radius: 20px;
             margin: 20px 0;
+            position: relative;
+            border: 2px solid white;
+            overflow: hidden;
         }
+        .emoji { position: absolute; bottom: 20px; font-size: 45px; transition: 0.2s; }
+
+        /* Progress Bar */
+        .bar-container { height: 8px; background: rgba(0,0,0,0.05); border-radius: 10px; margin-top: 10px; }
+        #bar { height: 100%; width: 0%; background: var(--pink); border-radius: 10px; transition: 0.3s; }
+
+        #noBtn { position: absolute; }
     </style>
 </head>
-
 <body>
 
-<div class="hearts-bg" id="hearts-bg"></div>
+<div class="bg-elements" id="bg"></div>
 
-<div class="container" id="main-card">
-    <div id="start-screen">
-        <div style="font-size: 50px; margin-bottom: 10px;">💝</div>
-        <h1>Will you be my Valentine?</h1>
-        <p>I promise to make you the happiest person!</p>
-        <div class="btn-group">
-            <button id="yesBtn" onclick="startValentine()">YES! ❤️</button>
-            <button id="noBtn" onmouseover="moveNoButton()">NO 💔</button>
+<div class="container">
+    <div class="step active" id="step1">
+        <h1>Hey Gorgeous... 🌸</h1>
+        <p>I’ve been thinking about this for a long time. There’s something special I want to ask you.</p>
+        <button class="btn" onclick="nextStep(2)">What is it? ✨</button>
+    </div>
+
+    <div class="step" id="step2">
+        <h1>First things first...</h1>
+        <p>Do you know that you have the most beautiful smile in the entire world? 😊</p>
+        <button class="btn" onclick="nextStep(3)">I know! 🙈</button>
+        <button class="btn btn-secondary" onclick="alert('Stop lying! You do! ❤️'); nextStep(3)">Maybe? 😅</button>
+    </div>
+
+    <div class="step" id="step3">
+        <h1>So, My Love...</h1>
+        <p>Will you make me the luckiest person alive and be my Valentine? 💖</p>
+        <div style="height: 100px;"> <button class="btn" onclick="nextStep(4)">YES, I WILL! ❤️</button>
+            <button class="btn btn-secondary" id="noBtn" onmouseover="moveNo()">NO 💔</button>
         </div>
     </div>
 
-    <div id="game-screen" class="hidden">
-        <h1>Help me reach you! ❤️</h1>
-        <p>Keep tapping to bring us closer</p>
-        <div id="game-area">
-            <div id="boy">🏃‍♂️</div>
-            <div id="girl">👸</div>
+    <div class="step" id="step4">
+        <h1>Almost there! 🏃‍♂️</h1>
+        <p>Tap fast to bring us together!</p>
+        <div id="game-box">
+            <div class="emoji" id="boy" style="left: 10px;">👦</div>
+            <div class="emoji" id="girl" style="right: 10px;">👧</div>
         </div>
-        <div class="progress-container">
-            <div id="progress-bar"></div>
-        </div>
+        <div class="bar-container"><div id="bar"></div></div>
     </div>
 
-    <div id="reward-screen" class="hidden">
-        <div class="reward-icon">💖</div>
-        <div class="love-text">LOVE YOU!</div>
-        <p>Tu meri hai aur meri hi rahegi!</p>
-        <p id="countdown" style="margin-top: 20px; font-style: italic; opacity: 0.8;"></p>
+    <div class="step" id="step5">
+        <h1>YAYY! 🎉</h1>
+        <p>"In all the world, there is no heart for me like yours. In all the world, there is no love for you like mine."</p>
+        <div style="font-size: 50px; margin: 20px;">🌹🍫</div>
+        <p id="countdown">Hold on, a surprise is loading...</p>
     </div>
 </div>
 
 <script>
-    // 1. Floating Hearts Background
-    function createHeart() {
-        const heart = document.createElement('div');
-        heart.classList.add('heart-particle');
-        heart.innerHTML = ['❤️','💖','💗','🌸','✨'][Math.floor(Math.random() * 5)];
-        heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.fontSize = Math.random() * 20 + 10 + 'px';
-        heart.style.duration = Math.random() * 3 + 2 + 's';
-        heart.style.animation = `floatUp ${heart.style.duration} linear forwards`;
-        
-        document.getElementById('hearts-bg').appendChild(heart);
-        setTimeout(() => heart.remove(), 5000);
+    // 1. Create Floating Background
+    for (let i = 0; i < 15; i++) {
+        let b = document.createElement('div');
+        b.className = 'bubble';
+        let size = Math.random() * 60 + 20 + 'px';
+        b.style.width = size;
+        b.style.height = size;
+        b.style.left = Math.random() * 100 + 'vw';
+        b.style.animationDelay = Math.random() * 8 + 's';
+        document.getElementById('bg').appendChild(b);
     }
-    setInterval(createHeart, 300);
 
-    // 2. No Button Run (Advanced)
-    function moveNoButton() {
-        const btn = document.getElementById('noBtn');
-        const x = Math.random() * (window.innerWidth - btn.offsetWidth - 50);
-        const y = Math.random() * (window.innerHeight - btn.offsetHeight - 50);
+    // 2. Navigation Logic
+    function nextStep(num) {
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        document.getElementById('step' + num).classList.add('active');
         
-        // Isko container se bahar bhi bhej sakte hain prank ke liye
-        btn.style.position = 'fixed';
+        if(num === 5) {
+            startFinalCountdown();
+        }
+    }
+
+    // 3. The Elusive "No" Button
+    function moveNo() {
+        const btn = document.getElementById('noBtn');
+        const container = document.querySelector('.container');
+        const x = Math.random() * (container.offsetWidth - btn.offsetWidth);
+        const y = Math.random() * (container.offsetHeight - btn.offsetHeight);
         btn.style.left = x + 'px';
         btn.style.top = y + 'px';
     }
 
-    // 3. Start Game
-    function startValentine() {
-        document.getElementById('start-screen').classList.add('hidden');
-        setTimeout(() => {
-            document.getElementById('start-screen').style.display = 'none';
-            const gs = document.getElementById('game-screen');
-            gs.classList.remove('hidden');
-            gs.style.opacity = '1';
-            gs.style.transform = 'scale(1)';
-        }, 300);
-    }
-
-    // 4. Tap Game Logic
+    // 4. Game Logic
     let taps = 0;
-    const maxTaps = 30; // 30 taps is enough to not be boring
-    const ytLink = "https://youtube.com/shorts/IP-dbNvNFe4?si=jIM4dihaZcWCuBiB";
+    const goal = 25;
+    document.body.addEventListener('click', () => {
+        if(document.getElementById('step4').classList.contains('active')) {
+            taps++;
+            let progress = (taps / goal) * 85;
+            document.getElementById('boy').style.left = progress + '%';
+            document.getElementById('bar').style.width = (taps / goal) * 100 + '%';
 
-    document.body.addEventListener('click', (e) => {
-        const gameScreen = document.getElementById('game-screen');
-        if (gameScreen.classList.contains('hidden') || taps >= maxTaps) return;
-
-        taps++;
-        const boy = document.getElementById('boy');
-        const progress = document.getElementById('progress-bar');
-        
-        // Calculate position (80% path)
-        let movePercent = (taps / maxTaps) * 80;
-        boy.style.left = movePercent + '%';
-        progress.style.width = (taps / maxTaps) * 100 + '%';
-
-        if (taps >= maxTaps) {
-            triggerSuccess();
+            if(taps >= goal) {
+                setTimeout(() => nextStep(5), 500);
+            }
         }
     });
 
-    function triggerSuccess() {
-        document.getElementById('game-screen').classList.add('hidden');
-        setTimeout(() => {
-            document.getElementById('game-screen').style.display = 'none';
-            const rs = document.getElementById('reward-screen');
-            rs.classList.remove('hidden');
-            rs.style.opacity = '1';
-            rs.style.transform = 'scale(1)';
-            
-            // Redirect countdown
-            let timeLeft = 5;
-            const cd = document.getElementById('countdown');
-            const timer = setInterval(() => {
-                cd.innerText = `Ek special video aapke liye... ${timeLeft}s`;
-                if(timeLeft <= 0) {
-                    clearInterval(timer);
-                    window.location.href = ytLink;
-                }
-                timeLeft--;
-            }, 1000);
-        }, 300);
+    // 5. Final Redirect
+    function startFinalCountdown() {
+        let timeLeft = 6;
+        const ytLink = "https://youtube.com/shorts/IP-dbNvNFe4?si=jIM4dihaZcWCuBiB";
+        const cd = document.getElementById('countdown');
+        
+        const timer = setInterval(() => {
+            timeLeft--;
+            cd.innerText = "Taking you to your surprise in " + timeLeft + "...";
+            if(timeLeft <= 0) {
+                clearInterval(timer);
+                window.location.href = ytLink;
+            }
+        }, 1000);
     }
 </script>
 
