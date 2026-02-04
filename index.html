@@ -143,7 +143,8 @@ button:hover{transform:scale(1.15)}
       <div id="block"></div>
     </div>
 
-    <p style="margin-top:10px">Use ⬅️ ➡️ keys</p>
+    <p style="margin-top:10px">Tap the screen to move ❤️</p>
+
   </div>
 
   <div id="reward" class="hidden">
@@ -173,26 +174,29 @@ function createHeart(){
 }
 setInterval(createHeart,250);
 
-/* GAME LOGIC */
-let boyPos=10;
-let solved=false;
+/* TAP GAME LOGIC */
+let taps = 0;
+let maxTaps = 100;
+let boyPos = 10;
+let solved = false;
 
-document.addEventListener("keydown",e=>{
-  if(solved) return;
-  const boy=document.getElementById("boy");
+document.body.addEventListener("click", () => {
+  if (solved) return;
 
-  if(e.key==="ArrowRight") boyPos+=10;
-  if(e.key==="ArrowLeft") boyPos-=10;
+  taps++;
+  const boy = document.getElementById("boy");
 
-  boy.style.left=boyPos+"px";
+  boyPos += 1.5; // smooth slow move
+  boy.style.left = boyPos + "px";
 
-  if(boyPos>160){
-    solved=true;
+  if (taps >= maxTaps) {
+    solved = true;
     document.getElementById("game").classList.add("hidden");
     document.getElementById("reward").classList.remove("hidden");
   }
 });
 </script>
+
 
 </body>
 </html>
