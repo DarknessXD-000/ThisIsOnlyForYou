@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Queen 👑</title>
+    <title>For Someone Special ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         :root {
             --pink: #ff4d6d;
             --dark-pink: #c9184a;
-            --glass: rgba(255, 255, 255, 0.2);
+            --soft-bg: #fff0f3;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
@@ -21,194 +22,201 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            color: #4a4a4a;
         }
 
-        /* Floating Bubbles Background */
-        .bg-elements { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        .bubble {
-            position: absolute;
-            bottom: -100px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            animation: rise 10s infinite ease-in;
+        /* Floating Animation Elements */
+        .floating-elements { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .heart { position: absolute; color: white; opacity: 0.6; animation: floatUp 8s infinite ease-in; }
+
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
         }
 
-        @keyframes rise {
-            0% { transform: translateY(0) scale(1); opacity: 1; }
-            100% { transform: translateY(-110vh) scale(1.5); opacity: 0; }
-        }
-
-        /* Modern Glass Card */
+        /* Main Glass Card */
         .container {
             width: 90%;
-            max-width: 450px;
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            max-width: 420px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 30px;
-            padding: 40px 30px;
+            border-radius: 40px;
+            padding: 40px 25px;
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.1);
             position: relative;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 10;
         }
 
-        h1 { font-family: 'Dancing Script', cursive; font-size: 2.5rem; color: var(--dark-pink); margin-bottom: 15px; }
-        p { font-size: 1rem; line-height: 1.6; margin-bottom: 25px; color: #555; }
+        h1 { font-family: 'Dancing Script', cursive; font-size: 2.8rem; color: var(--dark-pink); margin-bottom: 10px; }
+        p { font-size: 1rem; color: #555; line-height: 1.5; margin-bottom: 20px; }
 
         .btn {
             background: var(--pink);
             color: white;
             border: none;
-            padding: 12px 30px;
+            padding: 14px 35px;
             border-radius: 50px;
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.3);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             margin: 10px;
+            box-shadow: 0 8px 15px rgba(255, 77, 109, 0.3);
         }
 
-        .btn:hover { background: var(--dark-pink); transform: translateY(-3px); }
-
-        .btn-secondary { background: white; color: var(--pink); }
+        .btn:hover { background: var(--dark-pink); transform: scale(1.05); }
+        .btn-no { background: white; color: var(--pink); border: 1px solid var(--pink); position: absolute; }
 
         /* Step Logic */
-        .step { display: none; animation: fadeIn 0.8s forwards; }
-        .step.active { display: block; }
+        .step { display: none; }
+        .active { display: block; animation: slideUp 0.6s ease-out; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Game Area */
+        /* The Game */
         #game-box {
-            height: 150px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 20px;
+            height: 120px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 25px;
             margin: 20px 0;
             position: relative;
-            border: 2px solid white;
-            overflow: hidden;
+            border: 2px dashed white;
         }
-        .emoji { position: absolute; bottom: 20px; font-size: 45px; transition: 0.2s; }
+        .emoji { position: absolute; bottom: 15px; font-size: 50px; transition: 0.2s; }
 
-        /* Progress Bar */
-        .bar-container { height: 8px; background: rgba(0,0,0,0.05); border-radius: 10px; margin-top: 10px; }
-        #bar { height: 100%; width: 0%; background: var(--pink); border-radius: 10px; transition: 0.3s; }
+        /* Heartbeat Animation */
+        .big-heart {
+            font-size: 80px;
+            display: inline-block;
+            animation: beat 1.2s infinite;
+            filter: drop-shadow(0 0 10px rgba(255,77,109,0.5));
+        }
+        @keyframes beat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
 
-        #noBtn { position: absolute; }
+        .highlight { color: var(--dark-pink); font-weight: 600; }
     </style>
 </head>
 <body>
 
-<div class="bg-elements" id="bg"></div>
+<div class="floating-elements" id="bg"></div>
 
 <div class="container">
     <div class="step active" id="step1">
-        <h1>Hey Gorgeous... 🌸</h1>
-        <p>I’ve been thinking about this for a long time. There’s something special I want to ask you.</p>
-        <button class="btn" onclick="nextStep(2)">What is it? ✨</button>
+        <div style="font-size: 40px;">💌</div>
+        <h1>Hey Sweetie...</h1>
+        <p>There's a little secret I've been hiding. Do you want to find out what it is?</p>
+        <button class="btn" onclick="go(2)">Show me! ✨</button>
     </div>
 
     <div class="step" id="step2">
-        <h1>First things first...</h1>
-        <p>Do you know that you have the most beautiful smile in the entire world? 😊</p>
-        <button class="btn" onclick="nextStep(3)">I know! 🙈</button>
-        <button class="btn btn-secondary" onclick="alert('Stop lying! You do! ❤️'); nextStep(3)">Maybe? 😅</button>
+        <h1>Before that...</h1>
+        <p>I just wanted to say that <span class="highlight">you make everything better</span> just by being you.</p>
+        <p>Ready for the big question?</p>
+        <button class="btn" onclick="go(3)">Yes, I'm ready! ❤️</button>
     </div>
 
     <div class="step" id="step3">
-        <h1>So, My Love...</h1>
-        <p>Will you make me the luckiest person alive and be my Valentine? 💖</p>
-        <div style="height: 100px;"> <button class="btn" onclick="nextStep(4)">YES, I WILL! ❤️</button>
-            <button class="btn btn-secondary" id="noBtn" onmouseover="moveNo()">NO 💔</button>
+        <h1>My Valentine?</h1>
+        <p>Will you make me the happiest person and be mine this Valentine's Day?</p>
+        <div style="height: 120px; position: relative;">
+            <button class="btn" onclick="celebrate()">YES! ❤️</button>
+            <button class="btn btn-no" id="noBtn" onmouseover="moveNo()">No 💔</button>
         </div>
     </div>
 
     <div class="step" id="step4">
-        <h1>Almost there! 🏃‍♂️</h1>
-        <p>Tap fast to bring us together!</p>
+        <h1>Bring Us Together!</h1>
+        <p>Tap repeatedly to make me reach you!</p>
         <div id="game-box">
             <div class="emoji" id="boy" style="left: 10px;">👦</div>
             <div class="emoji" id="girl" style="right: 10px;">👧</div>
         </div>
-        <div class="bar-container"><div id="bar"></div></div>
+        <p id="tapCount" style="font-size: 0.8rem; opacity: 0.7;">Taps needed: 20</p>
     </div>
 
     <div class="step" id="step5">
-        <h1>YAYY! 🎉</h1>
-        <p>"❤️I Love You So Much❤️"</p>
-        <div style="font-size: 50px; margin: 20px;">🌹🍫</div>
-        <p id="countdown">Hold on, a surprise is loading...</p>
+        <div class="big-heart">❤️</div>
+        <h1>Forever Yours.</h1>
+        <p class="highlight" style="font-size: 1.1rem; font-style: italic;">
+            "In a world full of temporary things, <br>you are my forever feeling."
+        </p>
+        <p>I promise to cherish every moment with you. ❤️</p>
+        <p id="status" style="margin-top: 15px; font-weight: bold; color: var(--dark-pink);">Opening our world in 5s...</p>
     </div>
 </div>
 
 <script>
-    // 1. Create Floating Background
-    for (let i = 0; i < 15; i++) {
-        let b = document.createElement('div');
-        b.className = 'bubble';
-        let size = Math.random() * 60 + 20 + 'px';
-        b.style.width = size;
-        b.style.height = size;
-        b.style.left = Math.random() * 100 + 'vw';
-        b.style.animationDelay = Math.random() * 8 + 's';
-        document.getElementById('bg').appendChild(b);
+    // 1. Background Hearts
+    const bg = document.getElementById('bg');
+    for (let i = 0; i < 20; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.innerHTML = '❤️';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+        heart.style.animationDelay = Math.random() * 8 + 's';
+        bg.appendChild(heart);
     }
 
-    // 2. Navigation Logic
-    function nextStep(num) {
+    // 2. Navigation
+    function go(n) {
         document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-        document.getElementById('step' + num).classList.add('active');
-        
-        if(num === 5) {
-            startFinalCountdown();
-        }
+        document.getElementById('step' + n).classList.add('active');
     }
 
-    // 3. The Elusive "No" Button
+    // 3. Moving No Button
     function moveNo() {
         const btn = document.getElementById('noBtn');
-        const container = document.querySelector('.container');
-        const x = Math.random() * (container.offsetWidth - btn.offsetWidth);
-        const y = Math.random() * (container.offsetHeight - btn.offsetHeight);
-        btn.style.left = x + 'px';
-        btn.style.top = y + 'px';
+        const x = Math.random() * 250 - 125;
+        const y = Math.random() * 150 - 75;
+        btn.style.transform = `translate(${x}px, ${y}px)`;
     }
 
-    // 4. Game Logic
+    // 4. Celebration & Game Start
+    function celebrate() {
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff4d6d', '#ffffff'] });
+        setTimeout(() => go(4), 1000);
+    }
+
+    // 5. Game Logic
     let taps = 0;
-    const goal = 25;
+    const goal = 20;
     document.body.addEventListener('click', () => {
         if(document.getElementById('step4').classList.contains('active')) {
             taps++;
-            let progress = (taps / goal) * 85;
-            document.getElementById('boy').style.left = progress + '%';
-            document.getElementById('bar').style.width = (taps / goal) * 100 + '%';
-
+            let pos = (taps / goal) * 75;
+            document.getElementById('boy').style.left = pos + '%';
+            
             if(taps >= goal) {
-                setTimeout(() => nextStep(5), 500);
+                confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+                go(5);
+                startRedirect();
             }
         }
     });
 
-    // 5. Final Redirect
-    function startFinalCountdown() {
-        let timeLeft = 6;
-        const ytLink = "https://youtube.com/shorts/IP-dbNvNFe4?si=jIM4dihaZcWCuBiB";
-        const cd = document.getElementById('countdown');
-        
+    // 6. Instagram Redirect
+    function startRedirect() {
+        let time = 5;
+        const status = document.getElementById('status');
+        // REPLACE 'your_username' with your actual Instagram handle
+        const instaLink = "https://www.instagram.com/direct/inbox/"; 
+
         const timer = setInterval(() => {
-            timeLeft--;
-            cd.innerText = "Taking you to your surprise in " + timeLeft + "...";
-            if(timeLeft <= 0) {
+            time--;
+            status.innerText = "Taking you to Instagram in " + time + "s...";
+            if(time <= 0) {
                 clearInterval(timer);
-                window.location.href = ytLink;
+                window.location.href = instaLink;
             }
         }, 1000);
     }
