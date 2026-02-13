@@ -26,25 +26,34 @@
 
         .cursor-dot { position: fixed; width: 10px; height: 10px; background: white; border-radius: 50%; z-index: 11000; pointer-events: none; box-shadow: 0 0 15px 5px var(--pink); }
 
+        /* Loader */
+        #loader { position: fixed; inset: 0; background: #000; z-index: 30000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 1s; }
+        #progress-bar { width: 200px; height: 2px; background: #333; margin-top: 20px; position: relative; }
+        #progress-fill { position: absolute; height: 100%; background: var(--pink); width: 0%; transition: 0.2s; }
+
         /* Sections */
         section { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; padding: 100px 20px; text-align: center; }
         .hero-h1 { font-family: 'Playfair Display'; font-size: clamp(3rem, 10vw, 7rem); font-style: italic; background: linear-gradient(to bottom, #fff, var(--pink-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 20px rgba(255, 45, 117, 0.4)); }
 
-        /* Album */
+        /* Album Style */
         .album-container { display: flex; gap: 15px; width: 95%; max-width: 1200px; height: 500px; }
         .photo-card { flex: 1; overflow: hidden; border-radius: 35px; border: 1px solid rgba(255, 255, 255, 0.15); position: relative; transition: all 0.7s cubic-bezier(0.25, 1, 0.5, 1); }
-        .photo-card:hover { flex: 5; border-color: var(--pink); }
+        .photo-card:hover { flex: 5; border-color: var(--pink); box-shadow: 0 0 30px var(--pink); }
         .photo-card img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Buttons */
-        .yes-btn { background: linear-gradient(45deg, var(--pink), var(--pink-light)); border: none; padding: 20px 60px; border-radius: 50px; color: white; font-weight: 900; font-size: 1.5rem; cursor: pointer; box-shadow: 0 10px 30px rgba(255, 45, 117, 0.5); transition: 0.3s; }
-        .yes-btn:hover { transform: scale(1.1); }
+        /* Game Box */
+        .game-card { background: rgba(255, 255, 255, 0.03); border: 2px solid var(--pink); backdrop-filter: blur(15px); padding: 30px; border-radius: 40px; position: relative; overflow: hidden; }
+        #gameCanvas { background: rgba(0,0,0,0.5); border-radius: 20px; cursor: crosshair; touch-action: none; }
 
+        /* Proposal & Success */
+        .yes-btn { background: linear-gradient(45deg, var(--pink), var(--pink-light)); border: none; padding: 20px 60px; border-radius: 50px; color: white; font-weight: 900; font-size: 1.5rem; cursor: pointer; box-shadow: 0 10px 30px rgba(255, 45, 117, 0.5); transition: 0.3s; }
         #success-reveal { position: fixed; inset: 0; background: var(--bg-dark); z-index: 20000; display: none; flex-direction: column; justify-content: center; align-items: center; }
         
-        #loader { position: fixed; inset: 0; background: #000; z-index: 30000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 1s; }
-        #progress-bar { width: 200px; height: 2px; background: #333; margin-top: 20px; position: relative; }
-        #progress-fill { position: absolute; height: 100%; background: var(--pink); width: 0%; transition: 0.2s; }
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            50% { transform: translate(-3px, 2px) rotate(1deg); }
+            100% { transform: translate(1px, 1px) rotate(0deg); }
+        }
     </style>
 </head>
 <body>
@@ -55,15 +64,16 @@
     <div class="cursor-dot" id="dot"></div>
 
     <div id="loader">
-        <h1 style="font-size: 60px;">💖</h1>
+        <h1 style="font-size: 60px; animation: pulse 1s infinite;">💖</h1>
         <div id="progress-bar"><div id="progress-fill"></div></div>
+        <p style="margin-top: 10px; font-size: 12px; letter-spacing: 5px; color: var(--pink-light);">LOADING LOVE...</p>
     </div>
 
     <main>
         <section>
             <div>
+                <p style="letter-spacing: 10px; color: var(--pink-light);">HELLO BEAUTIFUL</p>
                 <h1 class="hero-h1">For My Universe</h1>
-                <p style="opacity: 0.6; margin-top: 20px;">Scroll to see why you're special...</p>
             </div>
         </section>
 
@@ -75,7 +85,15 @@
             </div>
         </section>
 
-        <section id="proposal">
+        <section>
+            <div class="game-card">
+                <h2 style="font-family: 'Playfair Display'; font-size: 2rem; margin-bottom: 10px;">Catch 10 Hearts!</h2>
+                <div style="font-size: 1.5rem; color: var(--pink); font-weight: bold; margin-bottom: 10px;">Hearts: <span id="score">0</span> / 10</div>
+                <canvas id="gameCanvas" width="320" height="400"></canvas>
+            </div>
+        </section>
+
+        <section id="proposal" style="display: none; transition: 1s;">
             <div>
                 <h1 style="font-size: 3.5rem; margin-bottom: 40px;">Will you be mine?</h1>
                 <button class="yes-btn" onclick="celebrate()">YES, FOREVER! ❤️</button>
@@ -84,19 +102,18 @@
     </main>
 
     <div id="success-reveal">
-        <h1 style="font-family: 'Playfair Display'; font-size: 4rem; color: var(--pink);">You're Mine! 💍</h1>
-        <p style="letter-spacing: 10px; margin-top: 20px;">I LOVE YOU</p>
+        <h1 style="font-family: 'Playfair Display'; font-size: 4rem; color: var(--pink); text-align: center;">I Knew It! 💍<br><span style="font-size: 1.5rem; color: white; letter-spacing: 10px;">I LOVE YOU</span></h1>
     </div>
 
     <script>
-        // 1. Optimized Particle Engine
         const canvas = document.getElementById('particles-canvas');
         const ctx = canvas.getContext('2d');
         const celCanvas = document.getElementById('celebration-canvas');
         const celCtx = celCanvas.getContext('2d');
-        
-        let hearts = [];
-        let celHearts = [];
+        const gc = document.getElementById('gameCanvas');
+        const gctx = gc.getContext('2d');
+
+        let hearts = [], celHearts = [], gameHearts = [], score = 0;
         const emojis = ['❤️', '💖', '💝', '💕'];
 
         function resize() {
@@ -106,33 +123,55 @@
         window.addEventListener('resize', resize);
         resize();
 
-        class Heart {
+        class Particle {
             constructor(x, y, vx, vy, size, opacity, isCel = false) {
                 this.x = x; this.y = y; this.vx = vx; this.vy = vy;
                 this.size = size; this.opacity = opacity;
                 this.emoji = emojis[Math.floor(Math.random() * emojis.length)];
                 this.isCel = isCel;
             }
-            draw(context) {
-                context.globalAlpha = this.opacity;
-                context.font = `${this.size}px Arial`;
-                context.fillText(this.emoji, this.x, this.y);
+            draw(c) {
+                c.globalAlpha = this.opacity;
+                c.font = `${this.size}px Arial`;
+                c.fillText(this.emoji, this.x, this.y);
             }
             update() {
                 this.x += this.vx; this.y += this.vy;
-                if(this.isCel) { this.vy += 0.1; this.opacity -= 0.005; } // Gravity for explosion
-                else { if(this.y < -50) this.y = canvas.height + 50; }
+                if(this.isCel) { this.vy += 0.1; this.opacity -= 0.005; }
+                else if(this.y < -50) this.y = canvas.height + 50;
             }
         }
 
-        // Init Background Hearts
-        for(let i=0; i<40; i++) {
-            hearts.push(new Heart(Math.random()*canvas.width, Math.random()*canvas.height, 0, -Math.random()*1 - 0.5, Math.random()*15+10, Math.random()*0.4));
+        // Game Heart Logic (Random Directions)
+        class GameHeart {
+            constructor() {
+                const side = Math.floor(Math.random() * 4); // 0: Top, 1: Bottom, 2: Left, 3: Right
+                if(side === 0) { this.x = Math.random() * gc.width; this.y = -20; this.vx = (Math.random()-0.5)*2; this.vy = Math.random()*2+1; }
+                else if(side === 1) { this.x = Math.random() * gc.width; this.y = gc.height+20; this.vx = (Math.random()-0.5)*2; this.vy = -(Math.random()*2+1); }
+                else if(side === 2) { this.x = -20; this.y = Math.random() * gc.height; this.vx = Math.random()*2+1; this.vy = (Math.random()-0.5)*2; }
+                else { this.x = gc.width+20; this.y = Math.random() * gc.height; this.vx = -(Math.random()*2+1); this.vy = (Math.random()-0.5)*2; }
+                this.size = 30;
+                this.emoji = emojis[Math.floor(Math.random() * emojis.length)];
+            }
+            update() { this.x += this.vx; this.y += this.vy; }
+            draw() { gctx.font = `${this.size}px Arial`; gctx.fillText(this.emoji, this.x, this.y); }
         }
+
+        // Background Hearts Init
+        for(let i=0; i<40; i++) hearts.push(new Particle(Math.random()*canvas.width, Math.random()*canvas.height, 0, -Math.random()*1-0.5, Math.random()*15+10, Math.random()*0.3));
 
         function animate() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
             hearts.forEach(h => { h.update(); h.draw(ctx); });
+
+            if(score < 10) {
+                gctx.clearRect(0,0,gc.width, gc.height);
+                if(Math.random() < 0.03) gameHearts.push(new GameHeart());
+                gameHearts.forEach((gh, i) => {
+                    gh.update(); gh.draw();
+                    if(gh.x < -50 || gh.x > gc.width+50 || gh.y < -50 || gh.y > gc.height+50) gameHearts.splice(i,1);
+                });
+            }
 
             if(celHearts.length > 0) {
                 celCtx.clearRect(0,0,celCanvas.width, celCanvas.height);
@@ -143,35 +182,44 @@
         }
         animate();
 
-        // 2. Cursor
-        const dot = document.getElementById('dot');
-        document.addEventListener('mousemove', e => {
-            dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px';
+        // Game Interaction
+        gc.addEventListener('mousedown', e => {
+            const r = gc.getBoundingClientRect();
+            const mx = e.clientX - r.left; const my = e.clientY - r.top;
+            gameHearts.forEach((gh, i) => {
+                if(Math.hypot(gh.x - mx, gh.y - my) < 35) {
+                    gameHearts.splice(i, 1);
+                    score++;
+                    document.getElementById('score').innerText = score;
+                    if(score >= 10) {
+                        document.getElementById('proposal').style.display = 'block';
+                        window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
+                    }
+                }
+            });
         });
 
-        // 3. Loader
+        // Cursor
+        const dot = document.getElementById('dot');
+        document.addEventListener('mousemove', e => { dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px'; });
+
+        // Loader
         let p = 0;
         const inv = setInterval(() => {
             p += 5; document.getElementById('progress-fill').style.width = p + "%";
             if(p >= 100) { clearInterval(inv); document.getElementById('loader').style.opacity = "0"; setTimeout(() => document.getElementById('loader').remove(), 1000); }
         }, 100);
 
-        // 4. THE LAG-FREE CELEBRATION
+        // Celebration
         function celebrate() {
+            document.body.style.animation = "shake 0.5s ease";
             document.getElementById('success-reveal').style.display = 'flex';
             celCanvas.style.display = 'block';
-
-            // Burst Explosion
             for(let i=0; i<100; i++) {
-                const vx = (Math.random() - 0.5) * 15;
-                const vy = (Math.random() - 0.5) * 15;
-                celHearts.push(new Heart(window.innerWidth/2, window.innerHeight/2, vx, vy, Math.random()*30+20, 1, true));
+                const vx = (Math.random() - 0.5) * 20; const vy = (Math.random() - 0.5) * 20;
+                celHearts.push(new Particle(window.innerWidth/2, window.innerHeight/2, vx, vy, Math.random()*35+25, 1, true));
             }
-
-            // Continuous fountain
-            setInterval(() => {
-                celHearts.push(new Heart(Math.random()*window.innerWidth, window.innerHeight+20, 0, -Math.random()*5-5, Math.random()*20+15, 1, true));
-            }, 100);
+            setInterval(() => celHearts.push(new Particle(Math.random()*window.innerWidth, window.innerHeight+20, 0, -Math.random()*5-5, Math.random()*25+15, 1, true)), 80);
         }
     </script>
 </body>
