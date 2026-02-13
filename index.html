@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infinity | My Forever 💖</title>
+    <title>Infinity | Our Love Story 💖</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:italic,wght@700;900&family=Outfit:wght@100;400;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -55,7 +55,6 @@
             z-index: 11000;
             pointer-events: none;
             box-shadow: 0 0 15px 5px var(--pink);
-            transition: transform 0.1s;
         }
 
         .heart-trail {
@@ -72,14 +71,16 @@
             100% { opacity: 0; transform: translateY(-30px) scale(0.5); }
         }
 
-        /* 3. LOADER */
+        /* 3. LOADER (SCANNER) */
         #loader {
             position: fixed; inset: 0; background: #000; z-index: 10000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             transition: 1s cubic-bezier(0.77, 0, 0.175, 1);
         }
 
-        /* 4. SECTIONS & HERO */
+        #progress { position: absolute; height: 100%; background: var(--pink); width: 0%; transition: 0.3s; box-shadow: 0 0 15px var(--pink); }
+
+        /* 4. HERO SECTION */
         section { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; padding: 100px 20px; }
         
         .hero-h1 { 
@@ -93,7 +94,7 @@
             filter: drop-shadow(0 0 20px rgba(255, 45, 117, 0.4));
         }
 
-        /* 5. 3D ALBUM RE-DESIGN */
+        /* 5. 3D EXPANDING ALBUM */
         .album-container {
             display: flex; gap: 15px; width: 95%; max-width: 1200px; height: 500px;
         }
@@ -112,17 +113,18 @@
             box-shadow: 0 0 40px rgba(255, 45, 117, 0.4);
         }
 
-        .photo-card img { width: 100%; height: 100%; object-fit: cover; }
+        .photo-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
+        .photo-card:hover img { transform: scale(1.1); }
 
         .overlay {
             position: absolute; bottom: 0; left: 0; right: 0;
-            padding: 30px; background: linear-gradient(transparent, rgba(0,0,0,0.8));
-            opacity: 0; transition: 0.5s;
+            padding: 40px; background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            opacity: 0; transition: 0.5s; transform: translateY(20px);
         }
 
-        .photo-card:hover .overlay { opacity: 1; }
+        .photo-card:hover .overlay { opacity: 1; transform: translateY(0); }
 
-        /* 6. GAME & PROPOSAL */
+        /* 6. MINI GAME */
         .game-card {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--pink);
@@ -130,19 +132,36 @@
             padding: 40px; border-radius: 40px; text-align: center;
         }
 
-        .yes-btn {
-            background: linear-gradient(45deg, var(--pink), var(--pink-light));
-            border: none; padding: 20px 60px; border-radius: 50px;
-            color: white; font-weight: 900; font-size: 1.5rem;
-            box-shadow: 0 10px 30px rgba(255, 45, 117, 0.5);
-            cursor: pointer; transition: 0.3s;
+        #gameCanvas {
+            background: rgba(0,0,0,0.3);
+            border-radius: 30px;
+            margin-top: 20px;
+            cursor: crosshair;
         }
 
-        .yes-btn:hover { transform: scale(1.1); box-shadow: 0 0 50px var(--pink-glow); }
+        /* 7. PROPOSAL & BUTTONS */
+        .yes-btn {
+            background: linear-gradient(45deg, var(--pink), var(--pink-light));
+            border: none; padding: 22px 70px; border-radius: 100px;
+            color: white; font-weight: 900; font-size: 1.6rem;
+            box-shadow: 0 10px 30px rgba(255, 45, 117, 0.5);
+            cursor: pointer; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            letter-spacing: 2px;
+        }
+
+        .yes-btn:hover { transform: scale(1.15); box-shadow: 0 0 60px var(--pink-glow); }
 
         #success-reveal {
             position: fixed; inset: 0; background: var(--bg-dark); z-index: 20000;
             display: none; flex-direction: column; justify-content: center; align-items: center;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            50% { transform: translate(-1px, 2px) rotate(1deg); }
+            100% { transform: translate(1px, 1px) rotate(0deg); }
         }
 
     </style>
@@ -154,69 +173,74 @@
     <div class="cursor-dot" id="dot"></div>
 
     <div id="loader">
-        <h1 style="font-size: 80px; animation: pulse 1s infinite;">❤️</h1>
-        <div style="width: 200px; height: 2px; background: #333; margin-top: 20px; position: relative;">
-            <div id="progress" style="position: absolute; height: 100%; background: var(--pink); width: 0%; transition: 0.3s;"></div>
+        <h1 style="font-size: 100px; animation: pulse 1s infinite; filter: drop-shadow(0 0 20px var(--pink));">💖</h1>
+        <div style="width: 250px; height: 3px; background: rgba(255,255,255,0.1); margin-top: 30px; position: relative; border-radius: 10px; overflow: hidden;">
+            <div id="progress"></div>
         </div>
-        <p style="margin-top: 15px; letter-spacing: 5px; font-size: 10px; color: var(--pink);">SYNCING HEARTBEATS...</p>
+        <p style="margin-top: 15px; letter-spacing: 8px; font-size: 12px; color: var(--pink-light); font-weight: bold;">SYNCING SOULS...</p>
     </div>
 
     <main>
         <section>
             <div style="text-align: center;">
-                <p style="letter-spacing: 12px; color: var(--pink-light); margin-bottom: 10px;">ESTABLISHED FEBRUARY 2026</p>
-                <h1 class="hero-h1">Forever & Always.</h1>
-                <p style="opacity: 0.6; font-size: 1.1rem;">You are the love I've always searched for.</p>
+                <p style="letter-spacing: 12px; color: var(--pink-light); margin-bottom: 15px; font-weight: bold;">EST. FEBRUARY 2026</p>
+                <h1 class="hero-h1">For My Everything.</h1>
+                <p style="opacity: 0.6; font-size: 1.2rem; margin-top: 20px;">You're the glitch in my matrix, the pink in my sky.</p>
             </div>
         </section>
 
         <section style="flex-direction: column;">
-            <h2 style="font-family: 'Playfair Display'; font-size: 3rem; margin-bottom: 40px; color: var(--pink-light);">Our Gallery</h2>
+            <h2 style="font-family: 'Playfair Display'; font-size: 3.5rem; margin-bottom: 50px; color: var(--pink-light);">Our Memory Lane</h2>
             <div class="album-container">
                 <div class="photo-card">
                     <img src="https://images.unsplash.com/photo-1516589174184-c6858b16ecb0?auto=format&fit=crop&w=800" alt="1">
-                    <div class="overlay"><h3 style="font-family: 'Dancing Script'; font-size: 2rem;">First Date 🌹</h3></div>
+                    <div class="overlay"><h3 style="font-family: 'Dancing Script'; font-size: 2.5rem;">Magical 🌹</h3></div>
                 </div>
                 <div class="photo-card">
                     <img src="https://images.unsplash.com/photo-1522673607200-1648832cee98?auto=format&fit=crop&w=800" alt="2">
-                    <div class="overlay"><h3 style="font-family: 'Dancing Script'; font-size: 2rem;">Your Smile ✨</h3></div>
+                    <div class="overlay"><h3 style="font-family: 'Dancing Script'; font-size: 2.5rem;">Innocence ✨</h3></div>
                 </div>
                 <div class="photo-card">
                     <img src="https://images.unsplash.com/photo-1494774157365-9e04c6720e47?auto=format&fit=crop&w=800" alt="3">
-                    <div class="overlay"><h3 style="font-family: 'Dancing Script'; font-size: 2rem;">Us ♾️</h3></div>
+                    <div class="overlay"><h3 style="font-family: 'Dancing Script'; font-size: 2.5rem;">The Best ♾️</h3></div>
                 </div>
                 <div class="photo-card">
                     <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800" alt="4">
-                    <div class="overlay"><h3 style="font-family: 'Dancing Script'; font-size: 2rem;">Always 💖</h3></div>
+                    <div class="overlay"><h3 style="font-family: 'Dancing Script'; font-size: 2.5rem;">Forever 💖</h3></div>
                 </div>
             </div>
         </section>
 
         <section>
             <div class="game-card">
-                <h2 style="font-family: 'Playfair Display'; margin-bottom: 20px;">Collect 10 Hearts</h2>
-                <div style="font-size: 2rem; color: var(--pink); font-weight: 900; margin-bottom: 15px;">SCORE: <span id="score">0</span></div>
-                <canvas id="gameCanvas" width="300" height="350"></canvas>
+                <h2 style="font-family: 'Playfair Display'; font-size: 2.5rem; margin-bottom: 10px;">Catch the Love</h2>
+                <p style="opacity: 0.7;">Collect 10 hearts to reveal the question</p>
+                <div style="font-size: 2.5rem; color: var(--pink); font-weight: 900; margin: 15px 0;">Score: <span id="score">0</span></div>
+                <canvas id="gameCanvas" width="320" height="380"></canvas>
             </div>
         </section>
 
-        <section id="proposal" style="opacity: 0; transform: scale(0.9); transition: 1s;">
+        <section id="proposal" style="opacity: 0; transform: scale(0.8); transition: 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
             <div style="text-align: center;">
-                <h1 style="font-family: 'Playfair Display'; font-size: 4rem; margin-bottom: 30px;">Will you be mine <br> <span style="color: var(--pink);">Valentine?</span></h1>
-                <button class="yes-btn" onclick="celebrate()">YES, FOREVER! ❤️</button>
-                <br>
-                <button id="no-btn" onmouseover="dodge()" style="background:transparent; border:none; color:rgba(255,255,255,0.2); margin-top:40px;">No...</button>
+                <h1 style="font-family: 'Playfair Display'; font-size: clamp(3rem, 10vw, 5rem); line-height: 1.1;">
+                    Will you be my <br> <span style="color: var(--pink); text-shadow: 0 0 30px var(--pink);">Forever Valentine?</span>
+                </h1>
+                <div style="margin-top: 50px;">
+                    <button class="yes-btn" onclick="celebrate()">YES, FOREVER! ❤️</button>
+                    <br>
+                    <button id="no-btn" onmouseover="dodge()" style="background:transparent; border:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.3); padding:10px 30px; border-radius:50px; margin-top:40px;">No...</button>
+                </div>
             </div>
         </section>
     </main>
 
     <div id="success-reveal">
-        <h1 style="font-family: 'Playfair Display'; font-size: 5rem; color: var(--pink);">I'm Yours! 💍</h1>
-        <p style="letter-spacing: 15px; margin-top: 20px;">I LOVE YOU TILL THE END OF TIME</p>
+        <h1 style="font-family: 'Playfair Display'; font-size: clamp(3rem, 12vw, 6rem); color: var(--pink); filter: drop-shadow(0 0 30px var(--pink));">I'm Yours Forever! 💍</h1>
+        <p style="letter-spacing: 20px; margin-top: 30px; opacity: 0.7; font-weight: 100; text-transform: uppercase;">A Promise for Infinity</p>
     </div>
 
     <script>
-        // 1. HEART PARTICLES BACKGROUND
+        // --- 1. HEART PARTICLES BACKGROUND ---
         const canvas = document.getElementById('particles-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -225,12 +249,12 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             particles = [];
-            for(let i=0; i<50; i++) {
+            for(let i=0; i<60; i++) {
                 particles.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    size: Math.random() * 15 + 5,
-                    speedY: Math.random() * 1 + 0.5,
+                    size: Math.random() * 15 + 8,
+                    speedY: Math.random() * 0.8 + 0.3,
                     opacity: Math.random() * 0.5
                 });
             }
@@ -243,19 +267,19 @@
                 ctx.font = `${p.size}px Arial`;
                 ctx.fillText("❤️", p.x, p.y);
                 p.y -= p.speedY;
-                if(p.y < -20) p.y = canvas.height + 20;
+                if(p.y < -30) p.y = canvas.height + 30;
             });
             requestAnimationFrame(drawParticles);
         }
         initParticles(); drawParticles();
 
-        // 2. HEART TRAIL CURSOR
+        // --- 2. HEART TRAIL CURSOR ---
         const dot = document.getElementById('dot');
         document.addEventListener('mousemove', e => {
             dot.style.left = e.clientX + 'px';
             dot.style.top = e.clientY + 'px';
             
-            if(Math.random() > 0.8) {
+            if(Math.random() > 0.75) {
                 const heart = document.createElement('div');
                 heart.innerHTML = "❤️";
                 heart.className = 'heart-trail';
@@ -266,18 +290,18 @@
             }
         });
 
-        // 3. LOADER
+        // --- 3. LOADER LOGIC ---
         let prog = 0;
         const progInt = setInterval(() => {
-            prog += Math.random() * 10;
+            prog += Math.random() * 12;
             document.getElementById('progress').style.width = prog + "%";
             if(prog >= 100) {
                 clearInterval(progInt);
-                setTimeout(() => document.getElementById('loader').style.transform = "translateY(-100%)", 500);
+                setTimeout(() => document.getElementById('loader').style.transform = "translateY(-100%)", 800);
             }
         }, 150);
 
-        // 4. GAME
+        // --- 4. MINI GAME ---
         const gc = document.getElementById('gameCanvas');
         const gctx = gc.getContext('2d');
         let score = 0;
@@ -285,25 +309,27 @@
         
         class GameHeart {
             constructor() {
-                this.x = Math.random() * 260 + 20;
-                this.y = 360;
-                this.speed = 2 + Math.random() * 2;
+                this.x = Math.random() * (gc.width - 40) + 20;
+                this.y = gc.height + 20;
+                this.speed = 2.5 + Math.random() * 2;
             }
             update() { this.y -= this.speed; }
-            draw() { gctx.font = "30px Arial"; gctx.fillText("💗", this.x, this.y); }
+            draw() { gctx.font = "35px Arial"; gctx.fillText("💗", this.x, this.y); }
         }
 
         function runGame() {
-            gctx.clearRect(0,0,300,350);
-            if(Math.random() < 0.04) gameHearts.push(new GameHeart());
+            gctx.clearRect(0,0,gc.width,gc.height);
+            if(Math.random() < 0.05) gameHearts.push(new GameHeart());
             gameHearts.forEach((h, i) => {
                 h.update(); h.draw();
-                if(h.y < -20) gameHearts.splice(i, 1);
+                if(h.y < -30) gameHearts.splice(i, 1);
             });
             if(score < 10) requestAnimationFrame(runGame);
             else {
-                document.getElementById('proposal').style.opacity = '1';
-                document.getElementById('proposal').style.transform = 'scale(1)';
+                const prop = document.getElementById('proposal');
+                prop.style.opacity = '1';
+                prop.style.transform = 'scale(1)';
+                prop.scrollIntoView({behavior: 'smooth'});
             }
         }
         runGame();
@@ -312,36 +338,68 @@
             const r = gc.getBoundingClientRect();
             const mx = e.clientX - r.left; const my = e.clientY - r.top;
             gameHearts.forEach((h, i) => {
-                if(Math.hypot(h.x + 15 - mx, h.y - 15 - my) < 35) {
+                if(Math.hypot(h.x + 15 - mx, h.y - 15 - my) < 40) {
                     gameHearts.splice(i, 1);
                     score++;
                     document.getElementById('score').innerText = score;
+                    createParticle(e.clientX, e.clientY, true);
                 }
             });
         });
 
-        // 5. FUNCTIONS
+        // --- 5. THE FINAL SURPRISE (HEART POP EXPLOSION) ---
         function dodge() {
             const b = document.getElementById('no-btn');
             b.style.position = 'fixed';
             b.style.left = Math.random() * 80 + 10 + '%';
             b.style.top = Math.random() * 80 + 10 + '%';
-            b.innerText = "Wrong Button! 😜";
+            b.innerText = "Error 404: Not Found 😂";
         }
 
         function celebrate() {
-            document.getElementById('success-reveal').style.display = 'flex';
+            document.body.style.animation = "shake 0.5s ease";
+            const successScreen = document.getElementById('success-reveal');
+            successScreen.style.display = 'flex';
+
+            // Initial Burst (150 Hearts)
+            for (let i = 0; i < 150; i++) {
+                setTimeout(() => {
+                    createParticle(window.innerWidth / 2, window.innerHeight / 2, true);
+                }, i * 5);
+            }
+
+            // Endless Fountain
             setInterval(() => {
-                const h = document.createElement('div');
-                h.innerHTML = "🌸";
-                h.style.position = 'fixed';
-                h.style.left = Math.random() * 100 + 'vw';
-                h.style.top = '-50px';
-                h.style.fontSize = '30px';
-                h.style.transition = '5s linear';
-                document.body.appendChild(h);
-                setTimeout(() => { h.style.top = '110vh'; h.style.opacity = '0'; }, 100);
-            }, 100);
+                createParticle(Math.random() * window.innerWidth, window.innerHeight + 50, false);
+            }, 60);
+        }
+
+        function createParticle(x, y, isExplosion) {
+            const p = document.createElement('div');
+            const hearts = ['❤️', '💖', '💝', '🌸', '✨', '💕'];
+            p.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+            p.style.position = 'fixed';
+            p.style.left = x + 'px';
+            p.style.top = y + 'px';
+            p.style.fontSize = (Math.random() * 30 + 25) + 'px';
+            p.style.zIndex = '20001';
+            p.style.pointerEvents = 'none';
+            
+            const vx = (Math.random() - 0.5) * (isExplosion ? 25 : 8);
+            const vy = isExplosion ? (Math.random() - 0.5) * 25 : -(Math.random() * 12 + 6);
+            
+            let curX = x, curY = y, op = 1;
+            document.body.appendChild(p);
+
+            const move = () => {
+                curX += vx; curY += vy;
+                op -= 0.008;
+                p.style.transform = `translate(${curX - x}px, ${curY - y}px) rotate(${curX}deg)`;
+                p.style.opacity = op;
+                if (op > 0) requestAnimationFrame(move);
+                else p.remove();
+            };
+            requestAnimationFrame(move);
         }
 
         window.onresize = initParticles;
