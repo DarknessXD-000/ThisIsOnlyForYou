@@ -3,373 +3,247 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infinity | My Universe 💖</title>
+    <title>Infinity | Our Love Story 💖</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:italic,wght@700;900&family=Outfit:wght@100;400;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --pink-main: #ff4d8d;
-            --pink-glow: #ff85a1;
-            --dark-pink: #2d0a15;
-            --glass: rgba(255, 182, 193, 0.1);
+            --pink: #ff4d8d;
+            --pink-light: #ff85a1;
+            --bg: #1a050d;
+            --glass: rgba(255, 77, 141, 0.1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-        body { background: var(--dark-pink); color: white; font-family: 'Outfit', sans-serif; overflow-x: hidden; }
+        body { background: var(--bg); color: white; font-family: 'Outfit', sans-serif; overflow-x: hidden; }
 
-        /* 1. CINEMATIC SCANNER STARTING */
+        /* 1. INITIAL SCANNER */
         #loader {
-            position: fixed;
-            inset: 0;
-            background: #000;
-            z-index: 10000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: 1.5s cubic-bezier(1, 0, 0, 1);
+            position: fixed; inset: 0; background: #000; z-index: 10000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: 1.2s cubic-bezier(1, 0, 0, 1);
         }
+        .scan-heart { font-size: 80px; animation: pulse 1s infinite; filter: drop-shadow(0 0 15px var(--pink)); }
+        .line { width: 250px; height: 2px; background: var(--pink); box-shadow: 0 0 20px var(--pink); margin-top: 20px; animation: scan 2s infinite; }
+        @keyframes scan { 0%, 100% { transform: scaleX(0.1); opacity: 0.2; } 50% { transform: scaleX(1); opacity: 1; } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
-        .scan-container {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            border: 2px solid rgba(255, 77, 141, 0.3);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+        /* 2. BG & CURSOR */
+        #cursor { position: fixed; width: 10px; height: 10px; background: #fff; border-radius: 50%; z-index: 11000; pointer-events: none; box-shadow: 0 0 15px var(--pink); }
+        #cursor-f { position: fixed; width: 35px; height: 35px; border: 2px solid var(--pink); border-radius: 50%; z-index: 10999; pointer-events: none; transition: 0.1s; }
 
-        .scan-line {
-            position: absolute;
-            width: 100%;
-            height: 4px;
-            background: var(--pink-main);
-            box-shadow: 0 0 20px var(--pink-main);
-            animation: scanMove 2s ease-in-out infinite;
-        }
+        /* 3. HERO */
+        section { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; padding: 100px 20px; }
+        .hero-h1 { font-family: 'Playfair Display'; font-size: clamp(3rem, 10vw, 7rem); font-style: italic; text-align: center; background: linear-gradient(to right, #fff, var(--pink-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        @keyframes scanMove {
-            0%, 100% { transform: translateY(-100px); opacity: 0; }
-            50% { transform: translateY(100px); opacity: 1; }
-        }
-
-        .scan-heart {
-            font-size: 80px;
-            filter: drop-shadow(0 0 10px var(--pink-main));
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        /* 2. BACKGROUND & CURSOR */
-        #bg-canvas { position: fixed; top: 0; left: 0; z-index: 0; }
+        /* 4. THE ULTIMATE ANIMATED GALLERY ALBUM */
+        .album-title { text-align: center; font-family: 'Playfair Display'; font-size: 3rem; margin-bottom: 50px; color: var(--pink-light); }
         
-        #cursor {
-            position: fixed;
-            width: 12px; height: 12px;
-            background: var(--pink-glow);
-            border-radius: 50%;
-            z-index: 11000;
-            pointer-events: none;
-            box-shadow: 0 0 15px var(--pink-main);
-        }
-
-        #cursor-f {
-            position: fixed;
-            width: 40px; height: 40px;
-            border: 2px solid var(--pink-main);
-            border-radius: 50%;
-            z-index: 10999;
-            pointer-events: none;
-            transition: 0.1s ease-out;
-        }
-
-        /* 3. HERO SECTION */
-        section {
-            min-height: 100vh;
+        .gallery-wrap {
             display: flex;
-            align-items: center;
             justify-content: center;
-            padding: 80px 20px;
+            perspective: 2000px; /* Gives 3D depth */
+            padding: 50px 0;
+        }
+
+        .album-container {
+            display: flex;
+            gap: 20px;
+            width: 90%;
+            max-width: 1200px;
+            height: 500px;
+        }
+
+        .photo-card {
+            flex: 1;
+            overflow: hidden;
+            border-radius: 30px;
+            border: 2px solid var(--glass);
             position: relative;
-            z-index: 1;
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            filter: grayscale(0.5);
+            background: #000;
         }
 
-        .hero-text {
-            text-align: center;
-        }
-
-        .hero-text h1 {
-            font-family: 'Playfair Display';
-            font-size: clamp(3.5rem, 12vw, 8rem);
-            font-style: italic;
-            color: #fff;
-            text-shadow: 0 0 30px rgba(255, 77, 141, 0.5);
-            margin-bottom: 10px;
-        }
-
-        /* 4. LUXURY GALLERY */
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            max-width: 1100px;
+        .photo-card img {
             width: 100%;
-        }
-
-        .glass-card {
-            background: var(--glass);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 15px;
-            border-radius: 40px;
-            backdrop-filter: blur(15px);
-            transition: 0.5s;
-            text-align: center;
-        }
-
-        .glass-card:hover {
-            transform: translateY(-15px) rotate(2deg);
-            border-color: var(--pink-main);
-            box-shadow: 0 15px 40px rgba(255, 77, 141, 0.3);
-        }
-
-        .glass-card img {
-            width: 100%;
-            height: 350px;
+            height: 100%;
             object-fit: cover;
-            border-radius: 30px;
+            transition: 0.6s;
         }
 
-        .caption {
-            font-family: 'Dancing Script';
-            font-size: 1.8rem;
-            color: var(--pink-glow);
-            margin-top: 15px;
+        /* Hover Effect: The card expands while others shrink */
+        .photo-card:hover {
+            flex: 5;
+            filter: grayscale(0);
+            border-color: var(--pink);
+            box-shadow: 0 0 50px rgba(255, 77, 141, 0.4);
+            transform: scale(1.05) translateZ(50px);
         }
 
-        /* 5. PINK GAME BOX */
-        .game-area {
-            background: rgba(45, 10, 21, 0.6);
-            padding: 40px;
-            border-radius: 50px;
-            border: 2px dashed var(--pink-main);
-            text-align: center;
-        }
-
-        #game-canvas {
-            border-radius: 30px;
-            background: rgba(0, 0, 0, 0.3);
-            margin-top: 20px;
-        }
-
-        /* 6. PROPOSAL */
-        .proposal-container {
+        .photo-card .overlay {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 30px;
             opacity: 0;
-            transform: translateY(50px);
-            transition: 1s all;
-            text-align: center;
+            transition: 0.4s;
+            transform: translateY(20px);
         }
 
-        .proposal-container.show { opacity: 1; transform: translateY(0); }
-
-        .yes-btn {
-            background: linear-gradient(45deg, #ff4d8d, #ff85a1);
-            color: white;
-            padding: 20px 60px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.5rem;
-            font-weight: 900;
-            box-shadow: 0 10px 30px rgba(255, 77, 141, 0.5);
-            margin-top: 30px;
+        .photo-card:hover .overlay {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        #success {
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(circle, #ff85a1, #2d0a15);
-            z-index: 20000;
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
+        .photo-card h3 { font-family: 'Dancing Script'; font-size: 2.5rem; color: var(--pink-light); }
+
+        /* 5. GAME & PROPOSAL */
+        .game-card { background: rgba(0,0,0,0.5); padding: 40px; border-radius: 40px; border: 1px solid var(--pink); text-align: center; }
+        .yes-btn { background: var(--pink); border: none; padding: 18px 50px; border-radius: 50px; color: white; font-weight: 900; font-size: 1.2rem; margin-top: 20px; box-shadow: 0 0 20px var(--pink); }
+
+        #success-reveal { position: fixed; inset: 0; background: #000; z-index: 20000; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
 
     </style>
 </head>
 <body>
 
-    <canvas id="bg-canvas"></canvas>
     <div id="cursor"></div>
     <div id="cursor-f"></div>
 
     <div id="loader">
-        <div class="scan-container">
-            <div class="scan-heart">❤️</div>
-            <div class="scan-line"></div>
-        </div>
-        <p id="load-status" style="margin-top: 30px; letter-spacing: 5px; color: var(--pink-main); font-size: 0.8rem;">INITIALIZING SOUL SCAN...</p>
+        <div class="scan-heart">❤️</div>
+        <div class="line"></div>
+        <p style="margin-top: 20px; letter-spacing: 5px; color: var(--pink);">SCANNING FOR MY SOULMATE...</p>
     </div>
 
     <main>
         <section>
-            <div class="hero-text">
-                <p style="letter-spacing: 8px; color: var(--pink-glow); font-weight: 200;">VALENTINE EDITION</p>
-                <h1>To [GF's Name]</h1>
-                <p style="opacity: 0.7; max-width: 500px; margin: 0 auto;">Because you're the pink in my gray world. Scroll to see the magic we made...</p>
+            <div>
+                <p style="text-align: center; letter-spacing: 10px; color: var(--pink-light);">HELLO BEAUTIFUL</p>
+                <h1 class="hero-h1">For [GF's Name]</h1>
+                <p style="text-align: center; opacity: 0.6; margin-top: 10px;">A digital piece of my heart, just for you.</p>
+            </div>
+        </section>
+
+        <section style="flex-direction: column;">
+            <h2 class="album-title">Our Memory Album</h2>
+            <div class="gallery-wrap">
+                <div class="album-container">
+                    <div class="photo-card">
+                        <img src="img1.jpg" alt="1">
+                        <div class="overlay">
+                            <h3>That Moment 🌹</h3>
+                            <p>Everything changed when I met you.</p>
+                        </div>
+                    </div>
+                    <div class="photo-card">
+                        <img src="img2.jpg" alt="2">
+                        <div class="overlay">
+                            <h3>Your Smile ✨</h3>
+                            <p>My favorite reason to be happy.</p>
+                        </div>
+                    </div>
+                    <div class="photo-card">
+                        <img src="img3.jpg" alt="3">
+                        <div class="overlay">
+                            <h3>Better Together ♾️</h3>
+                            <p>Hand in hand, heart to heart.</p>
+                        </div>
+                    </div>
+                    <div class="photo-card">
+                        <img src="img4.jpg" alt="4">
+                        <div class="overlay">
+                            <h3>Infinite Love 💖</h3>
+                            <p>You are my today and all of my tomorrows.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
         <section>
-            <div class="gallery">
-                <div class="glass-card"><img src="img1.jpg" alt="1"><div class="caption">The first hello 🌸</div></div>
-                <div class="glass-card"><img src="img2.jpg" alt="2"><div class="caption">My favorite view 💖</div></div>
-                <div class="glass-card"><img src="img3.jpg" alt="3"><div class="caption">Forever to go ✨</div></div>
+            <div class="game-card">
+                <h2 style="font-family: 'Playfair Display'; font-size: 2.5rem; margin-bottom: 10px;">Catch My Love</h2>
+                <p>Collect 10 hearts to unlock the final question</p>
+                <div style="font-size: 2rem; color: var(--pink); margin: 15px 0;">Score: <span id="score">0</span></div>
+                <canvas id="gameCanvas" width="300" height="350" style="background: rgba(255,255,255,0.05); border-radius: 20px;"></canvas>
             </div>
         </section>
 
-        <section>
-            <div class="game-area">
-                <h2 style="font-family: 'Playfair Display'; font-size: 2.5rem; color: var(--pink-glow);">Heart Catcher</h2>
-                <p>Catch 10 hearts to unlock my secret letter...</p>
-                <div style="font-size: 1.5rem; color: var(--pink-main); margin-top: 10px;">HEARTS: <span id="score">0</span></div>
-                <canvas id="game-canvas"></canvas>
-            </div>
-        </section>
-
-        <section>
-            <div class="proposal-container" id="p-box">
-                <h1 style="font-family: 'Playfair Display'; font-size: 4rem;">Will you be mine?</h1>
-                <p style="max-width: 600px; margin: 20px auto; line-height: 1.8;">
-                    In every universe, in every lifetime, I would find you and choose you. 
-                    Not just for today, but for every tomorrow.
-                </p>
-                <button class="yes-btn" onclick="celebrate()">YES, FOREVER ❤️</button>
+        <section id="proposal" style="opacity: 0; transition: 1s;">
+            <div style="text-align: center;">
+                <h1 style="font-family: 'Playfair Display'; font-size: 4rem;">Will you be mine forever?</h1>
+                <button class="yes-btn" onclick="celebrate()">YES, TILL INFINITY! ❤️</button>
                 <br>
-                <button id="no-btn" style="background:transparent; border:none; color:rgba(255,255,255,0.2); margin-top:30px;" onmouseover="dodge()">Not really...</button>
+                <button id="no-btn" onmouseover="runAway()" style="background:transparent; border:none; color:rgba(255,255,255,0.2); margin-top:40px;">No...</button>
             </div>
         </section>
     </main>
 
-    <div id="success">
-        <h1 style="font-family: 'Playfair Display'; font-size: 5rem; color: white;">It's Always You.</h1>
-        <p style="letter-spacing: 10px; margin-top: 20px;">I LOVE YOU TILL THE END</p>
-        <div id="rain-container"></div>
+    <div id="success-reveal">
+        <h1 style="font-family: 'Playfair Display'; font-size: 5rem; color: var(--pink);">It Was Always You.</h1>
+        <p style="letter-spacing: 15px; margin-top: 20px; opacity: 0.6;">I LOVE YOU</p>
     </div>
 
     <script>
-        // 1. Loader Script
-        const statuses = ["SCANNING EMOTIONS...", "MATCHING HEARTBEATS...", "ACCESS GRANTED"];
-        let sIdx = 0;
-        const loadInterval = setInterval(() => {
-            document.getElementById('load-status').innerText = statuses[sIdx++];
-            if(sIdx > 2) {
-                clearInterval(loadInterval);
-                setTimeout(() => { document.getElementById('loader').style.transform = "translateY(-100%)"; }, 800);
-            }
-        }, 1200);
-
-        // 2. Background Bubbles
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        let bubbles = [];
-
-        class Bubble {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = canvas.height + 50;
-                this.size = Math.random() * 20 + 5;
-                this.speed = Math.random() * 1 + 0.5;
-                this.opacity = Math.random() * 0.3;
-            }
-            draw() {
-                ctx.fillStyle = `rgba(255, 133, 161, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-            update() { this.y -= this.speed; if(this.y < -50) this.y = canvas.height + 50; }
-        }
-        for(let i=0; i<40; i++) bubbles.push(new Bubble());
-        function anim() {
-            ctx.clearRect(0,0, canvas.width, canvas.height);
-            bubbles.forEach(b => { b.update(); b.draw(); });
-            requestAnimationFrame(anim);
-        }
-        anim();
-
-        // 3. Cursor
-        const cur = document.getElementById('cursor');
-        const curF = document.getElementById('cursor-f');
-        document.addEventListener('mousemove', (e) => {
-            cur.style.left = e.clientX + 'px'; cur.style.top = e.clientY + 'px';
-            curF.style.left = e.clientX - 20 + 'px'; curF.style.top = e.clientY - 20 + 'px';
+        // Cursor
+        const c = document.getElementById('cursor');
+        const cf = document.getElementById('cursor-f');
+        document.addEventListener('mousemove', e => {
+            c.style.left = e.clientX + 'px'; c.style.top = e.clientY + 'px';
+            cf.style.left = e.clientX - 17 + 'px'; cf.style.top = e.clientY - 17 + 'px';
         });
 
-        // 4. Mini Game
-        const gc = document.getElementById('game-canvas');
+        // Loader
+        setTimeout(() => {
+            document.getElementById('loader').style.transform = "translateY(-100%)";
+        }, 3000);
+
+        // Game
+        const gc = document.getElementById('gameCanvas');
         const gctx = gc.getContext('2d');
-        gc.width = 300; gc.height = 350;
         let score = 0;
         let hearts = [];
 
         class Heart {
-            constructor() { this.x = Math.random() * 260 + 20; this.y = 360; this.speed = 3; }
+            constructor() { this.x = Math.random() * 260 + 20; this.y = 360; this.speed = 2 + Math.random() * 2; }
             draw() { gctx.font = "30px Arial"; gctx.fillText("💗", this.x, this.y); }
             update() { this.y -= this.speed; }
         }
 
         function game() {
-            gctx.clearRect(0,0, 300, 350);
-            if(Math.random() < 0.04) hearts.push(new Heart());
+            gctx.clearRect(0,0,300,350);
+            if(Math.random() < 0.05) hearts.push(new Heart());
             hearts.forEach((h, i) => {
                 h.update(); h.draw();
-                if(h.y < -20) hearts.splice(i, 1);
+                if(h.y < -20) hearts.splice(i,1);
             });
             if(score < 10) requestAnimationFrame(game);
-            else {
-                document.getElementById('p-box').classList.add('show');
+            else { 
+                document.getElementById('proposal').style.opacity = '1';
                 window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
             }
         }
         game();
 
-        gc.addEventListener('mousedown', (e) => {
+        gc.addEventListener('mousedown', e => {
             const r = gc.getBoundingClientRect();
             const mx = e.clientX - r.left; const my = e.clientY - r.top;
             hearts.forEach((h, i) => {
-                if(Math.hypot(h.x - mx, h.y - my) < 40) { hearts.splice(i, 1); score++; document.getElementById('score').innerText = score; }
+                if(Math.hypot(h.x - mx, h.y - my) < 40) { hearts.splice(i,1); score++; document.getElementById('score').innerText = score; }
             });
         });
 
-        // 5. Functions
-        function dodge() {
-            const b = document.getElementById('no-btn');
-            b.style.position = 'fixed';
-            b.style.left = Math.random() * 80 + '%';
-            b.style.top = Math.random() * 80 + '%';
+        // Interactions
+        function runAway() {
+            const btn = document.getElementById('no-btn');
+            btn.style.position = 'fixed';
+            btn.style.left = Math.random() * 80 + 10 + '%';
+            btn.style.top = Math.random() * 80 + 10 + '%';
         }
 
         function celebrate() {
-            document.getElementById('success').style.display = 'flex';
-            for(let i=0; i<50; i++) {
-                const h = document.createElement('div');
-                h.innerText = '🌸';
-                h.style.position = 'fixed';
-                h.style.left = Math.random() * 100 + 'vw';
-                h.style.top = '-50px';
-                h.style.transition = Math.random() * 3 + 2 + 's linear';
-                document.body.appendChild(h);
-                setTimeout(() => { h.style.top = '100vh'; h.style.opacity = '0'; }, 100);
-            }
+            document.getElementById('success-reveal').style.display = 'flex';
         }
     </script>
 </body>
