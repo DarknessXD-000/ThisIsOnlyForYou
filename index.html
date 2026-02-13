@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Our Love Story 💖</title>
+    <title>Infinity | Our Love Story 💖</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:italic,wght@700;900&family=Outfit:wght@100;400;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -16,7 +16,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         body { background: var(--bg-dark); color: white; font-family: 'Outfit', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
 
-        /* Background & Cursor */
+        /* Background & Canvas */
         .bg-gradient { position: fixed; inset: 0; background: linear-gradient(45deg, #0a0104, #2d0514, #1a0209, #3d0a1d); background-size: 400% 400%; animation: gradientBG 15s ease infinite; z-index: -2; }
         @keyframes gradientBG { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
         
@@ -27,9 +27,20 @@
         .cursor-dot { position: fixed; width: 10px; height: 10px; background: white; border-radius: 50%; z-index: 11000; pointer-events: none; box-shadow: 0 0 15px 5px var(--pink); }
 
         /* Loader */
-        #loader { position: fixed; inset: 0; background: #000; z-index: 30000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 1s; }
+        #loader { position: fixed; inset: 0; background: #000; z-index: 30000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 1s cubic-bezier(1,0,0,1); }
         #progress-bar { width: 200px; height: 2px; background: #333; margin-top: 20px; position: relative; }
         #progress-fill { position: absolute; height: 100%; background: var(--pink); width: 0%; transition: 0.2s; }
+
+        /* --- TEXT ANIMATIONS --- */
+        .reveal { opacity: 0; transform: translateY(50px); transition: all 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.67); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .tracking-in-expand { animation: tracking-in-expand 1.5s cubic-bezier(0.215, 0.610, 0.355, 1.000) both; }
+        @keyframes tracking-in-expand {
+            0% { letter-spacing: -0.5em; opacity: 0; }
+            40% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
 
         /* Sections */
         section { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; padding: 100px 20px; text-align: center; }
@@ -42,7 +53,7 @@
         .photo-card img { width: 100%; height: 100%; object-fit: cover; }
 
         /* Game Box */
-        .game-card { background: rgba(255, 255, 255, 0.03); border: 2px solid var(--pink); backdrop-filter: blur(15px); padding: 30px; border-radius: 40px; position: relative; overflow: hidden; }
+        .game-card { background: rgba(255, 255, 255, 0.03); border: 2px solid var(--pink); backdrop-filter: blur(15px); padding: 30px; border-radius: 40px; }
         #gameCanvas { background: rgba(0,0,0,0.5); border-radius: 20px; cursor: crosshair; touch-action: none; }
 
         /* Proposal & Success */
@@ -50,9 +61,9 @@
         #success-reveal { position: fixed; inset: 0; background: var(--bg-dark); z-index: 20000; display: none; flex-direction: column; justify-content: center; align-items: center; }
         
         @keyframes shake {
-            0% { transform: translate(1px, 1px) rotate(0deg); }
-            50% { transform: translate(-3px, 2px) rotate(1deg); }
-            100% { transform: translate(1px, 1px) rotate(0deg); }
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
@@ -66,46 +77,66 @@
     <div id="loader">
         <h1 style="font-size: 60px; animation: pulse 1s infinite;">💖</h1>
         <div id="progress-bar"><div id="progress-fill"></div></div>
-        <p style="margin-top: 10px; font-size: 12px; letter-spacing: 5px; color: var(--pink-light);">LOADING LOVE...</p>
+        <p style="margin-top: 10px; font-size: 10px; letter-spacing: 5px; color: var(--pink-light);">CRAFTING YOUR SURPRISE...</p>
     </div>
 
     <main>
         <section>
-            <div>
-                <p style="letter-spacing: 10px; color: var(--pink-light);">HELLO BEAUTIFUL</p>
-                <h1 class="hero-h1">For My Universe</h1>
+            <div class="reveal">
+                <p style="letter-spacing: 10px; color: var(--pink-light); margin-bottom: 20px;">SINCE THE DAY WE MET</p>
+                <h1 class="hero-h1 tracking-in-expand">Everything is Better <br> With You</h1>
             </div>
         </section>
 
         <section style="flex-direction: column;">
-            <div class="album-container">
-                <div class="photo-card"><img src="https://images.unsplash.com/photo-1516589174184-c6858b16ecb0?w=500" alt="1"></div>
-                <div class="photo-card"><img src="https://images.unsplash.com/photo-1522673607200-1648832cee98?w=500" alt="2"></div>
-                <div class="photo-card"><img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=500" alt="3"></div>
+            <h2 class="reveal" style="font-family: 'Playfair Display'; font-size: 3rem; margin-bottom: 40px; color: var(--pink-light);">Our Moments</h2>
+            <div class="album-container reveal">
+                <div class="photo-card"><img src="https://images.unsplash.com/photo-1516589174184-c6858b16ecb0?w=600" alt="1"></div>
+                <div class="photo-card"><img src="https://images.unsplash.com/photo-1522673607200-1648832cee98?w=600" alt="2"></div>
+                <div class="photo-card"><img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=600" alt="3"></div>
             </div>
         </section>
 
         <section>
-            <div class="game-card">
-                <h2 style="font-family: 'Playfair Display'; font-size: 2rem; margin-bottom: 10px;">Catch 10 Hearts!</h2>
+            <div class="game-card reveal">
+                <h2 style="font-family: 'Playfair Display'; font-size: 2.2rem; margin-bottom: 15px;">A Small Challenge...</h2>
+                <p style="opacity: 0.7; margin-bottom: 20px;">Catch 10 hearts to unlock my secret</p>
                 <div style="font-size: 1.5rem; color: var(--pink); font-weight: bold; margin-bottom: 10px;">Hearts: <span id="score">0</span> / 10</div>
                 <canvas id="gameCanvas" width="320" height="400"></canvas>
             </div>
         </section>
 
-        <section id="proposal" style="display: none; transition: 1s;">
-            <div>
-                <h1 style="font-size: 3.5rem; margin-bottom: 40px;">Will you be mine?</h1>
-                <button class="yes-btn" onclick="celebrate()">YES, FOREVER! ❤️</button>
+        <section id="proposal" style="display: none;">
+            <div class="reveal">
+                <h1 style="font-family: 'Playfair Display'; font-size: clamp(2.5rem, 8vw, 4.5rem); margin-bottom: 40px;">
+                    So, will you be mine <br> <span style="color: var(--pink);">Forever?</span>
+                </h1>
+                <button class="yes-btn" onclick="celebrate()">YES, MILLION TIMES! ❤️</button>
             </div>
         </section>
     </main>
 
     <div id="success-reveal">
-        <h1 style="font-family: 'Playfair Display'; font-size: 4rem; color: var(--pink); text-align: center;">I Knew It! 💍<br><span style="font-size: 1.5rem; color: white; letter-spacing: 10px;">I LOVE YOU</span></h1>
+        <h1 class="tracking-in-expand" style="font-family: 'Playfair Display'; font-size: 4rem; color: var(--pink); text-align: center;">You Just Made Me <br> The Happiest! 💍</h1>
+        <p style="letter-spacing: 15px; margin-top: 30px; opacity: 0.6;">FOREVER STARTS NOW</p>
     </div>
 
     <script>
+        // --- TEXT REVEAL LOGIC ---
+        function revealOnScroll() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", revealOnScroll);
+
+        // --- CANVAS ENGINE (Background & Celebration) ---
         const canvas = document.getElementById('particles-canvas');
         const ctx = canvas.getContext('2d');
         const celCanvas = document.getElementById('celebration-canvas');
@@ -137,28 +168,27 @@
             }
             update() {
                 this.x += this.vx; this.y += this.vy;
-                if(this.isCel) { this.vy += 0.1; this.opacity -= 0.005; }
+                if(this.isCel) { this.vy += 0.12; this.opacity -= 0.006; }
                 else if(this.y < -50) this.y = canvas.height + 50;
             }
         }
 
-        // Game Heart Logic (Random Directions)
         class GameHeart {
             constructor() {
-                const side = Math.floor(Math.random() * 4); // 0: Top, 1: Bottom, 2: Left, 3: Right
-                if(side === 0) { this.x = Math.random() * gc.width; this.y = -20; this.vx = (Math.random()-0.5)*2; this.vy = Math.random()*2+1; }
-                else if(side === 1) { this.x = Math.random() * gc.width; this.y = gc.height+20; this.vx = (Math.random()-0.5)*2; this.vy = -(Math.random()*2+1); }
-                else if(side === 2) { this.x = -20; this.y = Math.random() * gc.height; this.vx = Math.random()*2+1; this.vy = (Math.random()-0.5)*2; }
-                else { this.x = gc.width+20; this.y = Math.random() * gc.height; this.vx = -(Math.random()*2+1); this.vy = (Math.random()-0.5)*2; }
-                this.size = 30;
+                const side = Math.floor(Math.random() * 4);
+                if(side === 0) { this.x = Math.random() * gc.width; this.y = -30; this.vx = (Math.random()-0.5)*3; this.vy = Math.random()*2+2; }
+                else if(side === 1) { this.x = Math.random() * gc.width; this.y = gc.height+30; this.vx = (Math.random()-0.5)*3; this.vy = -(Math.random()*2+2); }
+                else if(side === 2) { this.x = -30; this.y = Math.random() * gc.height; this.vx = Math.random()*2+2; this.vy = (Math.random()-0.5)*3; }
+                else { this.x = gc.width+30; this.y = Math.random() * gc.height; this.vx = -(Math.random()*2+2); this.vy = (Math.random()-0.5)*3; }
+                this.size = 35;
                 this.emoji = emojis[Math.floor(Math.random() * emojis.length)];
             }
             update() { this.x += this.vx; this.y += this.vy; }
             draw() { gctx.font = `${this.size}px Arial`; gctx.fillText(this.emoji, this.x, this.y); }
         }
 
-        // Background Hearts Init
-        for(let i=0; i<40; i++) hearts.push(new Particle(Math.random()*canvas.width, Math.random()*canvas.height, 0, -Math.random()*1-0.5, Math.random()*15+10, Math.random()*0.3));
+        // Init Background
+        for(let i=0; i<40; i++) hearts.push(new Particle(Math.random()*canvas.width, Math.random()*canvas.height, 0, -Math.random()*0.8-0.3, Math.random()*15+10, Math.random()*0.3));
 
         function animate() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
@@ -166,10 +196,10 @@
 
             if(score < 10) {
                 gctx.clearRect(0,0,gc.width, gc.height);
-                if(Math.random() < 0.03) gameHearts.push(new GameHeart());
+                if(Math.random() < 0.04) gameHearts.push(new GameHeart());
                 gameHearts.forEach((gh, i) => {
                     gh.update(); gh.draw();
-                    if(gh.x < -50 || gh.x > gc.width+50 || gh.y < -50 || gh.y > gc.height+50) gameHearts.splice(i,1);
+                    if(gh.x < -60 || gh.x > gc.width+60 || gh.y < -60 || gh.y > gc.height+60) gameHearts.splice(i,1);
                 });
             }
 
@@ -182,44 +212,51 @@
         }
         animate();
 
-        // Game Interaction
+        // Game Click
         gc.addEventListener('mousedown', e => {
             const r = gc.getBoundingClientRect();
             const mx = e.clientX - r.left; const my = e.clientY - r.top;
             gameHearts.forEach((gh, i) => {
-                if(Math.hypot(gh.x - mx, gh.y - my) < 35) {
+                if(Math.hypot(gh.x - mx, gh.y - my) < 40) {
                     gameHearts.splice(i, 1);
                     score++;
                     document.getElementById('score').innerText = score;
                     if(score >= 10) {
-                        document.getElementById('proposal').style.display = 'block';
+                        const prop = document.getElementById('proposal');
+                        prop.style.display = 'flex';
+                        setTimeout(() => prop.querySelector('.reveal').classList.add('active'), 100);
                         window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
                     }
                 }
             });
         });
 
-        // Cursor
+        // Cursor & Loader
         const dot = document.getElementById('dot');
         document.addEventListener('mousemove', e => { dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px'; });
 
-        // Loader
         let p = 0;
         const inv = setInterval(() => {
-            p += 5; document.getElementById('progress-fill').style.width = p + "%";
-            if(p >= 100) { clearInterval(inv); document.getElementById('loader').style.opacity = "0"; setTimeout(() => document.getElementById('loader').remove(), 1000); }
+            p += 4; document.getElementById('progress-fill').style.width = p + "%";
+            if(p >= 100) { 
+                clearInterval(inv); 
+                document.getElementById('loader').style.transform = "translateY(-100%)"; 
+                setTimeout(() => {
+                    document.querySelector('.hero-h1').parentElement.classList.add('active');
+                }, 1000);
+            }
         }, 100);
 
-        // Celebration
+        // THE FINAL CELEBRATION
         function celebrate() {
             document.body.style.animation = "shake 0.5s ease";
             document.getElementById('success-reveal').style.display = 'flex';
             celCanvas.style.display = 'block';
-            for(let i=0; i<100; i++) {
-                const vx = (Math.random() - 0.5) * 20; const vy = (Math.random() - 0.5) * 20;
-                celHearts.push(new Particle(window.innerWidth/2, window.innerHeight/2, vx, vy, Math.random()*35+25, 1, true));
+            for(let i=0; i<150; i++) {
+                const vx = (Math.random() - 0.5) * 25; const vy = (Math.random() - 0.5) * 25;
+                celHearts.push(new Particle(window.innerWidth/2, window.innerHeight/2, vx, vy, Math.random()*40+20, 1, true));
             }
-            setInterval(() => celHearts.push(new Particle(Math.random()*window.innerWidth, window.innerHeight+20, 0, -Math.random()*5-5, Math.random()*25+15, 1, true)), 80);
+            setInterval(() => celHearts.push(new Particle(Math.random()*window.innerWidth, window.innerHeight+20, 0, -Math.random()*6-4, Math.random()*25+15, 1, true)), 70);
         }
     </script>
 </body>
