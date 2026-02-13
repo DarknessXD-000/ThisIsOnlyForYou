@@ -1,144 +1,303 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine Special 💖</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-* { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine Special 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
 
-body { background: linear-gradient(135deg,#ffafbd,#ffc3a0); overflow-x:hidden; color:#fff; scroll-behavior: smooth; }
+        body {
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0, #ff9a9e, #fecfef);
+            overflow-x: hidden;
+            color: #fff;
+            scroll-behavior: smooth;
+            position: relative;
+        }
 
-/* Sections */
-section { min-height:100vh; display:flex; justify-content:center; align-items:center; flex-direction:column; text-align:center; padding:20px; position:relative; }
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 15px 0;
+            text-align: center;
+        }
 
-h1 { font-size:3rem; margin-bottom:10px; }
-p { font-size:1.2rem; margin-bottom:20px; }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 20px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
 
-/* Glass card */
-.card {
-  background: rgba(255,255,255,0.1);
-  backdrop-filter: blur(15px);
-  padding:30px 40px;
-  border-radius:25px;
-  box-shadow:0 8px 32px rgba(0,0,0,0.2);
-  max-width:400px;
-  margin:20px;
-  animation: fadeIn 2s ease forwards;
-}
+        nav a:hover {
+            color: #ff6b81;
+            transform: scale(1.1);
+        }
 
-/* Buttons */
-.btn {
-  padding:12px 25px;
-  background:#fff;
-  color:#ff6b81;
-  font-weight:600;
-  border:none;
-  border-radius:25px;
-  cursor:pointer;
-  margin:10px;
-  transition:0.3s;
-  text-decoration:none;
-}
-.btn:hover { background:#ff6b81; color:#fff; transform:scale(1.1); }
+        /* Sections */
+        section {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 80px 20px 20px;
+            position: relative;
+        }
 
-/* Floating hearts */
-.heart {
-  position:absolute;
-  width:20px; height:20px; background:#ff6b81;
-  transform:rotate(-45deg); border-radius:5px;
-  animation: float 6s linear infinite;
-}
-.heart::before, .heart::after { content:''; position:absolute; width:20px; height:20px; border-radius:50%; background:#ff6b81; }
-.heart::before { top:-10px; left:0; } .heart::after { left:10px; top:0; }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
 
-/* Animations */
-@keyframes fadeIn {0%{opacity:0}100%{opacity:1}}
-@keyframes float {0%{transform:translateY(0) rotate(-45deg);opacity:1;}100%{transform:translateY(-120vh) rotate(-45deg);opacity:0;}}
-</style>
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        /* Glass card */
+        .card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            padding: 40px 50px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            margin: 20px;
+            animation: fadeIn 2s ease forwards;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #fff, #f8f9fa);
+            color: #ff6b81;
+            font-weight: 600;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            background: linear-gradient(45deg, #ff6b81, #ff4757);
+            color: #fff;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(255, 107, 129, 0.4);
+        }
+
+        /* Quiz Options */
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Floating hearts */
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff6b81;
+            transform: rotate(-45deg);
+            border-radius: 5px;
+            animation: float 6s linear infinite;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff6b81;
+        }
+
+        .heart::before {
+            top: -10px;
+            left: 0;
+        }
+
+        .heart::after {
+            left: 10px;
+            top: 0;
+        }
+
+        /* Confetti effect */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ff6b81;
+            animation: confettiFall 3s linear infinite;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(-45deg); opacity: 1; }
+            100% { transform: translateY(-120vh) rotate(-45deg); opacity: 0; }
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-100vh) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .card { padding: 30px 20px; max-width: 90%; }
+            nav a { margin: 0 10px; }
+        }
+    </style>
 </head>
 <body>
 
-<!-- Section 1: Greeting -->
-<section>
-  <div class="card">
-    <h1>Happy Valentine 💖</h1>
-    <p>You make my world brighter every day!</p>
-  </div>
-</section>
+    <!-- Navigation -->
+    <nav>
+        <a href="#greeting"><i class="fas fa-heart"></i> Greeting</a>
+        <a href="#quiz"><i class="fas fa-question-circle"></i> Quiz</a>
+        <a href="#game"><i class="fas fa-gamepad"></i> Game</a>
+        <a href="#music"><i class="fas fa-music"></i> Music</a>
+    </nav>
 
-<!-- Section 2: Quiz -->
-<section>
-  <div class="card">
-    <h1>Mini Valentine Quiz 📝</h1>
-    <p>What's my favorite thing about you?</p>
-    <button class="btn" onclick="alert('Your smile! ❤️')">Option 1</button>
-    <button class="btn" onclick="alert('Your eyes! 💖')">Option 2</button>
-    <button class="btn" onclick="alert('Your laugh! 😄')">Option 3</button>
-  </div>
-</section>
+    <!-- Section 1: Greeting -->
+    <section id="greeting">
+        <div class="card">
+            <h1><i class="fas fa-heart"></i> Happy Valentine 💖</h1>
+            <p>You make my world brighter every day! Your love fills my heart with joy.</p>
+            <div id="confetti-container"></div>
+        </div>
+    </section>
 
-<!-- Section 3: Heart Game -->
-<section id="game-section">
-  <div class="card">
-    <h1>Catch the Hearts 🎯</h1>
-    <p>Click the floating hearts!</p>
-    <p id="score">Score: 0</p>
-    <button class="btn" id="resetScore">Reset Score</button>
-  </div>
-</section>
+    <!-- Section 2: Quiz -->
+    <section id="quiz">
+        <div class="card">
+            <h1><i class="fas fa-clipboard-list"></i> Mini Valentine Quiz 📝</h1>
+            <p>What's my favorite thing about you?</p>
+            <div class="quiz-options">
+                <button class="btn" onclick="showAnswer('Your smile! ❤️')">Option 1: Your Smile</button>
+                <button class="btn" onclick="showAnswer('Your eyes! 💖')">Option 2: Your Eyes</button>
+                <button class="btn" onclick="showAnswer('Your laugh! 😄')">Option 3: Your Laugh</button>
+            </div>
+            <p id="quiz-result" style="margin-top: 20px; font-weight: 600;"></p>
+        </div>
+    </section>
 
-<!-- Music Play Button -->
-<section>
-  <div class="card">
-    <h1>Background Music 🎵</h1>
-    <p>Click to play the Valentine tune</p>
-    <button class="btn" id="playMusic">Play Music</button>
-  </div>
-</section>
+    <!-- Section 3: Heart Game -->
+    <section id="game">
+        <div class="card">
+            <h1><i class="fas fa-crosshairs"></i> Catch the Hearts 🎯</h1>
+            <p>Click the floating hearts to score points!</p>
+            <p id="score" style="font-size: 1.5rem; font-weight: 700;">Score: 0</p>
+            <button class="btn" id="resetScore">Reset Score</button>
+        </div>
+    </section>
 
-<audio id="bgMusic" loop>
-  <source src="music.mp3" type="audio/mpeg">
-</audio>
+    <!-- Section 4: Music -->
+    <section id="music">
+        <div class="card">
+            <h1><i class="fas fa-music"></i> Background Music 🎵</h1>
+            <p>Click to play a romantic Valentine tune</p>
+            <button class="btn" id="playMusic">Play Music</button>
+            <audio id="bgMusic" loop>
+                <!-- Using a free public domain romantic music URL for demo; replace with your own -->
+                <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+    </section>
 
-<script>
-// Music play
-const music = document.getElementById('bgMusic');
-document.getElementById('playMusic').addEventListener('click', ()=>{
-  music.play();
-});
+    <script>
+        // Music play
+        const music = document.getElementById('bgMusic');
+        document.getElementById('playMusic').addEventListener('click', () => {
+            music.play().catch(e => alert('Music playback failed. Please check your browser settings.'));
+        });
 
-// Floating hearts in game section only
-let score = 0;
-function createHeart(){
-  const heart = document.createElement('div');
-  heart.className='heart';
-  const gameSection = document.getElementById('game-section');
-  const rect = gameSection.getBoundingClientRect();
-  heart.style.left = (Math.random()*(rect.width-20)+rect.left)+'px';
-  const size = 10 + Math.random()*25;
-  heart.style.width = heart.style.height = size+'px';
-  heart.style.animationDuration = (4+Math.random()*4)+'s';
-  document.body.appendChild(heart);
+        // Quiz function
+        function showAnswer(message) {
+            document.getElementById('quiz-result').innerText = message;
+            // Add confetti effect
+            createConfetti();
+        }
 
-  // Click heart to increase score
-  heart.addEventListener('click', ()=>{
-    score++;
-    document.getElementById('score').innerText = "Score: "+score;
-    heart.remove();
-  });
+        // Floating hearts in game section only
+        let score = 0;
+        const gameSection = document.getElementById('game');
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            const rect = gameSection.getBoundingClientRect();
+            heart.style.left = Math.random() * (rect.width - 40) + 'px';
+            heart.style.top = Math.random() * (rect.height - 40) + 'px';
+            const size = 15 + Math.random() * 20;
+            heart.style.width = heart.style.height = size + 'px';
+            heart.style.animationDuration = (4 + Math.random() * 4) + 's';
+            gameSection.appendChild(heart);
 
-  setTimeout(()=>heart.remove(),6000);
-}
-setInterval(createHeart, 500);
+            // Click heart to increase score
+            heart.addEventListener('click', () => {
+                score++;
+                document.getElementById('score').innerText = "Score: " + score;
+                heart.remove();
+                createConfetti();
+            });
 
-// Reset Score
-document.getElementById('resetScore').addEventListener('click', ()=>{
-  score=0;
-  document.getElementById('score').innerText = "Score: 0";
-});
-</script>
+            setTimeout(() => heart.remove(), 6000);
+        }
+        setInterval(createHeart, 800); // Slightly slower for better UX
+
+        // Reset Score
+        document.getElementById('resetScore').addEventListener('click', () => {
+            score = 0;
+            document.getElementById('score').innerText = "Score: 0";
+        });
+
+        // Confetti effect
+        function createConfetti() {
+            for (let i = 0; i < 20; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.background = ['#ff6b81', '#ffa726', '#42a5f5', '#66bb6a'][Math.floor(Math.random() * 4)];
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 3000);
+            }
+        }
+
+        // Initial confetti on load
+        window.addEventListener('load', createConfetti);
+    </script>
 
 </body>
 </html>
