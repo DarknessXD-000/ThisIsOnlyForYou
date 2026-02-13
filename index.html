@@ -1,267 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Magic ❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <style>
-        :root {
-            --pink: #ff4d6d;
-            --dark-pink: #c9184a;
-            --glass: rgba(255, 255, 255, 0.2);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Valentine 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #000; /* Dark base for better contrast */
-            color: white;
-            overflow-x: hidden;
-        }
+body {
+  height:100vh;
+  width:100vw;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: linear-gradient(135deg, #ffafbd, #ffc3a0, #ffafbd);
+  overflow:hidden;
+}
 
-        /* Full page parallax background */
-        .bg-gradient {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-            z-index: -2;
-        }
+/* Glass card */
+.glass-card {
+  position:relative;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(15px);
+  padding: 50px 40px;
+  border-radius: 25px;
+  text-align:center;
+  color:#fff;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  animation: fadeIn 2s ease forwards;
+  z-index:1;
+}
 
-        /* Floating particles */
-        .particle {
-            position: fixed;
-            pointer-events: none;
-            z-index: -1;
-            animation: float-around infinite linear;
-        }
+.glass-card h1 {
+  font-size:3rem;
+  margin-bottom:15px;
+  animation: fadeUp 2s ease forwards;
+}
 
-        @keyframes float-around {
-            from { transform: translateY(100vh) rotate(0); }
-            to { transform: translateY(-10vh) rotate(360deg); }
-        }
+.glass-card p {
+  font-size:1.2rem;
+  margin-bottom:25px;
+  animation: fadeUp 2s 0.5s ease forwards;
+}
 
-        section {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            perspective: 1000px;
-        }
+.btn {
+  padding:12px 30px;
+  background:#fff;
+  color:#ff6b81;
+  font-weight:600;
+  border:none;
+  border-radius:25px;
+  cursor:pointer;
+  transition:0.4s;
+  text-decoration:none;
+  display:inline-block;
+  animation: fadeUp 2s 1s ease forwards;
+}
 
-        /* Reveal Animation Classes */
-        .reveal {
-            opacity: 0;
-            transform: translateY(50px) scale(0.9);
-            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+.btn:hover {
+  background:#ff6b81;
+  color:#fff;
+  transform: scale(1.1);
+}
 
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
+/* Floating hearts */
+.heart {
+  position:absolute;
+  width:20px;
+  height:20px;
+  background:#ff6b81;
+  transform:rotate(-45deg);
+  top:100%;
+  border-radius: 5px;
+  animation: float 6s linear infinite;
+}
+.heart::before, .heart::after {
+  content:'';
+  position:absolute;
+  width:20px; height:20px; border-radius:50%;
+  background:#ff6b81;
+}
+.heart::before { top:-10px; left:0; }
+.heart::after { left:10px; top:0; }
 
-        .glass-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 50px 30px;
-            border-radius: 40px;
-            max-width: 500px;
-            width: 100%;
-            text-align: center;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-        }
-
-        h1 { font-family: 'Dancing Script', cursive; font-size: 3.5rem; color: #fff; margin-bottom: 15px; text-shadow: 2px 2px 10px rgba(255, 77, 109, 0.5); }
-        p { font-size: 1.1rem; line-height: 1.8; color: #fff; opacity: 0.9; }
-
-        .btn {
-            background: #fff;
-            color: var(--pink);
-            padding: 16px 40px;
-            border-radius: 50px;
-            border: none;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 25px;
-            transition: 0.4s;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-        .btn:hover { background: var(--pink); color: white; transform: scale(1.1) rotate(-2deg); }
-
-        #noBtn { position: absolute; background: rgba(255,255,255,0.8); }
-
-        /* Game Box */
-        .game-zone {
-            height: 130px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 30px;
-            margin: 25px 0;
-            position: relative;
-            border: 2px dashed rgba(255,255,255,0.5);
-            overflow: hidden;
-        }
-        .emoji { position: absolute; bottom: 15px; font-size: 55px; transition: 0.1s; }
-
-        .heart-beat { font-size: 90px; animation: pulse 1.5s infinite; filter: drop-shadow(0 0 20px #ff4d6d); }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
-
-        .hidden { display: none; }
-        .scroll-down { position: absolute; bottom: 30px; font-size: 2rem; animation: bounce 2s infinite; opacity: 0.7; }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} }
-    </style>
+/* Animations */
+@keyframes fadeIn { 0%{opacity:0} 100%{opacity:1} }
+@keyframes fadeUp { 0%{opacity:0; transform:translateY(20px);} 100%{opacity:1; transform:translateY(0);} }
+@keyframes float {
+  0% { transform: translateY(0) rotate(-45deg); opacity:1; }
+  100% { transform: translateY(-120vh) rotate(-45deg); opacity:0; }
+}
+</style>
 </head>
 <body>
 
-<div class="bg-gradient"></div>
-<div id="particles"></div>
-
-<section>
-    <div class="glass-card reveal">
-        <h1>Hey My Everything... ✨</h1>
-        <p>I built this little digital world for you. Take a slow deep breath, and just scroll down...</p>
-        <div class="scroll-down">↓</div>
-    </div>
-</section>
-
-<section>
-    <div class="glass-card reveal">
-        <h1>Every Moment... 💎</h1>
-        <p>Whether it's a 2-minute talk or a 2-hour conversation, every second spent with you is a treasure I keep close to my heart.</p>
-        <div class="scroll-down">↓</div>
-    </div>
-</section>
-
-<section>
-    <div class="glass-card reveal">
-        <h1>That Smile... 🌸</h1>
-        <p>I could write a thousand poems about how your smile changes the energy in the room. You're pure magic.</p>
-        <div class="scroll-hint">Almost there... ↓</div>
-    </div>
-</section>
-
-<section>
-    <div class="glass-card reveal">
-        <h1>A Simple Request... ❤️</h1>
-        <p>I don't want much. Just a promise that we'll keep making memories like this. Will you be my Valentine?</p>
-        <div style="height: 120px; position: relative; margin-top: 20px;">
-            <button class="btn" onclick="sayYes()">YES, ALWAYS! ❤️</button>
-            <button class="btn" id="noBtn" onmouseover="moveNo()">No 💔</button>
-        </div>
-    </div>
-</section>
-
-<div id="final-flow" class="hidden">
-    <section>
-        <div class="glass-card reveal">
-            <h1>Don't leave me hanging!</h1>
-            <p>Tap fast to bring us together...</p>
-            <div class="game-zone">
-                <div class="emoji" id="boy" style="left: 10px;">👦</div>
-                <div class="emoji" id="girl" style="right: 10px;">👧</div>
-            </div>
-            <p style="font-weight: 600; font-size: 0.9rem;">Keep tapping anywhere on screen!</p>
-        </div>
-    </section>
-
-    <section id="the-end">
-        <div class="glass-card reveal">
-            <div class="heart-beat">❤️</div>
-            <h1>Forever & Always.</h1>
-            <p style="font-style: italic; font-weight: 600; font-size: 1.3rem; margin-bottom: 10px;">
-                "In a world full of temporary things, <br>you are my forever feeling."
-            </p>
-            <p>You're not just my Valentine, you're my best friend.</p>
-            <div id="timer" style="margin-top: 30px; font-weight: bold; background: rgba(255,255,255,0.2); padding: 15px; border-radius: 20px; border: 1px solid white;">
-                Wait for it... 10s
-            </div>
-        </div>
-    </section>
+<!-- Glass Card -->
+<div class="glass-card">
+  <h1>Happy Valentine 💖</h1>
+  <p>You light up my world in every way.</p>
+  <a href="#" class="btn">Open Surprise!</a>
 </div>
 
+<!-- Background Music -->
+<audio autoplay loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
 <script>
-    // 1. Particle Background Generator
-    const particleCount = 20;
-    const particles = document.getElementById('particles');
-    for (let i = 0; i < particleCount; i++) {
-        const p = document.createElement('div');
-        p.className = 'particle';
-        p.innerHTML = ['❤️', '✨', '🌸', '☁️'][Math.floor(Math.random() * 4)];
-        p.style.left = Math.random() * 100 + 'vw';
-        p.style.fontSize = Math.random() * 20 + 10 + 'px';
-        p.style.animationDuration = Math.random() * 5 + 5 + 's';
-        p.style.animationDelay = Math.random() * 5 + 's';
-        particles.appendChild(p);
-    }
+// Floating hearts
+function createHeart(){
+  const heart = document.createElement('div');
+  heart.className='heart';
+  heart.style.left=Math.random()*window.innerWidth+'px';
+  const size=10+Math.random()*25;
+  heart.style.width=heart.style.height=size+'px';
+  heart.style.animationDuration=(4+Math.random()*4)+'s';
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),6000);
+}
+setInterval(createHeart, 400);
 
-    // 2. Scroll Reveal Logic (The "Cool" Transition)
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-            }
-        });
-    }, { threshold: 0.3 });
-
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-    // 3. No Button Prank
-    function moveNo() {
-        const btn = document.getElementById('noBtn');
-        btn.style.left = Math.random() * 200 - 100 + 'px';
-        btn.style.top = Math.random() * 100 - 50 + 'px';
-    }
-
-    // 4. Yes Trigger
-    function sayYes() {
-        confetti({ particleCount: 200, spread: 100, origin: { y: 0.7 } });
-        document.getElementById('final-flow').classList.remove('hidden');
-        
-        // Refresh observer for new sections
-        setTimeout(() => {
-            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-            window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
-        }, 300);
-    }
-
-    // 5. Game Logic
-    let taps = 0;
-    const goal = 22;
-    document.body.addEventListener('click', () => {
-        if (!document.getElementById('final-flow').classList.contains('hidden') && taps < goal) {
-            taps++;
-            const boy = document.getElementById('boy');
-            boy.style.left = (taps / goal) * 80 + '%';
-
-            if (taps >= goal) {
-                confetti({ particleCount: 300, spread: 120 });
-                startFinalTimer();
-                setTimeout(() => {
-                    document.getElementById('the-end').scrollIntoView({ behavior: 'smooth' });
-                }, 800);
-            }
-        }
-    });
-
-    // 6. Final Countdown & Instagram
-    function startFinalTimer() {
-        let time = 10;
-        const timerTxt = document.getElementById('timer');
-        const interval = setInterval(() => {
-            time--;
-            timerTxt.innerText = "Taking you to our special place in " + time + "s...";
-            if (time <= 0) {
-                clearInterval(interval);
-                window.location.href = "https://www.instagram.com/direct/inbox/";
-            }
-        }, 1000);
-    }
+// Optional: click button animation
+document.querySelector('.btn').addEventListener('click', ()=>{
+  alert("You opened the surprise! ❤️");
+});
 </script>
 
 </body>
