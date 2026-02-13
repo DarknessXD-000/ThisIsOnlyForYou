@@ -3,349 +3,267 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Infinite Love 💖</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;600&family=Playfair+Display:italic,wght@700&display=swap" rel="stylesheet">
+    <title>Infinity & Beyond 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;400;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #ff4d6d;
-            --secondary: #ffb3c1;
-            --gold: #ffb703;
-            --dark: #0b0104;
+            --accent: #ff2d55;
+            --glow: rgba(255, 45, 85, 0.5);
+            --bg: #050505;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
 
         body {
-            background-color: var(--dark);
+            background: var(--bg);
             color: #fff;
-            font-family: 'Montserrat', sans-serif;
-            overflow-x: hidden;
-            min-height: 100vh;
+            font-family: 'Outfit', sans-serif;
+            overflow: hidden;
+            height: 100vh;
         }
 
-        /* Initial Overlay - Suspense build karne ke liye */
-        #overlay {
+        /* Cinematic Loading */
+        #loader {
             position: fixed;
             inset: 0;
             background: #000;
-            z-index: 10000;
+            z-index: 1000;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: 1s ease-in-out;
+            transition: 1.5s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        #overlay h2 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 3rem;
-            margin-bottom: 20px;
-            color: var(--secondary);
+        .loader-content { text-align: center; }
+        .loader-circle {
+            width: 50px;
+            height: 50px;
+            border: 2px solid var(--accent);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
         }
 
-        .start-btn {
-            padding: 15px 40px;
-            background: var(--primary);
-            border: none;
-            color: white;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            box-shadow: 0 0 20px var(--primary);
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Background Visuals */
-        #main-canvas {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1; pointer-events: none;
-        }
+        /* Background VFX */
+        canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
 
-        .gradient-bg {
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(circle at 50% 50%, #2b030f 0%, #000 100%);
-            z-index: 0;
-        }
-
-        /* Container */
-        .content {
+        /* Main Glass Container */
+        .viewport {
             position: relative;
             z-index: 10;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            display: none; /* Hidden until start */
-        }
-
-        /* Header */
-        header {
-            text-align: center;
-            padding: 100px 0;
-        }
-
-        header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(3rem, 10vw, 6rem);
-            font-style: italic;
-            background: linear-gradient(45deg, var(--primary), var(--gold), var(--primary));
-            background-size: 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: flow 5s linear infinite;
-        }
-
-        @keyframes flow { to { background-position: 200%; } }
-
-        /* Story Cards */
-        .story-section {
+            height: 100vh;
             display: flex;
-            flex-direction: column;
-            gap: 150px;
-            margin-bottom: 100px;
-        }
-
-        .memory-card {
-            display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 40px;
-            opacity: 0;
-            transform: translateY(50px);
-            transition: 1s all ease;
-        }
-
-        .memory-card.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .memory-card:nth-child(even) { flex-direction: row-reverse; }
-
-        .image-wrapper {
-            flex: 1;
-            position: relative;
-            transform-style: preserve-3d;
             perspective: 1000px;
         }
 
-        .image-wrapper img {
+        .main-card {
+            width: 90%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 40px;
+            padding: 40px;
+            text-align: center;
+            transform-style: preserve-3d;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            transition: transform 0.1s ease;
+        }
+
+        .profile-area {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+        }
+
+        .profile-img {
             width: 100%;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            transition: 0.5s;
-            border: 2px solid rgba(255,255,255,0.1);
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent);
+            padding: 5px;
+            animation: float 3s ease-in-out infinite;
         }
 
-        .image-wrapper:hover img {
-            transform: rotateY(10deg) rotateX(5deg) scale(1.02);
-            border-color: var(--primary);
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
         }
 
-        .text-content {
-            flex: 1;
-            padding: 20px;
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .text-content h3 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 3rem;
-            color: var(--secondary);
-            margin-bottom: 15px;
+        p {
+            font-size: 1rem;
+            opacity: 0.6;
+            line-height: 1.6;
+            margin-bottom: 30px;
         }
 
-        .text-content p {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            color: #ddd;
-        }
-
-        /* Typing Message Box */
-        .letter-box {
-            background: rgba(255,255,255,0.03);
-            backdrop-filter: blur(10px);
-            padding: 60px;
-            border-radius: 30px;
-            border: 1px solid rgba(255,255,255,0.1);
-            margin: 100px 0;
-            text-align: center;
-        }
-
-        #typing-text {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2rem;
-            color: var(--gold);
-            min-height: 100px;
-        }
-
-        /* The Big Question */
-        .proposal {
-            text-align: center;
-            padding: 100px 0;
-        }
-
-        .btn-group {
-            margin-top: 50px;
+        /* Buttons */
+        .actions {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 30px;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        .yes-btn {
-            padding: 20px 60px;
-            font-size: 1.5rem;
-            background: var(--primary);
-            color: #fff;
+        .btn-primary {
+            position: relative;
+            padding: 18px;
+            background: var(--accent);
             border: none;
-            border-radius: 50px;
-            font-weight: bold;
-            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.4);
-            animation: heartBeat 1.5s infinite;
+            border-radius: 20px;
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 900;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            overflow: hidden;
+            transition: 0.3s;
+            box-shadow: 0 10px 20px var(--glow);
         }
 
-        @keyframes heartBeat {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px var(--glow);
         }
 
-        #no-btn {
-            padding: 15px 30px;
+        .btn-secondary {
+            padding: 15px;
             background: transparent;
-            color: #fff;
-            border: 1px solid #fff;
-            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            color: rgba(255,255,255,0.4);
+            font-weight: 400;
+            transition: all 0.3s;
         }
 
-        /* Final Screen */
-        #success {
-            display: none;
+        /* Cursor */
+        #cursor {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            mix-blend-mode: difference;
+            transition: transform 0.2s ease;
+        }
+
+        #cursor-follower {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--accent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.15s ease-out, left 0.15s ease-out, top 0.15s ease-out;
+        }
+
+        /* Success State */
+        .success-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.95);
-            z-index: 20000;
+            background: var(--bg);
+            z-index: 100;
+            display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
         }
 
-        #success h1 {
+        .success-overlay h2 {
             font-family: 'Dancing Script', cursive;
-            font-size: 7rem;
-            color: var(--gold);
-            text-shadow: 0 0 30px var(--primary);
+            font-size: 5rem;
+            color: var(--accent);
         }
-
-        /* Custom Cursor */
-        #custom-cursor {
-            position: fixed;
-            width: 15px;
-            height: 15px;
-            background: var(--primary);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 99999;
-            box-shadow: 0 0 15px var(--primary);
-            transition: transform 0.1s ease;
-        }
-
     </style>
 </head>
 <body>
 
-    <!-- Audio Placeholder (Enter your link here) -->
-    <audio id="bgMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
-
-    <div id="custom-cursor"></div>
-
-    <div id="overlay">
-        <h2>Ready for a surprise?</h2>
-        <button class="start-btn" onclick="startExperience()">Open Your Heart ❤️</button>
+    <div id="loader">
+        <div class="loader-content">
+            <div class="loader-circle"></div>
+            <p>Scanning for true love...</p>
+        </div>
     </div>
 
-    <div class="gradient-bg"></div>
-    <canvas id="main-canvas"></canvas>
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
+    <canvas id="vfx-canvas"></canvas>
 
-    <div class="content" id="main-content">
-        <header>
-            <p style="letter-spacing: 5px; opacity: 0.6;">EVERY MOMENT COUNTS</p>
-            <h1>To My Dearest [GF's Name]</h1>
-        </header>
-
-        <div class="story-section">
-            <div class="memory-card">
-                <div class="image-wrapper"><img src="img1.jpg" alt="When we met"></div>
-                <div class="text-content">
-                    <h3>Where it all began...</h3>
-                    <p>I still remember the first time our eyes met. It wasn't just a meeting; it was the start of my favorite story. The world around us just faded away.</p>
-                </div>
+    <div class="viewport">
+        <div class="main-card" id="tilt-card">
+            <div class="profile-area">
+                <img src="https://via.placeholder.com/150" class="profile-img" alt="You & Her">
             </div>
-
-            <div class="memory-card">
-                <div class="text-content">
-                    <h3>The Countless Laughs</h3>
-                    <p>From the silly jokes to the deep late-night talks, every second I spend with you is a memory I'll cherish forever. You make life so much better.</p>
-                </div>
-                <div class="image-wrapper"><img src="img2.jpg" alt="Laughing together"></div>
-            </div>
-        </div>
-
-        <div class="letter-box">
-            <div id="typing-text"></div>
-        </div>
-
-        <div class="proposal">
-            <h2 style="font-size: 3rem;">I have a question for you...</h2>
-            <div class="btn-group">
-                <button class="yes-btn" onclick="celebrate()">BE MINE FOREVER? 💖</button>
-                <button id="no-btn" onmouseover="dodge()">No</button>
+            <p style="text-transform: uppercase; letter-spacing: 3px; color: var(--accent); font-weight: 900; margin-bottom: 5px;">A request from My Heart</p>
+            <h1>To [GF's Name]</h1>
+            <p>I realized that life is just a collection of moments. But with you, it's a masterpiece. Will you keep making me the luckiest person alive?</p>
+            
+            <div class="actions">
+                <button class="btn-primary" id="yesBtn" onclick="celebrate()">Be My Valentine? ✨</button>
+                <button class="btn-secondary" id="noBtn" onmouseover="dodge()">Not today</button>
             </div>
         </div>
     </div>
 
-    <div id="success">
-        <h1 id="yay-text">YESSS! 😍</h1>
-        <p style="font-size: 2rem; margin-top: 20px;">I promise to love you more every single day.</p>
-        <p style="margin-top: 40px; color: var(--secondary);">Forever & Always ✨</p>
+    <div class="success-overlay" id="success">
+        <h2 id="finalText">Mine Forever. ❤️</h2>
+        <p style="opacity: 0.8; margin-top: 20px;">I promise to never let go.</p>
     </div>
 
     <script>
-        const cursor = document.getElementById('custom-cursor');
-        const canvas = document.getElementById('main-canvas');
+        const loader = document.getElementById('loader');
+        const card = document.getElementById('tilt-card');
+        const cursor = document.getElementById('cursor');
+        const follower = document.getElementById('cursor-follower');
+        const canvas = document.getElementById('vfx-canvas');
         const ctx = canvas.getContext('2d');
-        let particles = [];
 
-        // Track mouse for cursor
+        // Initial Loading
+        window.onload = () => {
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => loader.remove(), 1500);
+            }, 2000);
+        };
+
+        // Smooth Cursor
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
+            
+            setTimeout(() => {
+                follower.style.left = e.clientX - 16 + 'px';
+                follower.style.top = e.clientY - 16 + 'px';
+            }, 50);
+
+            // 3D Tilt Effect
+            const x = (window.innerWidth / 2 - e.clientX) / 25;
+            const y = (window.innerHeight / 2 - e.clientY) / 25;
+            card.style.transform = `rotateX(${y}deg) rotateY(${-x}deg)`;
         });
 
-        function startExperience() {
-            document.getElementById('overlay').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('overlay').style.display = 'none';
-                document.getElementById('main-content').style.display = 'block';
-                document.getElementById('bgMusic').play();
-                startTyping();
-            }, 1000);
-        }
-
-        // Typing Effect
-        const message = "Every day I wake up, I realize you are the best thing that ever happened to me. You are my home, my peace, and my greatest adventure. I don't just love you, I'm grateful for you.";
-        let i = 0;
-        function startTyping() {
-            if (i < message.length) {
-                document.getElementById('typing-text').innerHTML += message.charAt(i);
-                i++;
-                setTimeout(startTyping, 50);
-            }
-        }
-
-        // Canvas Particles (Moving Hearts)
+        // VFX Particles
+        let particles = [];
         function resize() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -353,75 +271,74 @@
         window.addEventListener('resize', resize);
         resize();
 
-        class Heart {
+        class Particle {
             constructor() {
-                this.reset();
-            }
-            reset() {
                 this.x = Math.random() * canvas.width;
-                this.y = canvas.height + 50;
-                this.size = Math.random() * 10 + 5;
-                this.speed = Math.random() * 2 + 1;
-                this.opacity = Math.random() * 0.5 + 0.2;
-                this.angle = Math.random() * Math.PI * 2;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 1;
+                this.vy = (Math.random() - 0.5) * 1;
+                this.size = Math.random() * 2;
             }
             draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.rotate(this.angle);
                 ctx.beginPath();
-                ctx.moveTo(0, 0);
-                ctx.bezierCurveTo(-this.size/2, -this.size/2, -this.size, this.size/3, 0, this.size);
-                ctx.bezierCurveTo(this.size, this.size/3, this.size/2, -this.size/2, 0, 0);
-                ctx.fillStyle = `rgba(255, 77, 109, ${this.opacity})`;
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 45, 85, 0.4)';
                 ctx.fill();
-                ctx.restore();
             }
             update() {
-                this.y -= this.speed;
-                this.angle += 0.01;
-                if (this.y < -50) this.reset();
+                this.x += this.vx;
+                this.y += this.vy;
+                if(this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
             }
         }
 
-        for(let j=0; j<40; j++) particles.push(new Heart());
+        for(let i=0; i<100; i++) particles.push(new Particle());
 
         function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0,0, canvas.width, canvas.height);
             particles.forEach(p => { p.update(); p.draw(); });
             requestAnimationFrame(animate);
         }
         animate();
 
-        // Scroll Reveal
-        window.addEventListener('scroll', () => {
-            const cards = document.querySelectorAll('.memory-card');
-            cards.forEach(card => {
-                const cardTop = card.getBoundingClientRect().top;
-                if(cardTop < window.innerHeight * 0.8) card.classList.add('show');
-            });
-        });
-
-        // Dodge Button
+        // The "Impossible No"
+        let dodgeCount = 0;
         function dodge() {
-            const btn = document.getElementById('no-btn');
+            const noBtn = document.getElementById('noBtn');
+            const yesBtn = document.getElementById('yesBtn');
+            
+            dodgeCount++;
+            
+            // Random movement
             const x = Math.random() * (window.innerWidth - 100);
             const y = Math.random() * (window.innerHeight - 50);
-            btn.style.position = 'fixed';
-            btn.style.left = x + 'px';
-            btn.style.top = y + 'px';
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+
+            // Make Yes Button bigger and No button disappear
+            yesBtn.style.transform = `scale(${1 + dodgeCount * 0.1})`;
+            noBtn.style.opacity = 1 - (dodgeCount * 0.2);
+            noBtn.style.transform = `scale(${1 - dodgeCount * 0.1})`;
+
+            if(dodgeCount > 5) {
+                noBtn.innerHTML = "Okay, Yes! ❤️";
+                noBtn.style.opacity = '1';
+                noBtn.style.background = 'var(--accent)';
+                noBtn.style.color = 'white';
+                noBtn.onclick = celebrate;
+            }
         }
 
-        // Celebrate Final
         function celebrate() {
             document.getElementById('success').style.display = 'flex';
-            // Massive confetti effect can be added here
-            let count = 0;
-            const interval = setInterval(() => {
-                particles.push(new Heart());
-                count++;
-                if(count > 200) clearInterval(interval);
-            }, 10);
+            // Massive VFX here
+            setTimeout(() => {
+                const final = document.getElementById('finalText');
+                final.style.transition = '2s';
+                final.style.transform = 'scale(1.2)';
+            }, 100);
         }
     </script>
 </body>
