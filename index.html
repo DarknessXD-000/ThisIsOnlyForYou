@@ -3,256 +3,397 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Universe | For [GF's Name] 💖</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;400;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <title>Infinity | For My Universe 💖</title>
+    <!-- Aesthetic Fonts: Playfair for Serif, Outfit for Modern feel -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:italic,wght@700;900&family=Outfit:wght@100;300;600;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
             --accent: #ff2d55;
-            --dark: #08080a;
-            --glass: rgba(255, 255, 255, 0.05);
+            --gold: #d4af37;
+            --dark: #0a0a0c;
+            --glass: rgba(255, 255, 255, 0.03);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; scroll-behavior: smooth; }
 
         body {
-            background: var(--dark);
+            background-color: var(--dark);
             color: #fff;
             font-family: 'Outfit', sans-serif;
             overflow-x: hidden;
         }
 
-        /* Custom Cursor */
-        #cursor { position: fixed; width: 10px; height: 10px; background: #fff; border-radius: 50%; pointer-events: none; z-index: 10000; mix-blend-mode: difference; }
-        #cursor-f { position: fixed; width: 35px; height: 35px; border: 1px solid var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transition: 0.1s; }
+        /* 1. CINEMATIC SCANNING LOADER */
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: 1.5s cubic-bezier(1, 0, 0, 1);
+        }
 
-        /* General Layout */
-        section { min-height: 100vh; width: 100%; position: relative; display: flex; align-items: center; justify-content: center; padding: 50px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .scanner-line {
+            width: 300px;
+            height: 2px;
+            background: var(--accent);
+            box-shadow: 0 0 20px var(--accent);
+            position: relative;
+            animation: scan 2s ease-in-out infinite;
+        }
 
-        /* Floating Hearts Background */
-        #bg-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+        @keyframes scan {
+            0%, 100% { transform: translateY(-50px); opacity: 0; }
+            50% { transform: translateY(50px); opacity: 1; }
+        }
 
-        /* --- 1. HERO SECTION --- */
-        .hero-title { text-align: center; z-index: 10; }
-        .hero-title h1 { font-size: clamp(3rem, 15vw, 8rem); font-weight: 900; letter-spacing: -5px; line-height: 0.8; opacity: 0.1; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; }
-        .hero-content { z-index: 11; text-align: center; }
-        .hero-content h2 { font-family: 'Dancing Script', cursive; font-size: 4rem; color: var(--accent); }
-        .scroll-indicator { position: absolute; bottom: 30px; animation: bounce 2s infinite; opacity: 0.5; }
+        .scan-text {
+            margin-top: 40px;
+            font-family: 'Outfit';
+            letter-spacing: 5px;
+            font-weight: 200;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            color: var(--accent);
+        }
 
-        /* --- 2. THE GALLERY (3D Stack) --- */
-        .gallery-container { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; perspective: 1000px; }
-        .photo-frame { width: 280px; height: 380px; background: var(--glass); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); transition: 0.5s; position: relative; }
-        .photo-frame img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: 0.5s; }
-        .photo-frame:hover { transform: translateY(-20px) rotateY(10deg); border-color: var(--accent); }
-        .photo-frame:hover img { opacity: 1; transform: scale(1.1); }
-        .photo-frame p { position: absolute; bottom: 20px; left: 20px; font-family: 'Dancing Script'; font-size: 1.5rem; text-shadow: 0 2px 10px #000; }
+        /* 2. CUSTOM CURSOR */
+        #cursor { position: fixed; width: 8px; height: 8px; background: #fff; border-radius: 50%; pointer-events: none; z-index: 11000; mix-blend-mode: difference; }
+        #cursor-f { position: fixed; width: 40px; height: 40px; border: 1px solid var(--accent); border-radius: 50%; pointer-events: none; z-index: 10999; transition: 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
-        /* --- 3. THE GAME SECTION --- */
-        #game-canvas { background: rgba(255,255,255,0.02); border-radius: 20px; cursor: crosshair; }
-        .game-ui { position: absolute; top: 20px; width: 100%; text-align: center; pointer-events: none; }
-        .score { font-size: 2rem; font-weight: 900; color: var(--accent); }
+        /* 3. HERO SECTION */
+        section { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; padding: 100px 20px; }
 
-        /* --- 4. THE PROPOSAL --- */
-        .glass-card { background: var(--glass); backdrop-filter: blur(20px); padding: 60px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.1); text-align: center; max-width: 600px; }
-        .btn-main { padding: 20px 50px; background: var(--accent); border: none; color: white; border-radius: 50px; font-weight: 900; font-size: 1.2rem; margin-top: 30px; transition: 0.3s; box-shadow: 0 10px 30px rgba(255, 45, 85, 0.4); }
-        .btn-main:hover { transform: scale(1.1); box-shadow: 0 15px 40px rgba(255, 45, 85, 0.6); }
+        .hero-bg-text {
+            position: absolute;
+            font-family: 'Playfair Display';
+            font-size: 20vw;
+            font-weight: 900;
+            opacity: 0.03;
+            z-index: 0;
+            white-space: nowrap;
+        }
 
-        /* Animations */
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .hero-content { z-index: 10; text-align: center; }
+        .hero-content h1 { 
+            font-family: 'Playfair Display', serif; 
+            font-size: clamp(3rem, 10vw, 6rem); 
+            font-style: italic;
+            margin-bottom: 20px;
+            background: linear-gradient(to bottom, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-        /* Hidden Until Game Done */
-        #final-question { display: none; }
+        /* 4. AESTHETIC 3D GALLERY */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .glass-photo {
+            background: var(--glass);
+            padding: 15px;
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            transform-style: preserve-3d;
+        }
+
+        .glass-photo:hover {
+            transform: translateY(-20px) rotateY(10deg) rotateX(5deg);
+            border-color: var(--accent);
+            background: rgba(255, 45, 85, 0.05);
+        }
+
+        .glass-photo img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 20px;
+            filter: grayscale(40%);
+            transition: 0.5s;
+        }
+
+        .glass-photo:hover img { filter: grayscale(0%); transform: translateZ(20px); }
+
+        .photo-caption {
+            margin-top: 15px;
+            font-family: 'Dancing Script';
+            font-size: 1.8rem;
+            color: var(--accent);
+        }
+
+        /* 5. CATCH THE HEART GAME */
+        #game-container {
+            text-align: center;
+            z-index: 10;
+        }
+
+        #game-canvas {
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 40px;
+            background: radial-gradient(circle, #1a0509 0%, #0a0a0c 100%);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        /* 6. PROPOSAL CARD */
+        .proposal-card {
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 80px 40px;
+            border-radius: 50px;
+            text-align: center;
+            max-width: 700px;
+            backdrop-filter: blur(30px);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+            transform: scale(0.9);
+            opacity: 0;
+            transition: 1s all ease;
+        }
+
+        .proposal-card.locked { filter: blur(20px); pointer-events: none; }
+        .proposal-card.unlocked { transform: scale(1); opacity: 1; filter: blur(0); }
+
+        .btn-yes {
+            background: var(--accent);
+            color: #fff;
+            padding: 20px 60px;
+            border: none;
+            border-radius: 100px;
+            font-size: 1.4rem;
+            font-weight: 900;
+            margin-top: 40px;
+            box-shadow: 0 15px 40px rgba(255, 45, 85, 0.4);
+            transition: 0.4s;
+        }
+
+        .btn-yes:hover { transform: scale(1.1) translateY(-5px); box-shadow: 0 20px 50px rgba(255, 45, 85, 0.6); }
+
+        /* SUCCESS VIEW */
+        #success-reveal {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 20000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Scroll Progress Bar */
+        #progress {
+            position: fixed;
+            top: 0; left: 0; height: 3px;
+            background: var(--accent);
+            z-index: 15000;
+            width: 0%;
+        }
 
     </style>
 </head>
 <body>
 
+    <div id="progress"></div>
     <div id="cursor"></div>
     <div id="cursor-f"></div>
-    <canvas id="bg-canvas"></canvas>
 
-    <!-- SECTION 1: HERO -->
-    <section id="hero">
-        <div class="hero-title"><h1>FOREVER</h1></div>
-        <div class="hero-content">
-            <p style="letter-spacing: 10px; opacity: 0.5;">WELCOME TO OUR WORLD</p>
-            <h2>Hey [GF's Name]</h2>
-            <p style="margin-top: 20px; max-width: 600px; opacity: 0.7;">Scroll down to relive the magic we've created together...</p>
-        </div>
-        <div class="scroll-indicator">↓ Scroll to Relive</div>
-    </section>
+    <!-- 1. Cinematic Scanner -->
+    <div id="loader">
+        <div class="scanner-line"></div>
+        <div class="scan-text" id="status-text">INITIALIZING DEEP EMOTION SCAN...</div>
+    </div>
 
-    <!-- SECTION 2: GALLERY -->
-    <section id="gallery">
-        <div style="text-align: center;">
-            <h2 style="font-family: 'Dancing Script'; font-size: 3rem; margin-bottom: 50px; color: var(--accent);">Our Captured Moments</h2>
-            <div class="gallery-container">
-                <div class="photo-frame">
-                    <img src="img1.jpg" alt="Memory">
-                    <p>The First Day ✨</p>
+    <!-- Main Experience -->
+    <main id="main-content">
+        
+        <!-- SECTION 1: HERO -->
+        <section>
+            <div class="hero-bg-text">LOVE STORY</div>
+            <div class="hero-content">
+                <p style="letter-spacing: 8px; opacity: 0.4; font-weight: 300; margin-bottom: 10px;">VOLUME NULL</p>
+                <h1>To [GF's Name]</h1>
+                <p style="font-size: 1.2rem; opacity: 0.6; max-width: 500px; margin: 0 auto;">You aren't just a part of my world. You are the heartbeat that keeps it alive.</p>
+                <div style="margin-top: 40px; animation: bounce 2s infinite;">↓</div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: THE GALLERY -->
+        <section id="gallery">
+            <div class="hero-bg-text" style="top: 20%">MEMORIES</div>
+            <div class="gallery-grid">
+                <div class="glass-photo" style="transition-delay: 0.1s;">
+                    <img src="img1.jpg" alt="Memory 1">
+                    <div class="photo-caption">Where it started 🥂</div>
                 </div>
-                <div class="photo-frame">
-                    <img src="img2.jpg" alt="Memory">
-                    <p>Pure Happiness 😊</p>
+                <div class="glass-photo" style="transition-delay: 0.2s;">
+                    <img src="img2.jpg" alt="Memory 2">
+                    <div class="photo-caption">Your Magic Smile ✨</div>
                 </div>
-                <div class="photo-frame">
-                    <img src="img3.jpg" alt="Memory">
-                    <p>Infinite Laughs ❤️</p>
-                </div>
-                <div class="photo-frame">
-                    <img src="img4.jpg" alt="Memory">
-                    <p>Just Us 👩‍❤️‍👨</p>
+                <div class="glass-photo" style="transition-delay: 0.3s;">
+                    <img src="img3.jpg" alt="Memory 3">
+                    <div class="photo-caption">Infinite Us ♾️</div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- SECTION 3: THE GAME -->
-    <section id="game">
-        <div class="game-ui">
-            <h2 style="font-family: 'Dancing Script';">Catch 10 Hearts to unlock my heart!</h2>
-            <div class="score">Score: <span id="score-val">0</span></div>
-        </div>
-        <canvas id="game-canvas"></canvas>
-    </section>
+        <!-- SECTION 3: THE CHALLENGE -->
+        <section>
+            <div id="game-container">
+                <h2 style="font-family: 'Playfair Display'; font-size: 3rem; margin-bottom: 20px;">The Heart Collector</h2>
+                <p style="margin-bottom: 30px; opacity: 0.6;">Catch 15 Hearts to unlock my final message...</p>
+                <div style="font-size: 1.5rem; color: var(--accent); margin-bottom: 10px; font-weight: 900;">SCORE: <span id="score-val">0</span></div>
+                <canvas id="game-canvas"></canvas>
+            </div>
+        </section>
 
-    <!-- SECTION 4: THE BIG QUESTION -->
-    <section id="final-question">
-        <div class="glass-card">
-            <h1 style="font-family: 'Dancing Script'; font-size: 4rem; color: var(--accent); margin-bottom: 20px;">The Only Question...</h1>
-            <p>I searched the entire universe and found my home in you. You've seen my best and my worst, yet you're still here.</p>
-            <p style="margin-top: 20px; font-weight: bold;">Will you be my Valentine today, tomorrow, and forever?</p>
-            
-            <button class="btn-main" onclick="finalCelebrate()">YES, A THOUSAND TIMES! ❤️</button>
-            <br>
-            <button id="noBtn" style="background: transparent; border: none; color: gray; margin-top: 20px;" onmouseover="dodge()">No</button>
-        </div>
-    </section>
+        <!-- SECTION 4: THE ULTIMATE QUESTION -->
+        <section id="proposal-section">
+            <div class="proposal-card locked" id="p-card">
+                <h2 style="font-size: 0.8rem; letter-spacing: 5px; color: var(--accent); margin-bottom: 20px;">FINAL REVELATION</h2>
+                <h1 style="font-family: 'Playfair Display'; font-size: 4rem; margin-bottom: 30px;">Will you be mine?</h1>
+                <p style="font-size: 1.1rem; line-height: 1.8; opacity: 0.8;">In a world full of temporary things, I want us to be the exception. I don't need a perfect life, I just need you in it.</p>
+                
+                <button class="btn-yes" onclick="finish()">YES, WITHOUT A DOUBT ❤️</button>
+                <br>
+                <button id="noBtn" style="background:transparent; border:none; color:rgba(255,255,255,0.2); margin-top:30px;" onmouseover="dodge()">Not really...</button>
+            </div>
+        </section>
+    </main>
 
-    <div id="win-screen" style="display:none; position:fixed; inset:0; background:var(--dark); z-index:20000; flex-direction:column; justify-content:center; align-items:center;">
-        <h1 style="font-family:'Dancing Script'; font-size:6rem; color:var(--accent);">THANK YOU! 😍</h1>
-        <p>You've officially made me the happiest guy ever.</p>
-        <p style="margin-top: 20px; opacity: 0.5;">(Check your WhatsApp/Phone for my surprise call!)</p>
+    <!-- SUCCESS OVERLAY -->
+    <div id="success-reveal">
+        <div>
+            <h1 style="font-family: 'Playfair Display'; font-size: 6rem; font-style: italic; color: var(--accent);">It Was Always You.</h1>
+            <p style="font-size: 1.5rem; letter-spacing: 5px; opacity: 0.5;">I LOVE YOU FOREVER</p>
+        </div>
     </div>
 
     <script>
-        // --- CURSOR LOGIC ---
+        // 1. Loader Logic
+        const statusTexts = [
+            "SCANNING FOR SINCERITY...",
+            "ANALYZING HEARTBEAT...",
+            "RETRIEVING MEMORIES...",
+            "DECRYPTING TRUE LOVE...",
+            "ACCESS BEYOND MEASURE..."
+        ];
+        let textIdx = 0;
+        const statusEl = document.getElementById('status-text');
+        
+        const textInterval = setInterval(() => {
+            statusEl.innerText = statusTexts[textIdx];
+            textIdx++;
+            if(textIdx >= statusTexts.length) {
+                clearInterval(textInterval);
+                document.getElementById('loader').style.transform = 'translateY(-100%)';
+            }
+        }, 800);
+
+        // 2. Cursor Logic
         const cursor = document.getElementById('cursor');
         const cursorF = document.getElementById('cursor-f');
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
-            cursorF.style.left = e.clientX - 17 + 'px';
-            cursorF.style.top = e.clientY - 17 + 'px';
+            cursorF.style.left = e.clientX - 20 + 'px';
+            cursorF.style.top = e.clientY - 20 + 'px';
+            
+            // Scroll Progress
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("progress").style.width = scrolled + "%";
         });
 
-        // --- BACKGROUND HEARTS ---
-        const bgCanvas = document.getElementById('bg-canvas');
-        const bgCtx = bgCanvas.getContext('2d');
-        let bgHearts = [];
-
-        function resize() {
-            bgCanvas.width = window.innerWidth;
-            bgCanvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
-
-        class BackgroundHeart {
-            constructor() {
-                this.x = Math.random() * bgCanvas.width;
-                this.y = Math.random() * bgCanvas.height;
-                this.size = Math.random() * 5 + 2;
-                this.speed = Math.random() * 1 + 0.5;
-                this.opacity = Math.random() * 0.3;
-            }
-            draw() {
-                bgCtx.fillStyle = `rgba(255, 45, 85, ${this.opacity})`;
-                bgCtx.beginPath();
-                bgCtx.arc(this.x, this.y, this.size, 0, Math.PI*2);
-                bgCtx.fill();
-            }
-            update() {
-                this.y -= this.speed;
-                if(this.y < -10) this.y = bgCanvas.height + 10;
-            }
-        }
-        for(let i=0; i<100; i++) bgHearts.push(new BackgroundHeart());
-
-        function animate() {
-            bgCtx.clearRect(0,0, bgCanvas.width, bgCanvas.height);
-            bgHearts.forEach(h => { h.update(); h.draw(); });
-            requestAnimationFrame(animate);
-        }
-        animate();
-
-        // --- THE MINI GAME ---
+        // 3. Mini Game Logic
         const gCanvas = document.getElementById('game-canvas');
         const gCtx = gCanvas.getContext('2d');
-        gCanvas.width = 600;
-        gCanvas.height = 400;
-
+        gCanvas.width = Math.min(window.innerWidth - 40, 500);
+        gCanvas.height = 300;
+        
         let score = 0;
         let gameHearts = [];
         
         class GameHeart {
             constructor() {
-                this.x = Math.random() * (gCanvas.width - 30) + 15;
+                this.x = Math.random() * (gCanvas.width - 40) + 20;
                 this.y = gCanvas.height + 20;
-                this.size = 20;
                 this.speed = Math.random() * 3 + 2;
+                this.size = 25;
             }
             draw() {
-                gCtx.font = "20px serif";
+                gCtx.font = "25px Arial";
                 gCtx.fillText("❤️", this.x, this.y);
             }
             update() { this.y -= this.speed; }
         }
 
-        function runGame() {
+        function gameLoop() {
             gCtx.clearRect(0,0, gCanvas.width, gCanvas.height);
-            if(Math.random() < 0.03) gameHearts.push(new GameHeart());
+            if(Math.random() < 0.04) gameHearts.push(new GameHeart());
             
-            gameHearts.forEach((h, index) => {
-                h.update();
-                h.draw();
-                if(h.y < -20) gameHearts.splice(index, 1);
-            });
+            for(let i=0; i<gameHearts.length; i++) {
+                gameHearts[i].update();
+                gameHearts[i].draw();
+                if(gameHearts[i].y < -20) gameHearts.splice(i, 1);
+            }
 
-            if(score < 10) requestAnimationFrame(runGame);
+            if(score < 15) requestAnimationFrame(gameLoop);
             else {
-                document.getElementById('final-question').style.display = 'flex';
-                window.scrollTo(0, document.body.scrollHeight);
+                const card = document.getElementById('p-card');
+                card.classList.remove('locked');
+                card.classList.add('unlocked');
             }
         }
+        gameLoop();
 
         gCanvas.addEventListener('mousedown', (e) => {
             const rect = gCanvas.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
-
-            gameHearts.forEach((h, index) => {
-                const dist = Math.hypot(h.x - mouseX, h.y - mouseY);
-                if(dist < 30) {
-                    gameHearts.splice(index, 1);
+            const mx = e.clientX - rect.left;
+            const my = e.clientY - rect.top;
+            gameHearts.forEach((h, idx) => {
+                if(Math.hypot(h.x - mx, h.y - my) < 30) {
+                    gameHearts.splice(idx, 1);
                     score++;
                     document.getElementById('score-val').innerText = score;
                 }
             });
         });
 
-        runGame();
-
-        // --- FINAL LOGIC ---
+        // 4. Dodge Logic
         function dodge() {
             const btn = document.getElementById('noBtn');
-            btn.style.position = 'absolute';
+            btn.style.position = 'fixed';
             btn.style.left = Math.random() * 80 + '%';
             btn.style.top = Math.random() * 80 + '%';
         }
 
-        function finalCelebrate() {
-            document.getElementById('win-screen').style.display = 'flex';
+        // 5. Final Celebrate
+        function finish() {
+            const success = document.getElementById('success-reveal');
+            success.style.display = 'flex';
+            setTimeout(() => { success.style.opacity = '1'; }, 10);
         }
+
+        // Scroll Reveal Animation (Simple version)
+        window.addEventListener('scroll', () => {
+            const cards = document.querySelectorAll('.glass-photo');
+            cards.forEach(card => {
+                const top = card.getBoundingClientRect().top;
+                if(top < window.innerHeight - 100) card.style.opacity = '1';
+            });
+        });
+
     </script>
 </body>
 </html>
