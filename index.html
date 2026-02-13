@@ -3,342 +3,255 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infinity & Beyond 💖</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;400;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <title>Our Universe | For [GF's Name] 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;400;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
             --accent: #ff2d55;
-            --glow: rgba(255, 45, 85, 0.5);
-            --bg: #050505;
+            --dark: #08080a;
+            --glass: rgba(255, 255, 255, 0.05);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; scroll-behavior: smooth; }
 
         body {
-            background: var(--bg);
+            background: var(--dark);
             color: #fff;
             font-family: 'Outfit', sans-serif;
-            overflow: hidden;
-            height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Cinematic Loading */
-        #loader {
-            position: fixed;
-            inset: 0;
-            background: #000;
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: 1.5s cubic-bezier(0.19, 1, 0.22, 1);
-        }
+        /* Custom Cursor */
+        #cursor { position: fixed; width: 10px; height: 10px; background: #fff; border-radius: 50%; pointer-events: none; z-index: 10000; mix-blend-mode: difference; }
+        #cursor-f { position: fixed; width: 35px; height: 35px; border: 1px solid var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transition: 0.1s; }
 
-        .loader-content { text-align: center; }
-        .loader-circle {
-            width: 50px;
-            height: 50px;
-            border: 2px solid var(--accent);
-            border-top-color: transparent;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
+        /* General Layout */
+        section { min-height: 100vh; width: 100%; position: relative; display: flex; align-items: center; justify-content: center; padding: 50px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); }
 
-        @keyframes spin { to { transform: rotate(360deg); } }
+        /* Floating Hearts Background */
+        #bg-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
 
-        /* Background VFX */
-        canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+        /* --- 1. HERO SECTION --- */
+        .hero-title { text-align: center; z-index: 10; }
+        .hero-title h1 { font-size: clamp(3rem, 15vw, 8rem); font-weight: 900; letter-spacing: -5px; line-height: 0.8; opacity: 0.1; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; }
+        .hero-content { z-index: 11; text-align: center; }
+        .hero-content h2 { font-family: 'Dancing Script', cursive; font-size: 4rem; color: var(--accent); }
+        .scroll-indicator { position: absolute; bottom: 30px; animation: bounce 2s infinite; opacity: 0.5; }
 
-        /* Main Glass Container */
-        .viewport {
-            position: relative;
-            z-index: 10;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            perspective: 1000px;
-        }
+        /* --- 2. THE GALLERY (3D Stack) --- */
+        .gallery-container { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; perspective: 1000px; }
+        .photo-frame { width: 280px; height: 380px; background: var(--glass); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); transition: 0.5s; position: relative; }
+        .photo-frame img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: 0.5s; }
+        .photo-frame:hover { transform: translateY(-20px) rotateY(10deg); border-color: var(--accent); }
+        .photo-frame:hover img { opacity: 1; transform: scale(1.1); }
+        .photo-frame p { position: absolute; bottom: 20px; left: 20px; font-family: 'Dancing Script'; font-size: 1.5rem; text-shadow: 0 2px 10px #000; }
 
-        .main-card {
-            width: 90%;
-            max-width: 500px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 40px;
-            padding: 40px;
-            text-align: center;
-            transform-style: preserve-3d;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            transition: transform 0.1s ease;
-        }
+        /* --- 3. THE GAME SECTION --- */
+        #game-canvas { background: rgba(255,255,255,0.02); border-radius: 20px; cursor: crosshair; }
+        .game-ui { position: absolute; top: 20px; width: 100%; text-align: center; pointer-events: none; }
+        .score { font-size: 2rem; font-weight: 900; color: var(--accent); }
 
-        .profile-area {
-            position: relative;
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 30px;
-        }
+        /* --- 4. THE PROPOSAL --- */
+        .glass-card { background: var(--glass); backdrop-filter: blur(20px); padding: 60px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.1); text-align: center; max-width: 600px; }
+        .btn-main { padding: 20px 50px; background: var(--accent); border: none; color: white; border-radius: 50px; font-weight: 900; font-size: 1.2rem; margin-top: 30px; transition: 0.3s; box-shadow: 0 10px 30px rgba(255, 45, 85, 0.4); }
+        .btn-main:hover { transform: scale(1.1); box-shadow: 0 15px 40px rgba(255, 45, 85, 0.6); }
 
-        .profile-img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--accent);
-            padding: 5px;
-            animation: float 3s ease-in-out infinite;
-        }
+        /* Animations */
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(5deg); }
-        }
+        /* Hidden Until Game Done */
+        #final-question { display: none; }
 
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 900;
-            letter-spacing: -1px;
-            margin-bottom: 10px;
-            background: linear-gradient(to right, #fff, var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        p {
-            font-size: 1rem;
-            opacity: 0.6;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-
-        /* Buttons */
-        .actions {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .btn-primary {
-            position: relative;
-            padding: 18px;
-            background: var(--accent);
-            border: none;
-            border-radius: 20px;
-            color: white;
-            font-family: 'Outfit', sans-serif;
-            font-weight: 900;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            overflow: hidden;
-            transition: 0.3s;
-            box-shadow: 0 10px 20px var(--glow);
-        }
-
-        .btn-primary:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 30px var(--glow);
-        }
-
-        .btn-secondary {
-            padding: 15px;
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
-            color: rgba(255,255,255,0.4);
-            font-weight: 400;
-            transition: all 0.3s;
-        }
-
-        /* Cursor */
-        #cursor {
-            position: fixed;
-            width: 8px;
-            height: 8px;
-            background: #fff;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 10000;
-            mix-blend-mode: difference;
-            transition: transform 0.2s ease;
-        }
-
-        #cursor-follower {
-            position: fixed;
-            width: 40px;
-            height: 40px;
-            border: 1px solid var(--accent);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.15s ease-out, left 0.15s ease-out, top 0.15s ease-out;
-        }
-
-        /* Success State */
-        .success-overlay {
-            position: fixed;
-            inset: 0;
-            background: var(--bg);
-            z-index: 100;
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        .success-overlay h2 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 5rem;
-            color: var(--accent);
-        }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <div class="loader-content">
-            <div class="loader-circle"></div>
-            <p>Scanning for true love...</p>
-        </div>
-    </div>
-
     <div id="cursor"></div>
-    <div id="cursor-follower"></div>
-    <canvas id="vfx-canvas"></canvas>
+    <div id="cursor-f"></div>
+    <canvas id="bg-canvas"></canvas>
 
-    <div class="viewport">
-        <div class="main-card" id="tilt-card">
-            <div class="profile-area">
-                <img src="https://via.placeholder.com/150" class="profile-img" alt="You & Her">
-            </div>
-            <p style="text-transform: uppercase; letter-spacing: 3px; color: var(--accent); font-weight: 900; margin-bottom: 5px;">A request from My Heart</p>
-            <h1>To [GF's Name]</h1>
-            <p>I realized that life is just a collection of moments. But with you, it's a masterpiece. Will you keep making me the luckiest person alive?</p>
-            
-            <div class="actions">
-                <button class="btn-primary" id="yesBtn" onclick="celebrate()">Be My Valentine? ✨</button>
-                <button class="btn-secondary" id="noBtn" onmouseover="dodge()">Not today</button>
+    <!-- SECTION 1: HERO -->
+    <section id="hero">
+        <div class="hero-title"><h1>FOREVER</h1></div>
+        <div class="hero-content">
+            <p style="letter-spacing: 10px; opacity: 0.5;">WELCOME TO OUR WORLD</p>
+            <h2>Hey [GF's Name]</h2>
+            <p style="margin-top: 20px; max-width: 600px; opacity: 0.7;">Scroll down to relive the magic we've created together...</p>
+        </div>
+        <div class="scroll-indicator">↓ Scroll to Relive</div>
+    </section>
+
+    <!-- SECTION 2: GALLERY -->
+    <section id="gallery">
+        <div style="text-align: center;">
+            <h2 style="font-family: 'Dancing Script'; font-size: 3rem; margin-bottom: 50px; color: var(--accent);">Our Captured Moments</h2>
+            <div class="gallery-container">
+                <div class="photo-frame">
+                    <img src="img1.jpg" alt="Memory">
+                    <p>The First Day ✨</p>
+                </div>
+                <div class="photo-frame">
+                    <img src="img2.jpg" alt="Memory">
+                    <p>Pure Happiness 😊</p>
+                </div>
+                <div class="photo-frame">
+                    <img src="img3.jpg" alt="Memory">
+                    <p>Infinite Laughs ❤️</p>
+                </div>
+                <div class="photo-frame">
+                    <img src="img4.jpg" alt="Memory">
+                    <p>Just Us 👩‍❤️‍👨</p>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div class="success-overlay" id="success">
-        <h2 id="finalText">Mine Forever. ❤️</h2>
-        <p style="opacity: 0.8; margin-top: 20px;">I promise to never let go.</p>
+    <!-- SECTION 3: THE GAME -->
+    <section id="game">
+        <div class="game-ui">
+            <h2 style="font-family: 'Dancing Script';">Catch 10 Hearts to unlock my heart!</h2>
+            <div class="score">Score: <span id="score-val">0</span></div>
+        </div>
+        <canvas id="game-canvas"></canvas>
+    </section>
+
+    <!-- SECTION 4: THE BIG QUESTION -->
+    <section id="final-question">
+        <div class="glass-card">
+            <h1 style="font-family: 'Dancing Script'; font-size: 4rem; color: var(--accent); margin-bottom: 20px;">The Only Question...</h1>
+            <p>I searched the entire universe and found my home in you. You've seen my best and my worst, yet you're still here.</p>
+            <p style="margin-top: 20px; font-weight: bold;">Will you be my Valentine today, tomorrow, and forever?</p>
+            
+            <button class="btn-main" onclick="finalCelebrate()">YES, A THOUSAND TIMES! ❤️</button>
+            <br>
+            <button id="noBtn" style="background: transparent; border: none; color: gray; margin-top: 20px;" onmouseover="dodge()">No</button>
+        </div>
+    </section>
+
+    <div id="win-screen" style="display:none; position:fixed; inset:0; background:var(--dark); z-index:20000; flex-direction:column; justify-content:center; align-items:center;">
+        <h1 style="font-family:'Dancing Script'; font-size:6rem; color:var(--accent);">THANK YOU! 😍</h1>
+        <p>You've officially made me the happiest guy ever.</p>
+        <p style="margin-top: 20px; opacity: 0.5;">(Check your WhatsApp/Phone for my surprise call!)</p>
     </div>
 
     <script>
-        const loader = document.getElementById('loader');
-        const card = document.getElementById('tilt-card');
+        // --- CURSOR LOGIC ---
         const cursor = document.getElementById('cursor');
-        const follower = document.getElementById('cursor-follower');
-        const canvas = document.getElementById('vfx-canvas');
-        const ctx = canvas.getContext('2d');
-
-        // Initial Loading
-        window.onload = () => {
-            setTimeout(() => {
-                loader.style.opacity = '0';
-                setTimeout(() => loader.remove(), 1500);
-            }, 2000);
-        };
-
-        // Smooth Cursor
+        const cursorF = document.getElementById('cursor-f');
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
-            
-            setTimeout(() => {
-                follower.style.left = e.clientX - 16 + 'px';
-                follower.style.top = e.clientY - 16 + 'px';
-            }, 50);
-
-            // 3D Tilt Effect
-            const x = (window.innerWidth / 2 - e.clientX) / 25;
-            const y = (window.innerHeight / 2 - e.clientY) / 25;
-            card.style.transform = `rotateX(${y}deg) rotateY(${-x}deg)`;
+            cursorF.style.left = e.clientX - 17 + 'px';
+            cursorF.style.top = e.clientY - 17 + 'px';
         });
 
-        // VFX Particles
-        let particles = [];
+        // --- BACKGROUND HEARTS ---
+        const bgCanvas = document.getElementById('bg-canvas');
+        const bgCtx = bgCanvas.getContext('2d');
+        let bgHearts = [];
+
         function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            bgCanvas.width = window.innerWidth;
+            bgCanvas.height = window.innerHeight;
         }
         window.addEventListener('resize', resize);
         resize();
 
-        class Particle {
+        class BackgroundHeart {
             constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 1;
-                this.vy = (Math.random() - 0.5) * 1;
-                this.size = Math.random() * 2;
+                this.x = Math.random() * bgCanvas.width;
+                this.y = Math.random() * bgCanvas.height;
+                this.size = Math.random() * 5 + 2;
+                this.speed = Math.random() * 1 + 0.5;
+                this.opacity = Math.random() * 0.3;
             }
             draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(255, 45, 85, 0.4)';
-                ctx.fill();
+                bgCtx.fillStyle = `rgba(255, 45, 85, ${this.opacity})`;
+                bgCtx.beginPath();
+                bgCtx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+                bgCtx.fill();
             }
             update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                if(this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
+                this.y -= this.speed;
+                if(this.y < -10) this.y = bgCanvas.height + 10;
             }
         }
-
-        for(let i=0; i<100; i++) particles.push(new Particle());
+        for(let i=0; i<100; i++) bgHearts.push(new BackgroundHeart());
 
         function animate() {
-            ctx.clearRect(0,0, canvas.width, canvas.height);
-            particles.forEach(p => { p.update(); p.draw(); });
+            bgCtx.clearRect(0,0, bgCanvas.width, bgCanvas.height);
+            bgHearts.forEach(h => { h.update(); h.draw(); });
             requestAnimationFrame(animate);
         }
         animate();
 
-        // The "Impossible No"
-        let dodgeCount = 0;
-        function dodge() {
-            const noBtn = document.getElementById('noBtn');
-            const yesBtn = document.getElementById('yesBtn');
-            
-            dodgeCount++;
-            
-            // Random movement
-            const x = Math.random() * (window.innerWidth - 100);
-            const y = Math.random() * (window.innerHeight - 50);
-            noBtn.style.position = 'fixed';
-            noBtn.style.left = x + 'px';
-            noBtn.style.top = y + 'px';
+        // --- THE MINI GAME ---
+        const gCanvas = document.getElementById('game-canvas');
+        const gCtx = gCanvas.getContext('2d');
+        gCanvas.width = 600;
+        gCanvas.height = 400;
 
-            // Make Yes Button bigger and No button disappear
-            yesBtn.style.transform = `scale(${1 + dodgeCount * 0.1})`;
-            noBtn.style.opacity = 1 - (dodgeCount * 0.2);
-            noBtn.style.transform = `scale(${1 - dodgeCount * 0.1})`;
+        let score = 0;
+        let gameHearts = [];
+        
+        class GameHeart {
+            constructor() {
+                this.x = Math.random() * (gCanvas.width - 30) + 15;
+                this.y = gCanvas.height + 20;
+                this.size = 20;
+                this.speed = Math.random() * 3 + 2;
+            }
+            draw() {
+                gCtx.font = "20px serif";
+                gCtx.fillText("❤️", this.x, this.y);
+            }
+            update() { this.y -= this.speed; }
+        }
 
-            if(dodgeCount > 5) {
-                noBtn.innerHTML = "Okay, Yes! ❤️";
-                noBtn.style.opacity = '1';
-                noBtn.style.background = 'var(--accent)';
-                noBtn.style.color = 'white';
-                noBtn.onclick = celebrate;
+        function runGame() {
+            gCtx.clearRect(0,0, gCanvas.width, gCanvas.height);
+            if(Math.random() < 0.03) gameHearts.push(new GameHeart());
+            
+            gameHearts.forEach((h, index) => {
+                h.update();
+                h.draw();
+                if(h.y < -20) gameHearts.splice(index, 1);
+            });
+
+            if(score < 10) requestAnimationFrame(runGame);
+            else {
+                document.getElementById('final-question').style.display = 'flex';
+                window.scrollTo(0, document.body.scrollHeight);
             }
         }
 
-        function celebrate() {
-            document.getElementById('success').style.display = 'flex';
-            // Massive VFX here
-            setTimeout(() => {
-                const final = document.getElementById('finalText');
-                final.style.transition = '2s';
-                final.style.transform = 'scale(1.2)';
-            }, 100);
+        gCanvas.addEventListener('mousedown', (e) => {
+            const rect = gCanvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            gameHearts.forEach((h, index) => {
+                const dist = Math.hypot(h.x - mouseX, h.y - mouseY);
+                if(dist < 30) {
+                    gameHearts.splice(index, 1);
+                    score++;
+                    document.getElementById('score-val').innerText = score;
+                }
+            });
+        });
+
+        runGame();
+
+        // --- FINAL LOGIC ---
+        function dodge() {
+            const btn = document.getElementById('noBtn');
+            btn.style.position = 'absolute';
+            btn.style.left = Math.random() * 80 + '%';
+            btn.style.top = Math.random() * 80 + '%';
+        }
+
+        function finalCelebrate() {
+            document.getElementById('win-screen').style.display = 'flex';
         }
     </script>
 </body>
