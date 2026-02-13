@@ -3,249 +3,245 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Love Story 💖</title>
+    <title>For My Forever 💖</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary-pink: #ff85a2;
-            --deep-rose: #ff4d6d;
-            --soft-white: rgba(255, 255, 255, 0.15);
+            --pink: #ff758c;
+            --rose: #ff7eb3;
             --gold: #f9d423;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
 
         body { 
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background: #000; /* Darker background makes the pink particles pop */
+            background: linear-gradient(135deg, #1a0a1a 0%, #3d0d16 100%);
             color: #fff; 
             overflow-x: hidden; 
             min-height: 100vh;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Particles Canvas */
+        #heartCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
         }
 
-        /* Glassmorphism Container */
+        .content-wrapper {
+            position: relative;
+            z-index: 1; /* Sits above the particles */
+        }
+
         .glass-panel {
-            background: var(--soft-white);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 30px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
         }
 
-        .hero { 
-            text-align: center; 
-            padding: 120px 20px 60px; 
-        }
-
+        .hero { text-align: center; padding: 100px 20px 40px; }
         .hero h1 { 
             font-family: 'Dancing Script', cursive; 
-            font-size: clamp(3rem, 8vw, 5rem); 
-            color: #fff;
-            text-shadow: 0 0 20px rgba(255,255,255,0.5);
-            margin-bottom: 20px;
+            font-size: clamp(3rem, 10vw, 5.5rem); 
+            background: linear-gradient(to right, #ff758c, #ff7eb3, #f9d423);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
         }
 
-        .section { 
-            max-width: 900px; 
-            margin: 40px auto; 
-            padding: 50px; 
-            animation: fadeInUp 1.2s ease-out;
-        }
+        .section { max-width: 850px; margin: 30px auto; padding: 40px; animation: fadeInUp 1.5s ease; }
+        .section h2 { font-family: 'Dancing Script', cursive; font-size: 2.5rem; color: var(--gold); margin-bottom: 25px; text-align: center;}
 
-        .section h2 { 
-            font-family: 'Dancing Script', cursive; 
-            font-size: 2.8rem; 
-            color: var(--gold); 
-            text-align: center; 
-            margin-bottom: 30px; 
-        }
+        .message { font-size: 1.1rem; line-height: 1.8; text-align: center; }
 
-        .message { 
-            font-size: 1.1rem; 
-            line-height: 1.8; 
-            text-align: center; 
-            letter-spacing: 0.5px;
-        }
-
-        /* Modern Photo Cards */
-        .photo-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-            gap: 25px; 
-        }
-
+        .photo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
         .photo-card { 
-            background: rgba(255,255,255,0.1); 
             border-radius: 20px; 
             overflow: hidden; 
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            background: rgba(255,255,255,0.05);
+            transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
         }
-
-        .photo-card:hover { 
-            transform: translateY(-10px) rotate(2deg); 
-            background: rgba(255,255,255,0.2);
-        }
-
+        .photo-card:hover { transform: scale(1.03); border-color: var(--pink); }
         .photo-card img { width: 100%; height: 250px; object-fit: cover; }
-        .photo-card p { padding: 15px; text-align: center; font-weight: 600; font-size: 0.9rem; }
+        .photo-card p { padding: 15px; text-align: center; font-weight: 500; font-size: 0.9rem;}
 
-        /* Elegant Buttons */
+        .btn-container { text-align: center; margin-top: 20px; position: relative; height: 100px;}
         .btn { 
-            padding: 15px 40px; 
-            background: white; 
-            color: var(--deep-rose); 
+            padding: 15px 35px; 
+            background: linear-gradient(45deg, #ff758c, #ff7eb3);
+            color: white; 
             border: none; 
             border-radius: 50px; 
-            font-size: 1.1rem; 
+            font-size: 1rem; 
             font-weight: 600; 
             cursor: pointer; 
-            transition: all 0.3s ease; 
-            margin: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 117, 140, 0.4);
         }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(255, 117, 140, 0.6); }
 
-        .btn:hover { 
-            transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(255,255,255,0.6);
-        }
-
-        .btn-no {
+        #noBtn {
             background: transparent;
-            border: 2px solid white;
-            color: white;
+            border: 1px solid rgba(255,255,255,0.4);
+            margin-left: 10px;
         }
 
-        /* Floating Hearts Animation */
-        .heart {
-            position: fixed;
-            color: rgba(255, 255, 255, 0.3);
-            font-size: 20px;
-            pointer-events: none;
-            z-index: -1;
-            animation: floatHeart 8s linear infinite;
-        }
-
-        @keyframes floatHeart {
-            0% { transform: translateY(110vh) Math.random(); opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
-        }
-
-        @keyframes fadeInUp { 
-            from { opacity: 0; transform: translateY(40px); } 
-            to { opacity: 1; transform: translateY(0); } 
-        }
-
-        .particle { position: fixed; pointer-events: none; animation: popOut 1s ease-out forwards; }
-        @keyframes popOut {
-            0% { transform: scale(0); opacity: 1; }
-            100% { transform: scale(2) translateY(-100px); opacity: 0; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
-    <div id="heartContainer"></div>
-    
-    <div class="hero">
-        <h1>Happy Valentine's Day, [GF's Name]! 💖</h1>
-        <p>You make every single day feel like a dream.</p>
-    </div>
-    
-    <div class="section glass-panel">
-        <h2><i class="fas fa-heart"></i> To My Favorite Person</h2>
-        <div class="message">
-            <p>Dear [GF's Name],</p><br>
-            <p>They say home is a place, but for me, <b>home is you</b>. Every moment spent with you is a memory I treasure. Thank you for being my peace in this chaotic world.</p><br>
-            <p>I love you more than words can encode.</p><br>
-            <p style="font-family: 'Dancing Script'; font-size: 2rem;">Forever yours, [Your Name]</p>
+
+    <canvas id="heartCanvas"></canvas>
+
+    <div class="content-wrapper">
+        <div class="hero">
+            <h1>For [GF's Name] 💖</h1>
+            <p style="opacity: 0.7; letter-spacing: 2px;">MY VALENTINE, MY ALWAYS</p>
         </div>
-    </div>
-    
-    <div class="section glass-panel">
-        <h2><i class="fas fa-camera"></i> Our Best Moments</h2>
-        <div class="photo-grid">
-            <div class="photo-card">
-                <img src="my_image.jpg" alt="Memory">
-                <p>The day my world changed 🌸</p>
-            </div>
-            <div class="photo-card">
-                <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=300&q=80" alt="Memory">
-                <p>Infinite laughs together ✨</p>
+
+        <div class="section glass-panel">
+            <h2><i class="fas fa-quote-left" style="font-size: 1rem; vertical-align: middle; opacity: 0.5;"></i> A Note for You</h2>
+            <div class="message">
+                <p>Meeting you was like listening to a song for the first time and knowing it would be my favorite forever. You are the most beautiful person I know, inside and out.</p>
+                <br>
+                <p style="font-family: 'Dancing Script'; font-size: 1.8rem; color: var(--pink);">I love you more today than yesterday.</p>
             </div>
         </div>
-    </div>
-    
-    <div class="section glass-panel" style="text-align: center;">
-        <h2><i class="fas fa-music"></i> Our Song</h2>
-        <p style="margin-bottom: 20px; opacity: 0.8;">Click below to set the mood</p>
-        <button class="btn" onclick="playSong('music.mp3')">
-            <i class="fas fa-play"></i> Play Our Memory
-        </button>
-        <audio id="audioPlayer" controls style="display: none;"></audio>
-    </div>
-    
-    <div class="section glass-panel surprise" style="text-align: center;">
-        <h2><i class="fas fa-ring"></i> A Final Question</h2>
-        <p style="font-size: 1.5rem; margin-bottom: 30px;">Will you be my Valentine forever? 💍</p>
-        <button class="btn" onclick="handleAnswer(true)">Absolutely Yes!</button>
-        <button class="btn btn-no" id="noBtn" onmouseover="moveNo()">No</button>
-        <div id="surpriseContent" style="display: none; margin-top: 30px;"></div>
+
+        <div class="section glass-panel">
+            <h2>Our Journey</h2>
+            <div class="photo-grid">
+                <div class="photo-card">
+                    <img src="my_image.jpg" alt="Memory 1">
+                    <p>Where it all started ✨</p>
+                </div>
+                <div class="photo-card">
+                    <img src="https://images.unsplash.com/photo-1516589174184-c6852657d403?q=80&w=400" alt="Memory 2">
+                    <p>My favorite laugh 🌹</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section glass-panel" style="text-align: center;">
+            <h2 id="questionText">The Big Question...</h2>
+            <p style="font-size: 1.3rem; margin-bottom: 20px;">Will you be my Valentine forever?</p>
+            
+            <div class="btn-container">
+                <button class="btn" onclick="celebrate()">YES, I WILL!</button>
+                <button class="btn" id="noBtn" onmouseover="dodge()">No</button>
+            </div>
+            <div id="finalMessage" style="display:none; margin-top: 20px;">
+                <h2 style="font-size: 3rem; color: #fff;">Yay! 🎉💖</h2>
+                <p>Get ready for the best date ever!</p>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Floating Hearts Background
-        function createHeart() {
-            const heart = document.createElement('i');
-            heart.className = 'fas fa-heart heart';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            heart.style.animationDuration = (Math.random() * 3 + 5) + 's';
-            document.getElementById('heartContainer').appendChild(heart);
-            setTimeout(() => heart.remove(), 8000);
-        }
-        setInterval(createHeart, 300);
+        // --- Heart Particle Engine ---
+        const canvas = document.getElementById('heartCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
 
-        function playSong(url) {
-            const audio = document.getElementById('audioPlayer');
-            audio.src = url;
-            audio.play();
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class HeartParticle {
+            constructor(x, y, size, speedX, speedY) {
+                this.x = x;
+                this.y = y;
+                this.size = size;
+                this.speedX = speedX;
+                this.speedY = speedY;
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.bezierCurveTo(-this.size/2, -this.size/2, -this.size, this.size/3, 0, this.size);
+                ctx.bezierCurveTo(this.size, this.size/3, this.size/2, -this.size/2, 0, 0);
+                ctx.fillStyle = `rgba(255, 117, 140, ${this.opacity})`;
+                ctx.fill();
+                ctx.restore();
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.y < -20) this.y = canvas.height + 20;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+            }
         }
 
-        // Playful 'No' button movement
-        function moveNo() {
+        function init() {
+            for (let i = 0; i < 60; i++) {
+                const size = Math.random() * 15 + 10;
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const sx = (Math.random() - 0.5) * 0.5;
+                const sy = -Math.random() * 1 - 0.5;
+                particles.push(new HeartParticle(x, y, size, sx, sy));
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+
+        // --- Interactive Functions ---
+        function dodge() {
             const btn = document.getElementById('noBtn');
             const x = Math.random() * (window.innerWidth - btn.offsetWidth);
             const y = Math.random() * (window.innerHeight - btn.offsetHeight);
-            btn.style.position = 'absolute';
+            btn.style.position = 'fixed';
             btn.style.left = x + 'px';
             btn.style.top = y + 'px';
         }
 
-        function handleAnswer(isYes) {
-            const content = document.getElementById('surpriseContent');
-            if (isYes) {
-                content.style.display = 'block';
-                content.innerHTML = `<h2 style="color:white; font-size: 3rem;">I'm the luckiest guy! ❤️</h2>`;
-                
-                // Celebration explosion
-                for (let i = 0; i < 100; i++) {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle';
-                    particle.style.left = Math.random() * 100 + 'vw';
-                    particle.style.top = Math.random() * 100 + 'vh';
-                    particle.innerHTML = ['✨','💖','🌸','🔥','🥰'][Math.floor(Math.random()*5)];
-                    document.body.appendChild(particle);
-                    setTimeout(() => particle.remove(), 1000);
-                }
+        function celebrate() {
+            document.getElementById('finalMessage').style.display = 'block';
+            document.getElementById('questionText').style.display = 'none';
+            document.querySelector('.btn-container').style.display = 'none';
+            
+            // Explosion of hearts
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const size = Math.random() * 30 + 10;
+                    const x = canvas.width / 2;
+                    const y = canvas.height / 2;
+                    const sx = (Math.random() - 0.5) * 10;
+                    const sy = (Math.random() - 0.5) * 10;
+                    particles.push(new HeartParticle(x, y, size, sx, sy));
+                }, i * 20);
             }
         }
     </script>
