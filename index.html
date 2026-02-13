@@ -3,68 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Happy Valentine 💖</title>
+<title>Valentine Special 💖</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
 
 body {
-  height:100vh;
-  width:100vw;
+  background: linear-gradient(135deg, #ffafbd, #ffc3a0, #ffafbd);
+  overflow-x:hidden;
+  color:#fff;
+}
+
+/* Sections */
+section {
+  min-height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  background: linear-gradient(135deg, #ffafbd, #ffc3a0, #ffafbd);
-  overflow:hidden;
+  flex-direction:column;
+  text-align:center;
+  padding:20px;
+  position:relative;
 }
 
-/* Glass card */
-.glass-card {
-  position:relative;
+h1 { font-size:3rem; margin-bottom:10px; }
+p { font-size:1.2rem; margin-bottom:20px; }
+
+/* Glass cards */
+.card {
   background: rgba(255,255,255,0.1);
   backdrop-filter: blur(15px);
-  padding: 50px 40px;
-  border-radius: 25px;
-  text-align:center;
-  color:#fff;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-  animation: fadeIn 2s ease forwards;
-  z-index:1;
+  padding:30px 40px;
+  border-radius:25px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.2);
+  max-width:400px;
+  margin:20px;
 }
 
-.glass-card h1 {
-  font-size:3rem;
-  margin-bottom:15px;
-  animation: fadeUp 2s ease forwards;
-}
-
-.glass-card p {
-  font-size:1.2rem;
-  margin-bottom:25px;
-  animation: fadeUp 2s 0.5s ease forwards;
-}
-
+/* Buttons */
 .btn {
-  padding:12px 30px;
+  padding:12px 25px;
   background:#fff;
   color:#ff6b81;
   font-weight:600;
   border:none;
   border-radius:25px;
   cursor:pointer;
-  transition:0.4s;
+  margin:10px;
+  transition:0.3s;
   text-decoration:none;
-  display:inline-block;
-  animation: fadeUp 2s 1s ease forwards;
 }
+.btn:hover { background:#ff6b81; color:#fff; transform:scale(1.1); }
 
-.btn:hover {
-  background:#ff6b81;
-  color:#fff;
-  transform: scale(1.1);
-}
-
-/* Floating hearts */
+/* Hearts */
 .heart {
   position:absolute;
   width:20px;
@@ -72,35 +63,44 @@ body {
   background:#ff6b81;
   transform:rotate(-45deg);
   top:100%;
-  border-radius: 5px;
+  border-radius:5px;
   animation: float 6s linear infinite;
 }
-.heart::before, .heart::after {
-  content:'';
-  position:absolute;
-  width:20px; height:20px; border-radius:50%;
-  background:#ff6b81;
-}
-.heart::before { top:-10px; left:0; }
-.heart::after { left:10px; top:0; }
+.heart::before, .heart::after { content:''; position:absolute; width:20px; height:20px; border-radius:50%; background:#ff6b81; }
+.heart::before { top:-10px; left:0; } .heart::after { left:10px; top:0; }
 
-/* Animations */
-@keyframes fadeIn { 0%{opacity:0} 100%{opacity:1} }
-@keyframes fadeUp { 0%{opacity:0; transform:translateY(20px);} 100%{opacity:1; transform:translateY(0);} }
-@keyframes float {
-  0% { transform: translateY(0) rotate(-45deg); opacity:1; }
-  100% { transform: translateY(-120vh) rotate(-45deg); opacity:0; }
-}
+@keyframes float { 0% { transform: translateY(0) rotate(-45deg); opacity:1;} 100% { transform: translateY(-120vh) rotate(-45deg); opacity:0;} }
 </style>
 </head>
 <body>
 
-<!-- Glass Card -->
-<div class="glass-card">
-  <h1>Happy Valentine 💖</h1>
-  <p>You light up my world in every way.</p>
-  <a href="#" class="btn">Open Surprise!</a>
-</div>
+<!-- Section 1: Greeting -->
+<section>
+  <div class="card">
+    <h1>Happy Valentine 💖</h1>
+    <p>You make my world brighter every day!</p>
+  </div>
+</section>
+
+<!-- Section 2: Fun Quiz -->
+<section>
+  <div class="card">
+    <h1>Mini Valentine Quiz 📝</h1>
+    <p>What's my favorite thing about you?</p>
+    <button class="btn" onclick="alert('Your smile! ❤️')">Option 1</button>
+    <button class="btn" onclick="alert('Your eyes! 💖')">Option 2</button>
+    <button class="btn" onclick="alert('Your laugh! 😄')">Option 3</button>
+  </div>
+</section>
+
+<!-- Section 3: Clickable Game -->
+<section>
+  <div class="card">
+    <h1>Catch the Heart 🎯</h1>
+    <p>Click the floating hearts!</p>
+    <p id="score">Score: 0</p>
+  </div>
+</section>
 
 <!-- Background Music -->
 <audio autoplay loop>
@@ -117,14 +117,17 @@ function createHeart(){
   heart.style.width=heart.style.height=size+'px';
   heart.style.animationDuration=(4+Math.random()*4)+'s';
   document.body.appendChild(heart);
+
+  // Click to score
+  heart.addEventListener('click', ()=>{
+    let score = document.getElementById('score');
+    score.innerText = "Score: "+(parseInt(score.innerText.split(': ')[1])+1);
+    heart.remove();
+  });
+
   setTimeout(()=>heart.remove(),6000);
 }
-setInterval(createHeart, 400);
-
-// Optional: click button animation
-document.querySelector('.btn').addEventListener('click', ()=>{
-  alert("You opened the surprise! ❤️");
-});
+setInterval(createHeart, 500);
 </script>
 
 </body>
