@@ -16,36 +16,34 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
 
         body { 
-            background: #000; /* Darker background makes the pink particles pop */
-            background: linear-gradient(135deg, #1a0a1a 0%, #3d0d16 100%);
+            background: #0f0a0c;
             color: #fff; 
             overflow-x: hidden; 
             min-height: 100vh;
         }
 
-        /* Particles Canvas */
+        /* Particles Canvas - MOVED TO FRONT */
         #heartCanvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0;
-            pointer-events: none;
+            z-index: 9999; /* Isko sabse upar kar diya */
+            pointer-events: none; /* Taki buttons click ho sakein */
         }
 
         .content-wrapper {
             position: relative;
-            z-index: 1; /* Sits above the particles */
+            z-index: 1; 
         }
 
         .glass-panel {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 30px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
         }
 
         .hero { text-align: center; padding: 100px 20px 40px; }
@@ -55,103 +53,61 @@
             background: linear-gradient(to right, #ff758c, #ff7eb3, #f9d423);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
         }
 
-        .section { max-width: 850px; margin: 30px auto; padding: 40px; animation: fadeInUp 1.5s ease; }
+        .section { max-width: 800px; margin: 30px auto; padding: 40px; }
         .section h2 { font-family: 'Dancing Script', cursive; font-size: 2.5rem; color: var(--gold); margin-bottom: 25px; text-align: center;}
 
-        .message { font-size: 1.1rem; line-height: 1.8; text-align: center; }
-
         .photo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        .photo-card { 
-            border-radius: 20px; 
-            overflow: hidden; 
-            background: rgba(255,255,255,0.05);
-            transition: 0.3s;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .photo-card:hover { transform: scale(1.03); border-color: var(--pink); }
-        .photo-card img { width: 100%; height: 250px; object-fit: cover; }
-        .photo-card p { padding: 15px; text-align: center; font-weight: 500; font-size: 0.9rem;}
+        .photo-card { border-radius: 20px; overflow: hidden; background: #000; border: 1px solid rgba(255,255,255,0.1); }
+        .photo-card img { width: 100%; height: 250px; object-fit: cover; opacity: 0.8; }
 
-        .btn-container { text-align: center; margin-top: 20px; position: relative; height: 100px;}
+        .btn-container { text-align: center; margin-top: 40px; }
         .btn { 
-            padding: 15px 35px; 
+            padding: 18px 45px; 
             background: linear-gradient(45deg, #ff758c, #ff7eb3);
-            color: white; 
-            border: none; 
-            border-radius: 50px; 
-            font-size: 1rem; 
-            font-weight: 600; 
-            cursor: pointer; 
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(255, 117, 140, 0.4);
+            color: white; border: none; border-radius: 50px; 
+            font-size: 1.2rem; font-weight: 600; cursor: pointer;
+            transition: 0.3s; z-index: 10000; position: relative;
         }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(255, 117, 140, 0.6); }
+        .btn:hover { transform: scale(1.1); box-shadow: 0 0 30px var(--pink); }
 
-        #noBtn {
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.4);
-            margin-left: 10px;
-        }
+        #noBtn { background: transparent; border: 1px solid white; margin-left: 10px; font-size: 1rem; }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        #finalMessage { text-align: center; display: none; padding: 50px; }
     </style>
 </head>
 <body>
 
     <canvas id="heartCanvas"></canvas>
 
-    <div class="content-wrapper">
+    <div class="content-wrapper" id="mainContent">
         <div class="hero">
             <h1>For [GF's Name] 💖</h1>
-            <p style="opacity: 0.7; letter-spacing: 2px;">MY VALENTINE, MY ALWAYS</p>
+            <p style="opacity: 0.6; letter-spacing: 3px; font-size: 0.8rem;">YOU ARE MY UNIVERSE</p>
         </div>
 
         <div class="section glass-panel">
-            <h2><i class="fas fa-quote-left" style="font-size: 1rem; vertical-align: middle; opacity: 0.5;"></i> A Note for You</h2>
-            <div class="message">
-                <p>Meeting you was like listening to a song for the first time and knowing it would be my favorite forever. You are the most beautiful person I know, inside and out.</p>
-                <br>
-                <p style="font-family: 'Dancing Script'; font-size: 1.8rem; color: var(--pink);">I love you more today than yesterday.</p>
+            <div class="message" style="text-align: center; line-height: 2;">
+                <p>In a world full of temporary things, <br><b>you are my forever.</b></p>
             </div>
         </div>
 
-        <div class="section glass-panel">
-            <h2>Our Journey</h2>
-            <div class="photo-grid">
-                <div class="photo-card">
-                    <img src="my_image.jpg" alt="Memory 1">
-                    <p>Where it all started ✨</p>
-                </div>
-                <div class="photo-card">
-                    <img src="https://images.unsplash.com/photo-1516589174184-c6852657d403?q=80&w=400" alt="Memory 2">
-                    <p>My favorite laugh 🌹</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="section glass-panel" style="text-align: center;">
-            <h2 id="questionText">The Big Question...</h2>
-            <p style="font-size: 1.3rem; margin-bottom: 20px;">Will you be my Valentine forever?</p>
-            
+        <div class="section glass-panel" id="questionBox">
+            <h2>Will you be my Valentine?</h2>
             <div class="btn-container">
-                <button class="btn" onclick="celebrate()">YES, I WILL!</button>
+                <button class="btn" onclick="celebrate()">YES, ALWAYS! ❤️</button>
                 <button class="btn" id="noBtn" onmouseover="dodge()">No</button>
             </div>
-            <div id="finalMessage" style="display:none; margin-top: 20px;">
-                <h2 style="font-size: 3rem; color: #fff;">Yay! 🎉💖</h2>
-                <p>Get ready for the best date ever!</p>
-            </div>
+        </div>
+
+        <div id="finalMessage">
+            <h1 style="font-family: 'Dancing Script'; font-size: 4rem; color: var(--gold);">Yay! I Love You! 🎉</h1>
+            <p>You've made me the happiest person alive.</p>
         </div>
     </div>
 
     <script>
-        // --- Heart Particle Engine ---
         const canvas = document.getElementById('heartCanvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -163,14 +119,15 @@
         window.addEventListener('resize', resize);
         resize();
 
-        class HeartParticle {
-            constructor(x, y, size, speedX, speedY) {
+        class Heart {
+            constructor(x, y, size, sx, sy, color, life = 1) {
                 this.x = x;
                 this.y = y;
                 this.size = size;
-                this.speedX = speedX;
-                this.speedY = speedY;
-                this.opacity = Math.random() * 0.5 + 0.2;
+                this.sx = sx;
+                this.sy = sy;
+                this.life = life;
+                this.color = color || `rgba(255, ${Math.random()*100 + 100}, ${Math.random()*100 + 150},`;
             }
 
             draw() {
@@ -180,70 +137,81 @@
                 ctx.moveTo(0, 0);
                 ctx.bezierCurveTo(-this.size/2, -this.size/2, -this.size, this.size/3, 0, this.size);
                 ctx.bezierCurveTo(this.size, this.size/3, this.size/2, -this.size/2, 0, 0);
-                ctx.fillStyle = `rgba(255, 117, 140, ${this.opacity})`;
+                ctx.fillStyle = this.color + this.life + ')';
                 ctx.fill();
                 ctx.restore();
             }
 
             update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.y < -20) this.y = canvas.height + 20;
-                if (this.x > canvas.width) this.x = 0;
-                if (this.x < 0) this.x = canvas.width;
+                this.x += this.sx;
+                this.y += this.sy;
+                this.life -= 0.005; // Hearts slowly fade away
             }
         }
 
-        function init() {
-            for (let i = 0; i < 60; i++) {
-                const size = Math.random() * 15 + 10;
-                const x = Math.random() * canvas.width;
-                const y = Math.random() * canvas.height;
-                const sx = (Math.random() - 0.5) * 0.5;
-                const sy = -Math.random() * 1 - 0.5;
-                particles.push(new HeartParticle(x, y, size, sx, sy));
+        // Floating background hearts
+        function addBackgroundHearts() {
+            if(particles.length < 50) {
+                particles.push(new Heart(
+                    Math.random() * canvas.width,
+                    canvas.height + 20,
+                    Math.random() * 15 + 10,
+                    (Math.random() - 0.5) * 1,
+                    -Math.random() * 2 - 1,
+                    null,
+                    0.6
+                ));
             }
         }
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
+            addBackgroundHearts();
+            
+            for(let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                if(particles[i].life <= 0) {
+                    particles.splice(i, 1);
+                    i--;
+                }
+            }
             requestAnimationFrame(animate);
         }
-
-        init();
         animate();
 
-        // --- Interactive Functions ---
         function dodge() {
             const btn = document.getElementById('noBtn');
-            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
             btn.style.position = 'fixed';
-            btn.style.left = x + 'px';
-            btn.style.top = y + 'px';
+            btn.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+            btn.style.top = Math.random() * (window.innerHeight - 50) + 'px';
         }
 
         function celebrate() {
+            document.getElementById('questionBox').style.display = 'none';
             document.getElementById('finalMessage').style.display = 'block';
-            document.getElementById('questionText').style.display = 'none';
-            document.querySelector('.btn-container').style.display = 'none';
             
-            // Explosion of hearts
-            for (let i = 0; i < 100; i++) {
-                setTimeout(() => {
-                    const size = Math.random() * 30 + 10;
-                    const x = canvas.width / 2;
-                    const y = canvas.height / 2;
-                    const sx = (Math.random() - 0.5) * 10;
-                    const sy = (Math.random() - 0.5) * 10;
-                    particles.push(new HeartParticle(x, y, size, sx, sy));
-                }, i * 20);
+            // HUGE EXPLOSION ON SCREEN
+            for(let i = 0; i < 150; i++) {
+                particles.push(new Heart(
+                    window.innerWidth / 2,
+                    window.innerHeight / 2,
+                    Math.random() * 30 + 15,
+                    (Math.random() - 0.5) * 15,
+                    (Math.random() - 0.5) * 15,
+                    `rgba(255, ${Math.random()*50}, ${Math.random()*100 + 100},`,
+                    1.5
+                ));
             }
         }
+
+        // Add hearts on mouse move
+        window.addEventListener('mousemove', (e) => {
+            if(Math.random() > 0.8) {
+                particles.push(new Heart(e.x, e.y, 10, (Math.random()-0.5)*2, (Math.random()-0.5)*2, null, 0.5));
+            }
+        });
+
     </script>
 </body>
 </html>
