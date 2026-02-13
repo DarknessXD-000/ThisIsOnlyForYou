@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infinity | Our Love Story 💖</title>
+    <title> Our Love Story 💖</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:italic,wght@700;900&family=Outfit:wght@100;400;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -23,360 +23,192 @@
             scroll-behavior: smooth;
         }
 
-        /* 1. ANIMATED BACKGROUND PARTICLES */
-        #particles {
+        /* 1. HEART PARTICLES BACKGROUND */
+        #heart-particles {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 0; pointer-events: none;
         }
 
-        /* 2. LOADER (SCANNER) */
+        /* 2. LOADER */
         #loader {
             position: fixed; inset: 0; background: #000; z-index: 10000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             transition: 1.5s cubic-bezier(1, 0, 0, 1);
         }
-        .scan-heart { 
-            font-size: 100px; 
-            animation: heartBeat 1.2s infinite; 
-            filter: drop-shadow(0 0 30px var(--pink)); 
-        }
-        .line { 
-            width: 300px; height: 3px; 
-            background: var(--pink); 
-            box-shadow: 0 0 25px var(--pink-glow); 
-            margin-top: 30px; 
-            border-radius: 10px;
-            animation: scanLine 2s infinite ease-in-out; 
-        }
+        .scan-heart { font-size: 100px; animation: heartBeat 1.2s infinite; filter: drop-shadow(0 0 30px var(--pink)); }
+        .line { width: 300px; height: 3px; background: var(--pink); box-shadow: 0 0 25px var(--pink-glow); margin-top: 30px; animation: scanLine 2s infinite ease-in-out; }
         @keyframes scanLine { 0%, 100% { transform: scaleX(0.2); opacity: 0.3; } 50% { transform: scaleX(1.2); opacity: 1; } }
         @keyframes heartBeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2) rotate(5deg); } }
 
-        /* 3. NEON CURSOR */
-        #cursor { position: fixed; width: 8px; height: 8px; background: #fff; border-radius: 50%; z-index: 11000; pointer-events: none; box-shadow: 0 0 20px 5px var(--pink); }
-        #cursor-f { position: fixed; width: 40px; height: 40px; border: 2px solid var(--pink); border-radius: 50%; z-index: 10999; pointer-events: none; transition: 0.15s ease-out; box-shadow: inset 0 0 10px var(--pink); }
+        /* 3. HEART CURSOR */
+        #cursor-heart {
+            position: fixed;
+            font-size: 24px;
+            z-index: 11000;
+            pointer-events: none;
+            transition: transform 0.1s ease-out;
+            filter: drop-shadow(0 0 10px var(--pink));
+            user-select: none;
+        }
+        #cursor-trail {
+            position: fixed;
+            width: 40px; height: 40px;
+            border: 1px solid var(--pink-light);
+            border-radius: 50%;
+            z-index: 10999;
+            pointer-events: none;
+            transition: 0.2s ease-out;
+            opacity: 0.5;
+        }
 
-        /* 4. HERO SECTION */
+        /* 4. SECTIONS */
         section { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; padding: 100px 20px; }
-        
         .hero-h1 { 
-            font-family: 'Playfair Display'; 
-            font-size: clamp(3.5rem, 12vw, 8rem); 
-            font-style: italic; 
-            text-align: center; 
+            font-family: 'Playfair Display'; font-size: clamp(3.5rem, 12vw, 8rem); font-style: italic; text-align: center; 
             background: linear-gradient(to bottom, #fff 30%, var(--pink-light));
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent;
-            line-height: 1;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             filter: drop-shadow(0 0 20px rgba(255, 45, 117, 0.3));
         }
 
-        /* 5. 3D EXPANDING ALBUM */
-        .album-title { text-align: center; font-family: 'Playfair Display'; font-size: 3.5rem; margin-bottom: 50px; color: var(--pink-light); text-shadow: 0 0 15px var(--pink); }
-        
-        .gallery-wrap { display: flex; justify-content: center; perspective: 2000px; width: 100%; transition: 1s; }
-        .album-container { display: flex; gap: 15px; width: 95%; max-width: 1300px; height: 550px; }
-
+        /* 5. ALBUM */
+        .album-container { display: flex; gap: 15px; width: 95%; max-width: 1200px; height: 500px; }
         .photo-card {
-            flex: 1;
-            overflow: hidden;
-            border-radius: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
-            filter: saturate(0.5) brightness(0.7);
+            flex: 1; overflow: hidden; border-radius: 40px; border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative; transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+            filter: saturate(0.5) brightness(0.8);
         }
+        .photo-card:hover { flex: 5; filter: saturate(1.2) brightness(1); border-color: var(--pink); box-shadow: 0 0 50px rgba(255, 45, 117, 0.4); }
+        .photo-card img { width: 100%; height: 100%; object-fit: cover; }
+        .overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); display: flex; flex-direction: column; justify-content: flex-end; padding: 30px; opacity: 0; transition: 0.5s; }
+        .photo-card:hover .overlay { opacity: 1; }
 
-        .photo-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s; scale: 1.1; }
-
-        .photo-card:hover {
-            flex: 6;
-            filter: saturate(1.2) brightness(1);
-            border-color: var(--pink);
-            box-shadow: 0 0 60px rgba(255, 45, 117, 0.5);
-        }
-        .photo-card:hover img { scale: 1; }
-
-        .photo-card .overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(10, 1, 4, 0.9), transparent 60%);
-            display: flex; flex-direction: column; justify-content: flex-end;
-            padding: 40px; opacity: 0; transition: 0.5s; transform: translateY(30px);
-        }
-
-        .photo-card:hover .overlay { opacity: 1; transform: translateY(0); }
-        .photo-card h3 { font-family: 'Dancing Script'; font-size: 3rem; color: var(--pink-light); margin-bottom: 5px; }
-
-        /* 6. NEON GAME */
-        .game-card { 
-            background: var(--glass); 
-            backdrop-filter: blur(15px);
-            padding: 50px; border-radius: 50px; 
-            border: 2px solid var(--pink); 
-            text-align: center;
-            box-shadow: 0 0 40px var(--glass);
-        }
-        #gameCanvas {
-            background: rgba(0,0,0,0.3);
-            border-radius: 30px;
-            margin-top: 20px;
-            border: 1px dashed var(--pink-light);
-            cursor: crosshair;
-        }
-
-        /* 7. PROPOSAL AREA */
-        .yes-btn { 
-            background: var(--pink); 
-            border: none; padding: 20px 60px; 
-            border-radius: 100px; color: white; 
-            font-weight: 900; font-size: 1.5rem; 
-            margin-top: 30px; cursor: pointer;
-            box-shadow: 0 0 30px var(--pink); 
-            transition: 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
+        /* 6. BUTTONS */
+        .yes-btn { background: var(--pink); border: none; padding: 20px 60px; border-radius: 100px; color: white; font-weight: 900; font-size: 1.5rem; margin-top: 30px; cursor: pointer; box-shadow: 0 0 30px var(--pink); transition: 0.3s; }
         .yes-btn:hover { transform: scale(1.1); box-shadow: 0 0 50px var(--pink-glow); }
-
-        #no-btn {
-            background: transparent; border: 1px solid rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.4); padding: 10px 30px;
-            border-radius: 50px; margin-top: 50px; transition: 0.1s;
+        
+        /* 7. FLOATING ANIMATION */
+        .floating-heart-particle {
+            position: absolute; color: var(--pink); pointer-events: none;
+            animation: rise 5s linear forwards; opacity: 0.6;
+        }
+        @keyframes rise {
+            0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 0.8; }
+            100% { transform: translateY(-100vh) scale(1.5) rotate(360deg); opacity: 0; }
         }
 
-        /* 8. FINAL REVEAL SVG EFFECT */
-        #success-reveal { 
-            position: fixed; inset: 0; background: var(--bg); z-index: 20000; 
-            display: none; flex-direction: column; justify-content: center; 
-            align-items: center; text-align: center;
-            animation: fadeIn 1.5s forwards;
-        }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .floating-heart {
-            position: absolute;
-            color: var(--pink);
-            pointer-events: none;
-            animation: floatUp 4s linear Infinite;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
-        }
-
+        #success-reveal { position: fixed; inset: 0; background: var(--bg); z-index: 20000; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
     </style>
 </head>
 <body>
 
-    <canvas id="particles"></canvas>
-    <div id="cursor"></div>
-    <div id="cursor-f"></div>
+    <div id="heart-particles"></div>
+    <div id="cursor-heart">💖</div>
+    <div id="cursor-trail"></div>
 
-    <!-- LOADER -->
     <div id="loader">
-        <div class="scan-heart">💖</div>
+        <div class="scan-heart">💗</div>
         <div class="line"></div>
-        <p style="margin-top: 25px; letter-spacing: 8px; color: var(--pink-light); font-weight: 100;">INITIALIZING LOVE_ENGINE.EXE</p>
+        <p style="margin-top: 25px; letter-spacing: 5px; color: var(--pink-light);">SCANNING FOR MY SOULMATE...</p>
     </div>
 
     <main>
-        <!-- HERO -->
         <section>
             <div style="text-align: center;">
-                <p style="letter-spacing: 15px; color: var(--pink); margin-bottom: 20px; font-weight: 900;">A PRIVATE DIGITAL GALLERY</p>
-                <h1 class="hero-h1">For My Everything</h1>
-                <p style="opacity: 0.5; margin-top: 20px; font-size: 1.2rem;">Scroll down to explore our world...</p>
+                <p style="letter-spacing: 12px; color: var(--pink); font-weight: 900;">ONLY FOR YOU</p>
+                <h1 class="hero-h1">Infinite Love</h1>
             </div>
         </section>
 
-        <!-- GALLERY -->
         <section style="flex-direction: column;">
-            <h2 class="album-title">Moments Frozen in Time</h2>
-            <div class="gallery-wrap">
-                <div class="album-container">
-                    <div class="photo-card">
-                        <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800" alt="Moment 1">
-                        <div class="overlay">
-                            <h3>Magical 🕊️</h3>
-                            <p>Every second with you feels like a dream I never want to wake up from.</p>
-                        </div>
-                    </div>
-                    <div class="photo-card">
-                        <img src="https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?auto=format&fit=crop&w=800" alt="Moment 2">
-                        <div class="overlay">
-                            <h3>Your Light ✨</h3>
-                            <p>You don't just walk into a room; you illuminate it with your soul.</p>
-                        </div>
-                    </div>
-                    <div class="photo-card">
-                        <img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=800" alt="Moment 3">
-                        <div class="overlay">
-                            <h3>Infinite ♾️</h3>
-                            <p>Beyond the stars and past the end of time, it's always been you.</p>
-                        </div>
-                    </div>
-                </div>
+            <h2 style="font-family: 'Playfair Display'; font-size: 3rem; color: var(--pink-light); margin-bottom: 40px;">Our Chapter</h2>
+            <div class="album-container">
+                <div class="photo-card"><img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800"><div class="overlay"><h3>Pure ✨</h3><p>Every moment counts.</p></div></div>
+                <div class="photo-card"><img src="https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?auto=format&fit=crop&w=800"><div class="overlay"><h3>Destiny 🕊️</h3><p>Meant to be.</p></div></div>
+                <div class="photo-card"><img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=800"><div class="overlay"><h3>Forever ♾️</h3><p>Till the end.</p></div></div>
             </div>
         </section>
 
-        <!-- MINI GAME -->
-        <section>
-            <div class="game-card">
-                <h2 style="font-family: 'Playfair Display'; font-size: 2.8rem; color: #fff;">Catch My Hearts</h2>
-                <p style="color: var(--pink-light); margin-bottom: 10px;">Reach 10 points to unlock my heart.</p>
-                <div style="font-size: 2.5rem; color: var(--pink); font-weight: 900; text-shadow: 0 0 10px var(--pink);"> <span id="score">0</span> / 10</div>
-                <canvas id="gameCanvas" width="350" height="400"></canvas>
-            </div>
-        </section>
-
-        <!-- PROPOSAL -->
-        <section id="proposal" style="opacity: 0; transform: translateY(50px); transition: 1.5s ease-out;">
-            <div style="text-align: center; position: relative; z-index: 10;">
-                <h1 style="font-family: 'Playfair Display'; font-size: clamp(3rem, 8vw, 5rem); color: #fff; line-height: 1.1;">
-                    Will you be my <br><span style="color: var(--pink); text-shadow: 0 0 30px var(--pink);">Forever Valentine?</span>
-                </h1>
-                <button class="yes-btn" onclick="celebrate()">YES, FOREVER! ❤️</button>
+        <section id="proposal">
+            <div style="text-align: center;">
+                <h1 style="font-family: 'Playfair Display'; font-size: 4rem;">Will you be mine?</h1>
+                <button class="yes-btn" onclick="celebrate()">YES, TILL INFINITY! ❤️</button>
                 <br>
-                <button id="no-btn" onmouseover="runAway()">Maybe not...</button>
+                <button id="no-btn" onmouseover="runAway()" style="background:transparent; border:none; color:rgba(255,255,255,0.2); margin-top:40px;">No...</button>
             </div>
         </section>
     </main>
 
-    <!-- SUCCESS -->
     <div id="success-reveal">
-        <h1 style="font-family: 'Playfair Display'; font-size: clamp(3rem, 10vw, 7rem); color: var(--pink); filter: drop-shadow(0 0 20px var(--pink));">It's a Promise! 💍</h1>
-        <p style="letter-spacing: 20px; margin-top: 30px; opacity: 0.8; font-weight: 100;">I LOVE YOU TO INFINITY</p>
-        <div id="confetti-container"></div>
+        <h1 style="font-family: 'Playfair Display'; font-size: 5rem; color: var(--pink);">You Are My World 🌎</h1>
+        <p style="letter-spacing: 15px; margin-top: 20px; opacity: 0.6;">I LOVE YOU</p>
     </div>
 
     <script>
-        // 1. Particle Background
-        const canvas = document.getElementById('particles');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        function initParticles() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            for(let i=0; i<30; i++) particles.push({
-                x: Math.random()*canvas.width, y: Math.random()*canvas.height,
-                r: Math.random()*3, dx: Math.random()-0.5, dy: Math.random()-0.5
-            });
-        }
-        function drawParticles() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            ctx.fillStyle = "rgba(255, 45, 117, 0.3)";
-            particles.forEach(p => {
-                ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
-                p.x += p.dx; p.y += p.dy;
-                if(p.x<0 || p.x>canvas.width) p.dx *= -1;
-                if(p.y<0 || p.y>canvas.height) p.dy *= -1;
-            });
-            requestAnimationFrame(drawParticles);
-        }
-        initParticles(); drawParticles();
-
-        // 2. Cursor
-        const c = document.getElementById('cursor');
-        const cf = document.getElementById('cursor-f');
-        document.addEventListener('mousemove', e => {
-            c.style.left = e.clientX + 'px'; c.style.top = e.clientY + 'px';
+        // 1. Heart Cursor Interaction
+        const cursorHeart = document.getElementById('cursor-heart');
+        const cursorTrail = document.getElementById('cursor-trail');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursorHeart.style.left = e.clientX - 12 + 'px';
+            cursorHeart.style.top = e.clientY - 12 + 'px';
+            
+            // Smooth trail
             setTimeout(() => {
-                cf.style.left = e.clientX - 20 + 'px'; cf.style.top = e.clientY - 20 + 'px';
+                cursorTrail.style.left = e.clientX - 20 + 'px';
+                cursorTrail.style.top = e.clientY - 20 + 'px';
             }, 50);
+
+            // Create mini hearts on move
+            if (Math.random() > 0.9) {
+                createParticle(e.clientX, e.clientY, true);
+            }
         });
+
+        // 2. Continuous Heart Particles
+        function createParticle(x, y, isClick = false) {
+            const container = document.getElementById('heart-particles');
+            const p = document.createElement('div');
+            const hearts = ["❤️", "💖", "💗", "💓", "💕"];
+            p.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+            p.className = 'floating-heart-particle';
+            
+            const startX = x || Math.random() * window.innerWidth;
+            const startY = y || window.innerHeight + 50;
+            
+            p.style.left = startX + 'px';
+            p.style.top = startY + 'px';
+            p.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            
+            container.appendChild(p);
+            
+            // Remove after animation
+            setTimeout(() => p.remove(), 5000);
+        }
+
+        // Generate background hearts
+        setInterval(() => createParticle(), 400);
 
         // 3. Loader
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('loader').style.transform = "translateY(-100%)";
-            }, 2500);
-        });
+        setTimeout(() => {
+            document.getElementById('loader').style.transform = "translateY(-100%)";
+        }, 2500);
 
-        // 4. Game Logic
-        const gc = document.getElementById('gameCanvas');
-        const gctx = gc.getContext('2d');
-        let score = 0;
-        let gameHearts = [];
-        let gameActive = true;
-
-        class Heart {
-            constructor() {
-                this.x = Math.random() * (gc.width - 40) + 20;
-                this.y = gc.height + 20;
-                this.speed = 1.5 + Math.random() * 2;
-                this.size = 20 + Math.random() * 20;
-            }
-            draw() {
-                gctx.font = `${this.size}px Arial`;
-                gctx.fillText("❤️", this.x, this.y);
-            }
-            update() { this.y -= this.speed; }
-        }
-
-        function runGame() {
-            if(!gameActive) return;
-            gctx.clearRect(0,0,gc.width, gc.height);
-            if(Math.random() < 0.03) gameHearts.push(new Heart());
-            gameHearts.forEach((h, i) => {
-                h.update(); h.draw();
-                if(h.y < -50) gameHearts.splice(i,1);
-            });
-            if(score < 10) requestAnimationFrame(runGame);
-            else {
-                gameActive = false;
-                const prop = document.getElementById('proposal');
-                prop.style.opacity = '1';
-                prop.style.transform = 'translateY(0)';
-                prop.scrollIntoView({behavior: 'smooth'});
-            }
-        }
-        runGame();
-
-        gc.addEventListener('click', e => {
-            const rect = gc.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
-            gameHearts.forEach((h, i) => {
-                let dist = Math.hypot(h.x + 15 - mouseX, h.y - 15 - mouseY);
-                if(dist < 40) {
-                    gameHearts.splice(i, 1);
-                    score++;
-                    document.getElementById('score').innerText = score;
-                    createFloatingHeart(e.clientX, e.clientY);
-                }
-            });
-        });
-
-        // 5. Interactions
+        // 4. Interactions
         function runAway() {
             const btn = document.getElementById('no-btn');
-            const x = Math.random() * (window.innerWidth - 150);
-            const y = Math.random() * (window.innerHeight - 100);
             btn.style.position = 'fixed';
-            btn.style.left = x + 'px';
-            btn.style.top = y + 'px';
-            btn.style.borderColor = 'var(--pink)';
-            btn.innerText = "Nice try! 😂";
+            btn.style.left = Math.random() * 80 + 10 + '%';
+            btn.style.top = Math.random() * 80 + 10 + '%';
+            btn.innerText = "Try harder! 😜";
         }
 
         function celebrate() {
             document.getElementById('success-reveal').style.display = 'flex';
-            setInterval(() => {
-                createFloatingHeart(Math.random() * window.innerWidth, window.innerHeight + 50);
-            }, 100);
-        }
-
-        function createFloatingHeart(x, y) {
-            const h = document.createElement('div');
-            h.innerHTML = "💖";
-            h.className = 'floating-heart';
-            h.style.left = x + 'px';
-            h.style.top = y + 'px';
-            h.style.fontSize = Math.random() * 30 + 20 + 'px';
-            document.body.appendChild(h);
-            setTimeout(() => h.remove(), 4000);
+            // Explosion of hearts
+            for(let i=0; i<100; i++) {
+                setTimeout(() => createParticle(Math.random() * window.innerWidth, window.innerHeight + 50), i * 20);
+            }
         }
     </script>
 </body>
