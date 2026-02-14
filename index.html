@@ -84,7 +84,7 @@ display:grid;
 grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
 gap:25px;
 width:90%;
-max-width:1000px;
+max-width:900px;
 margin-top:40px;
 }
 
@@ -101,7 +101,6 @@ animation:slideIn .8s forwards;
 .card:nth-child(3){animation-delay:.4s;}
 .card:nth-child(4){animation-delay:.6s;}
 .card:nth-child(5){animation-delay:.8s;}
-.card:nth-child(6){animation-delay:1s;}
 
 @keyframes slideIn{
 to{transform:translateX(0);opacity:1;}
@@ -227,8 +226,6 @@ opacity:0;
 
 </div>
 
-</div>
-
 <button class="btn" onclick="goProposal(event)">Next 💍</button>
 </div>
 
@@ -244,36 +241,23 @@ opacity:0;
 </div>
 
 <script>
-
-/* Page Switch */
-function enterSite(e){
-burstEffect(e);
-switchPage("photos");
-}
-function goProposal(e){
-burstEffect(e);
-switchPage("proposal");
-}
+function enterSite(e){burstEffect(e);switchPage("photos");}
+function goProposal(e){burstEffect(e);switchPage("proposal");}
 function switchPage(id){
 document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
 document.getElementById(id).classList.add("active");
 }
 
-/* Gift Open */
 function openGift(el){
 el.classList.add("open");
-setTimeout(()=>{
-el.style.display="none";
-},800);
+setTimeout(()=>{el.style.display="none";},800);
 }
 
-/* Lightbox */
 function openImg(src){
 document.getElementById("lightImg").src=src;
 document.getElementById("lightbox").style.display="flex";
 }
 
-/* Background Hearts */
 function createHeart(){
 let heart=document.createElement("div");
 heart.className="heart";
@@ -286,7 +270,6 @@ setTimeout(()=>heart.remove(),6000);
 }
 setInterval(createHeart,300);
 
-/* Button Burst */
 function burstEffect(e){
 for(let i=0;i<15;i++){
 let b=document.createElement("div");
@@ -301,7 +284,6 @@ setTimeout(()=>b.remove(),1000);
 }
 }
 
-/* YES Surprise */
 function sayYes(e){
 burstEffect(e);
 for(let i=0;i<60;i++){
