@@ -1,262 +1,308 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Our Love Story :> 💖</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:italic,wght@700;900&family=Outfit:wght@100;400;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --pink: #ff2d75;
-            --pink-light: #ff85a1;
-            --pink-glow: #ff0055;
-            --bg-dark: #0a0104;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Love Story 💖</title>
 
-        /* Cursor ab 'auto' hai, hide nahi hoga */
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: auto; }
-        body { background: var(--bg-dark); color: white; font-family: 'Outfit', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700;1,900&family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet">
 
-        /* Background & Canvas */
-        .bg-gradient { position: fixed; inset: 0; background: linear-gradient(45deg, #0a0104, #2d0514, #1a0209, #3d0a1d); background-size: 400% 400%; animation: gradientBG 15s ease infinite; z-index: -2; }
-        @keyframes gradientBG { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
-        
-        #particles-canvas, #celebration-canvas { position: fixed; inset: 0; pointer-events: none; }
-        #particles-canvas { z-index: -1; }
-        #celebration-canvas { z-index: 20001; display: none; }
+<style>
+:root{
+--pink:#ff2d75;
+--pink-light:#ff85a1;
+--pink-glow:#ff0055;
+--bg-dark:#0a0104;
+}
 
-        /* Floating Cursor Dot (Abhi bhi saath chalega) */
-        .cursor-dot { position: fixed; width: 12px; height: 12px; background: white; border-radius: 50%; z-index: 11000; pointer-events: none; box-shadow: 0 0 20px 5px var(--pink-glow); transition: transform 0.1s ease; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+background:var(--bg-dark);
+color:white;
+font-family:'Outfit',sans-serif;
+overflow-x:hidden;
+scroll-behavior:smooth;
+}
 
-        /* --- GLOW & FLOAT EFFECTS --- */
-        .glow-text { text-shadow: 0 0 10px rgba(255, 45, 117, 0.7), 0 0 20px rgba(255, 45, 117, 0.4); animation: pulseGlow 2s infinite alternate; }
-        @keyframes pulseGlow {
-            from { text-shadow: 0 0 10px var(--pink); }
-            to { text-shadow: 0 0 25px var(--pink-glow), 0 0 10px white; }
-        }
+/* Background */
+.bg-gradient{
+position:fixed;
+inset:0;
+background:linear-gradient(45deg,#0a0104,#2d0514,#1a0209,#3d0a1d);
+background-size:400% 400%;
+animation:gradientBG 15s ease infinite;
+z-index:-2;
+}
+@keyframes gradientBG{
+0%,100%{background-position:0% 50%}
+50%{background-position:100% 50%}
+}
 
-        .float-effect { animation: floating 3s ease-in-out infinite; }
-        @keyframes floating {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
+/* Floating hearts background */
+#particles{
+position:fixed;
+inset:0;
+pointer-events:none;
+z-index:-1;
+}
 
-        /* --- TEXT ANIMATIONS --- */
-        .reveal { opacity: 0; transform: translateY(50px); transition: all 1s ease-out; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+section{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:80px 20px;
+text-align:center;
+flex-direction:column;
+}
 
-        /* Sections */
-        section { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; padding: 100px 20px; text-align: center; }
-        .hero-h1 { font-family: 'Playfair Display'; font-size: clamp(3rem, 10vw, 7rem); font-style: italic; color: white; }
+.hero-h1{
+font-family:'Playfair Display';
+font-size:clamp(2.5rem,8vw,6rem);
+font-style:italic;
+text-shadow:0 0 20px var(--pink-glow);
+}
 
-        /* Album */
-        .album-container { display: flex; gap: 15px; width: 95%; max-width: 1200px; height: 500px; padding: 20px; }
-        .photo-card { flex: 1; overflow: hidden; border-radius: 35px; border: 2px solid rgba(255, 45, 117, 0.2); position: relative; transition: all 0.7s cubic-bezier(0.25, 1, 0.5, 1); box-shadow: 0 0 15px rgba(0,0,0,0.5); }
-        .photo-card:hover { flex: 4; border-color: var(--pink); box-shadow: 0 0 40px var(--pink-glow); }
-        .photo-card img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.8); transition: 0.5s; }
-        .photo-card:hover img { filter: brightness(1); transform: scale(1.05); }
+/* Album */
+.album{
+display:flex;
+gap:15px;
+width:95%;
+max-width:1100px;
+height:450px;
+}
 
-        /* Game Box */
-        .game-card { background: rgba(255, 255, 255, 0.05); border: 2px solid var(--pink); backdrop-filter: blur(15px); padding: 30px; border-radius: 40px; box-shadow: 0 0 30px rgba(255, 45, 117, 0.3); }
-        #gameCanvas { background: rgba(0,0,0,0.6); border-radius: 20px; cursor: crosshair; }
+.card{
+flex:1;
+border-radius:30px;
+overflow:hidden;
+transition:.6s cubic-bezier(.25,1,.5,1);
+border:2px solid rgba(255,45,117,.2);
+}
 
-        /* Buttons */
-        .yes-btn { 
-            background: linear-gradient(45deg, var(--pink), var(--pink-light)); border: none; padding: 22px 70px; border-radius: 100px;
-            color: white; font-weight: 900; font-size: 1.6rem; cursor: pointer; transition: 0.4s;
-            box-shadow: 0 0 20px var(--pink); animation: buttonPulse 1.5s infinite;
-        }
-        @keyframes buttonPulse {
-            0% { box-shadow: 0 0 10px var(--pink); }
-            50% { box-shadow: 0 0 30px var(--pink-glow); }
-            100% { box-shadow: 0 0 10px var(--pink); }
-        }
+.card img{
+width:100%;
+height:100%;
+object-fit:cover;
+transition:.5s;
+}
 
-        #success-reveal { position: fixed; inset: 0; background: var(--bg-dark); z-index: 20000; display: none; flex-direction: column; justify-content: center; align-items: center; }
-        
-        #loader { position: fixed; inset: 0; background: #000; z-index: 30000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 1s; }
-    </style>
+/* Desktop hover */
+@media (hover:hover){
+.card:hover{
+flex:4;
+box-shadow:0 0 40px var(--pink-glow);
+border-color:var(--pink);
+}
+.card:hover img{
+transform:scale(1.05);
+}
+}
+
+/* Mobile layout */
+@media(max-width:768px){
+.album{
+flex-direction:column;
+height:auto;
+}
+.card{
+height:260px;
+flex:none;
+opacity:0;
+transform:translateY(40px);
+animation:fadeIn .8s forwards;
+}
+.card:nth-child(1){animation-delay:.1s}
+.card:nth-child(2){animation-delay:.2s}
+.card:nth-child(3){animation-delay:.3s}
+.card:nth-child(4){animation-delay:.4s}
+.card:nth-child(5){animation-delay:.5s}
+.card:nth-child(6){animation-delay:.6s}
+.card:nth-child(7){animation-delay:.7s}
+@keyframes fadeIn{
+to{opacity:1;transform:translateY(0)}
+}
+}
+
+/* Game */
+.game-box{
+background:rgba(255,255,255,.05);
+padding:30px;
+border-radius:40px;
+border:2px solid var(--pink);
+backdrop-filter:blur(15px);
+box-shadow:0 0 30px rgba(255,45,117,.3);
+}
+#gameCanvas{
+background:rgba(0,0,0,.6);
+border-radius:20px;
+width:100%;
+max-width:320px;
+}
+
+/* Button */
+.yes-btn{
+margin-top:30px;
+padding:20px 60px;
+border:none;
+border-radius:100px;
+background:linear-gradient(45deg,var(--pink),var(--pink-light));
+color:white;
+font-weight:900;
+font-size:1.4rem;
+cursor:pointer;
+box-shadow:0 0 20px var(--pink);
+animation:pulse 1.5s infinite;
+}
+@keyframes pulse{
+0%{box-shadow:0 0 10px var(--pink)}
+50%{box-shadow:0 0 30px var(--pink-glow)}
+100%{box-shadow:0 0 10px var(--pink)}
+}
+
+.success{
+position:fixed;
+inset:0;
+background:var(--bg-dark);
+display:none;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+z-index:1000;
+}
+</style>
 </head>
+
 <body>
 
-    <div class="bg-gradient"></div>
-    <canvas id="particles-canvas"></canvas>
-    <canvas id="celebration-canvas"></canvas>
-    <div class="cursor-dot" id="dot"></div>
+<div class="bg-gradient"></div>
+<canvas id="particles"></canvas>
 
-    <div id="loader">
-        <h1 class="glow-text" style="font-size: 80px;">💖</h1>
-        <p style="margin-top: 20px; letter-spacing: 5px; color: var(--pink-light);">scanning soul...</p>
-    </div>
+<section>
+<h1 class="hero-h1">My Love ❤️<br>Akshi</h1>
+</section>
 
-    <main>
-        <section>
-            <div class="reveal float-effect">
-                <p style="letter-spacing: 8px; color: var(--pink-light); margin-bottom: 20px;">FOR MY SOULMATE</p>
-                <h1 class="hero-h1 glow-text"> My Love :> <br> Akshi </h1>
-            </div>
-        </section>
+<section>
+<h2 style="margin-bottom:30px;font-size:2.5rem;">Our Photos</h2>
+<div class="album">
+<div class="card"><img src="Love.jpeg"></div>
+<div class="card"><img src="suar.png"></div>
+<div class="card"><img src="1.png"></div>
+<div class="card"><img src="2.png"></div>
+<div class="card"><img src="3.png"></div>
+<div class="card"><img src="4.png"></div>
+<div class="card"><img src="5.png"></div>
+</div>
+</section>
 
-        <section style="flex-direction: column;">
-            <h2 class="reveal glow-text" style="font-family: 'Playfair Display'; font-size: 3rem; margin-bottom: 40px;">Our Photos :></h2>
-            <div class="album-container reveal float-effect">
-                <div class="photo-card"><img src="Love.jpeg" alt="1"></div>
-                <div class="photo-card"><img src="suar.png" alt="2"></div>
-                <div class="photo-card"><img src="1.png" alt="3"></div>
-                <div class="photo-card"><img src="2.png" alt="4"></div>
-                <div class="photo-card"><img src="3.png" alt="5"></div>
-                <div class="photo-card"><img src="4.png" alt="6"></div>
-                <div class="photo-card"><img src="5.png" alt="7"></div>
-            </div>
-        </section>
+<section>
+<div class="game-box">
+<h2 style="margin-bottom:10px;">Catch 10 Hearts</h2>
+<p style="margin-bottom:10px;">Score: <span id="score">0</span></p>
+<canvas id="gameCanvas" width="320" height="400"></canvas>
+</div>
+</section>
 
-        <section>
-            <div class="game-card reveal float-effect">
-                <h2 class="glow-text" style="font-size: 2rem; margin-bottom: 15px;">Catch 10 Hearts!</h2>
-                <div style="font-size: 1.5rem; color: var(--pink-light); font-weight: bold; margin-bottom: 10px;">Score: <span id="score">0</span></div>
-                <canvas id="gameCanvas" width="320" height="400"></canvas>
-            </div>
-        </section>
+<section id="proposal" style="display:none;">
+<h1 style="font-size:3rem;">Will you be my Valentine?</h1>
+<button class="yes-btn" onclick="celebrate()">YES FOREVER ❤️</button>
+</section>
 
-        <section id="proposal" style="display: none;">
-            <div class="reveal">
-                <h1 class="glow-text" style="font-size: 4rem; margin-bottom: 40px;">So... Will you be <br> my Valentine?</h1>
-                <button class="yes-btn" onclick="celebrate()">YES, FOREVER! ❤️</button>
-            </div>
-        </section>
-    </main>
+<div class="success" id="success">
+<h1 style="font-size:4rem;">YAAAY 💍</h1>
+<p>I Love You To Infinity ✨</p>
+</div>
 
-    <div id="success-reveal">
-        <h1 class="glow-text" style="font-size: 5rem;">YAAAY! 💍</h1>
-        <p style="letter-spacing: 15px; margin-top: 20px; font-weight: 100;">I LOVE YOU TO INFINITY</p>
-    </div>
+<script>
+/* Floating Background Hearts */
+const canvas=document.getElementById("particles");
+const ctx=canvas.getContext("2d");
+function resize(){
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+}
+resize();
+window.addEventListener("resize",resize);
 
-    <script>
-        // Scroll Reveal
-        function reveal() {
-            var reveals = document.querySelectorAll(".reveal");
-            reveals.forEach(r => {
-                var windowHeight = window.innerHeight;
-                var top = r.getBoundingClientRect().top;
-                if (top < windowHeight - 100) r.classList.add("active");
-            });
-        }
-        window.addEventListener("scroll", reveal);
+let hearts=[];
+for(let i=0;i<40;i++){
+hearts.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+size:Math.random()*20+10,
+speed:Math.random()*1+.3
+});
+}
 
-        // Canvas Settings
-        const canvas = document.getElementById('particles-canvas');
-        const ctx = canvas.getContext('2d');
-        const celCanvas = document.getElementById('celebration-canvas');
-        const celCtx = celCanvas.getContext('2d');
-        const gc = document.getElementById('gameCanvas');
-        const gctx = gc.getContext('2d');
+function animateBG(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+hearts.forEach(h=>{
+ctx.font=h.size+"px Arial";
+ctx.fillText("💖",h.x,h.y);
+h.y-=h.speed;
+if(h.y<0)h.y=canvas.height;
+});
+requestAnimationFrame(animateBG);
+}
+animateBG();
 
-        let hearts = [], celHearts = [], gameHearts = [], score = 0;
-        const emojis = ['❤️', '💖', '💝', '💕', '✨'];
+/* Game */
+const gc=document.getElementById("gameCanvas");
+const gctx=gc.getContext("2d");
+let gameHearts=[];
+let score=0;
 
-        function resize() {
-            canvas.width = celCanvas.width = window.innerWidth;
-            canvas.height = celCanvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
+class Heart{
+constructor(){
+this.x=Math.random()*gc.width;
+this.y=-30;
+this.vy=Math.random()*2+2;
+}
+draw(){
+gctx.font="30px Arial";
+gctx.fillText("❤️",this.x,this.y);
+}
+update(){
+this.y+=this.vy;
+}
+}
 
-        class Particle {
-            constructor(x, y, vx, vy, size, opacity, isCel = false) {
-                this.x = x; this.y = y; this.vx = vx; this.vy = vy;
-                this.size = size; this.opacity = opacity;
-                this.emoji = emojis[Math.floor(Math.random() * emojis.length)];
-                this.isCel = isCel;
-            }
-            draw(c) {
-                c.globalAlpha = this.opacity;
-                c.font = `${this.size}px Arial`;
-                c.fillText(this.emoji, this.x, this.y);
-            }
-            update() {
-                this.x += this.vx; this.y += this.vy;
-                if(this.isCel) { this.vy += 0.12; this.opacity -= 0.006; }
-                else if(this.y < -50) this.y = canvas.height + 50;
-            }
-        }
+function gameLoop(){
+gctx.clearRect(0,0,gc.width,gc.height);
+if(Math.random()<0.03)gameHearts.push(new Heart());
+gameHearts.forEach((h,i)=>{
+h.update();
+h.draw();
+if(h.y>gc.height)gameHearts.splice(i,1);
+});
+requestAnimationFrame(gameLoop);
+}
+gameLoop();
 
-        class GameHeart {
-            constructor() {
-                const side = Math.floor(Math.random() * 4);
-                if(side === 0) { this.x = Math.random() * gc.width; this.y = -30; this.vx = (Math.random()-0.5)*3; this.vy = Math.random()*2+2; }
-                else if(side === 1) { this.x = Math.random() * gc.width; this.y = gc.height+30; this.vx = (Math.random()-0.5)*3; this.vy = -(Math.random()*2+2); }
-                else if(side === 2) { this.x = -30; this.y = Math.random() * gc.height; this.vx = Math.random()*2+2; this.vy = (Math.random()-0.5)*3; }
-                else { this.x = gc.width+30; this.y = Math.random() * gc.height; this.vx = -(Math.random()*2+2); this.vy = (Math.random()-0.5)*3; }
-                this.size = 35; this.emoji = emojis[0];
-            }
-            update() { this.x += this.vx; this.y += this.vy; }
-            draw() { gctx.font = `${this.size}px Arial`; gctx.fillText(this.emoji, this.x, this.y); }
-        }
+function handleClick(e){
+const rect=gc.getBoundingClientRect();
+const x=(e.touches?e.touches[0].clientX:e.clientX)-rect.left;
+const y=(e.touches?e.touches[0].clientY:e.clientY)-rect.top;
+gameHearts.forEach((h,i)=>{
+if(Math.hypot(h.x-x,h.y-y)<30){
+gameHearts.splice(i,1);
+score++;
+document.getElementById("score").innerText=score;
+if(score>=10){
+document.getElementById("proposal").style.display="flex";
+window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
+}
+}
+});
+}
+gc.addEventListener("mousedown",handleClick);
+gc.addEventListener("touchstart",handleClick);
 
-        // Init BG
-        for(let i=0; i<40; i++) hearts.push(new Particle(Math.random()*canvas.width, Math.random()*canvas.height, 0, -Math.random()*0.8-0.3, Math.random()*15+10, Math.random()*0.3));
+/* Celebration */
+function celebrate(){
+document.getElementById("success").style.display="flex";
+}
+</script>
 
-        function animate() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            hearts.forEach(h => { h.update(); h.draw(ctx); });
-
-            if(score < 10) {
-                gctx.clearRect(0,0,gc.width, gc.height);
-                if(Math.random() < 0.04) gameHearts.push(new GameHeart());
-                gameHearts.forEach((gh, i) => {
-                    gh.update(); gh.draw();
-                    if(gh.x < -60 || gh.x > gc.width+60 || gh.y < -60 || gh.y > gc.height+60) gameHearts.splice(i,1);
-                });
-            }
-
-            if(celHearts.length > 0) {
-                celCtx.clearRect(0,0,celCanvas.width, celCanvas.height);
-                celHearts = celHearts.filter(h => h.opacity > 0);
-                celHearts.forEach(h => { h.update(); h.draw(celCtx); });
-            }
-            requestAnimationFrame(animate);
-        }
-        animate();
-
-        // Game Click
-        gc.addEventListener('mousedown', e => {
-            const r = gc.getBoundingClientRect();
-            const mx = e.clientX - r.left; const my = e.clientY - r.top;
-            gameHearts.forEach((gh, i) => {
-                if(Math.hypot(gh.x - mx, gh.y - my) < 40) {
-                    gameHearts.splice(i, 1);
-                    score++;
-                    document.getElementById('score').innerText = score;
-                    if(score >= 10) {
-                        document.getElementById('proposal').style.display = 'flex';
-                        window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
-                    }
-                }
-            });
-        });
-
-        // Cursor & Loader
-        const dot = document.getElementById('dot');
-        document.addEventListener('mousemove', e => { 
-            dot.style.left = e.clientX + 'px'; 
-            dot.style.top = e.clientY + 'px'; 
-        });
-
-        setTimeout(() => {
-            document.getElementById('loader').style.transform = "translateY(-100%)";
-            reveal(); // Initial reveal
-        }, 2000);
-
-        // Celebration
-        function celebrate() {
-            document.getElementById('success-reveal').style.display = 'flex';
-            celCanvas.style.display = 'block';
-            for(let i=0; i<150; i++) {
-                const vx = (Math.random() - 0.5) * 25; const vy = (Math.random() - 0.5) * 25;
-                celHearts.push(new Particle(window.innerWidth/2, window.innerHeight/2, vx, vy, Math.random()*40+20, 1, true));
-            }
-            setInterval(() => celHearts.push(new Particle(Math.random()*window.innerWidth, window.innerHeight+20, 0, -Math.random()*6-4, Math.random()*25+15, 1, true)), 70);
-        }
-    </script>
 </body>
 </html>
