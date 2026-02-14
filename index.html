@@ -5,11 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Our Love Story 💖</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700;1,900&family=Outfit:wght@400;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700;1,900&family=Outfit:wght@300;400;900&display=swap" rel="stylesheet">
 
 <style>
 :root{
 --pink:#ff2d75;
+--pink-light:#ff85a1;
+--pink-glow:#ff0055;
 --dark:#0a0104;
 }
 
@@ -21,7 +23,51 @@ font-family:'Outfit',sans-serif;
 overflow:hidden;
 }
 
-/* PAGES */
+/* Animated Gradient */
+.bg{
+position:fixed;
+inset:0;
+background:linear-gradient(45deg,#0a0104,#2d0514,#1a0209,#3d0a1d);
+background-size:400% 400%;
+animation:grad 15s ease infinite;
+z-index:-2;
+}
+@keyframes grad{
+0%,100%{background-position:0% 50%}
+50%{background-position:100% 50%}
+}
+
+canvas{
+position:fixed;
+inset:0;
+z-index:-1;
+pointer-events:none;
+}
+
+/* Loader */
+#loader{
+position:fixed;
+inset:0;
+background:black;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:9999;
+transition:1s;
+}
+
+.scan-text{
+letter-spacing:5px;
+color:var(--pink-light);
+animation:blink 1s infinite alternate;
+}
+@keyframes blink{
+from{opacity:.4}
+to{opacity:1}
+}
+
+/* Pages */
 .page{
 position:absolute;
 inset:0;
@@ -31,13 +77,24 @@ justify-content:center;
 align-items:center;
 text-align:center;
 opacity:0;
-pointer-events:none;
+transform:scale(.9);
 transition:.6s;
+pointer-events:none;
 }
 
 .page.active{
 opacity:1;
+transform:scale(1);
 pointer-events:auto;
+}
+
+/* Floating effect */
+.float{
+animation:float 3s ease-in-out infinite;
+}
+@keyframes float{
+0%,100%{transform:translateY(0)}
+50%{transform:translateY(-20px)}
 }
 
 /* Buttons */
@@ -45,20 +102,15 @@ button{
 padding:18px 50px;
 border:none;
 border-radius:100px;
-background:var(--pink);
+background:linear-gradient(45deg,var(--pink),var(--pink-light));
 color:white;
-font-size:1.2rem;
+font-weight:bold;
 cursor:pointer;
 margin-top:30px;
+box-shadow:0 0 20px var(--pink);
 }
 
-/* HOME */
-.hero{
-font-family:'Playfair Display';
-font-size:clamp(3rem,8vw,6rem);
-}
-
-/* GALLERY */
+/* Gallery */
 .gallery{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
@@ -67,19 +119,17 @@ width:90%;
 max-width:900px;
 margin-top:40px;
 }
-
 .gallery img{
 width:100%;
 border-radius:20px;
 cursor:pointer;
-transition:.3s;
+transition:.4s;
 }
-
 .gallery img:hover{
 transform:scale(1.05);
 }
 
-/* LIGHTBOX */
+/* Lightbox */
 #lightbox{
 position:fixed;
 inset:0;
@@ -87,41 +137,45 @@ background:rgba(0,0,0,.95);
 display:none;
 justify-content:center;
 align-items:center;
-z-index:9999;
+z-index:10000;
 }
-
 #lightbox img{
 max-width:90%;
 max-height:90%;
 border-radius:20px;
 }
 
-/* GAME */
+/* Game */
 #gameCanvas{
-background:rgba(0,0,0,0.6);
+background:rgba(0,0,0,.6);
 border-radius:20px;
 margin-top:20px;
-}
-
-/* SUCCESS */
-.success-text{
-font-family:'Playfair Display';
-font-size:clamp(3rem,7vw,5rem);
 }
 </style>
 </head>
 
 <body>
 
+<div class="bg"></div>
+<canvas id="particles"></canvas>
+
+<!-- LOADER -->
+<div id="loader">
+<h1 style="font-size:80px;">💖</h1>
+<p class="scan-text">Scanning for soulmate...</p>
+</div>
+
 <!-- HOME -->
 <div class="page active" id="home">
-<h1 class="hero">For My Love 💖 <br> Akshi</h1>
+<h1 class="float" style="font-family:'Playfair Display';font-size:clamp(3rem,8vw,6rem);">
+My Love 💖 <br> Akshi
+</h1>
 <button onclick="showPage('gallery')">Enter</button>
 </div>
 
 <!-- GALLERY -->
 <div class="page" id="gallery">
-<h1>Our Photos 💕</h1>
+<h1>Our Memories 💕</h1>
 <div class="gallery">
 <img src="Love.jpeg" onclick="openImg(this.src)">
 <img src="suar.png" onclick="openImg(this.src)">
@@ -143,13 +197,13 @@ font-size:clamp(3rem,7vw,5rem);
 
 <!-- PROPOSAL -->
 <div class="page" id="proposal">
-<h1>Will You Be My Valentine? 💍</h1>
-<button onclick="showPage('success')">YES FOREVER ❤️</button>
+<h1 style="font-size:3rem;">Will You Be Mine? 💍</h1>
+<button onclick="celebrate()">YES FOREVER ❤️</button>
 </div>
 
 <!-- SUCCESS -->
 <div class="page" id="success">
-<h1 class="success-text">YAAAY 💖</h1>
+<h1 style="font-size:4rem;">YAAAY 💖</h1>
 <p>I LOVE YOU TO INFINITY</p>
 </div>
 
@@ -160,13 +214,52 @@ font-size:clamp(3rem,7vw,5rem);
 
 <script>
 
-/* PAGE SWITCH */
+/* Page Switch */
 function showPage(id){
 document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
 document.getElementById(id).classList.add("active");
 }
 
-/* LIGHTBOX */
+/* Loader */
+setTimeout(()=>{
+document.getElementById("loader").style.opacity=0;
+setTimeout(()=>document.getElementById("loader").style.display="none",1000);
+},2500);
+
+/* Background Heart Particles */
+const canvas=document.getElementById("particles");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth;
+canvas.height=innerHeight;
+
+let hearts=[];
+class Particle{
+constructor(){
+this.x=Math.random()*canvas.width;
+this.y=Math.random()*canvas.height;
+this.vy=Math.random()*1+0.3;
+this.size=Math.random()*20+10;
+}
+update(){
+this.y-=this.vy;
+if(this.y<-20) this.y=canvas.height+20;
+}
+draw(){
+ctx.font=`${this.size}px Arial`;
+ctx.fillText("❤️",this.x,this.y);
+}
+}
+
+for(let i=0;i<40;i++) hearts.push(new Particle());
+
+function animateBG(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+hearts.forEach(h=>{h.update();h.draw();});
+requestAnimationFrame(animateBG);
+}
+animateBG();
+
+/* Lightbox */
 function openImg(src){
 document.getElementById("lightImg").src=src;
 document.getElementById("lightbox").style.display="flex";
@@ -175,34 +268,34 @@ function closeImg(){
 document.getElementById("lightbox").style.display="none";
 }
 
-/* GAME */
-const canvas=document.getElementById("gameCanvas");
-const ctx=canvas.getContext("2d");
-let hearts=[];
+/* Game */
+const gc=document.getElementById("gameCanvas");
+const gctx=gc.getContext("2d");
+let gameHearts=[];
 let score=0;
 
-class Heart{
+class GameHeart{
 constructor(){
-this.x=Math.random()*canvas.width;
+this.x=Math.random()*gc.width;
 this.y=-20;
 this.vy=Math.random()*2+2;
 this.size=30;
 }
 update(){this.y+=this.vy;}
 draw(){
-ctx.font=`${this.size}px Arial`;
-ctx.fillText("❤️",this.x,this.y);
+gctx.font=`${this.size}px Arial`;
+gctx.fillText("💖",this.x,this.y);
 }
 }
 
-canvas.addEventListener("click",e=>{
-const r=canvas.getBoundingClientRect();
+gc.addEventListener("click",e=>{
+const r=gc.getBoundingClientRect();
 const mx=e.clientX-r.left;
 const my=e.clientY-r.top;
 
-hearts.forEach((h,i)=>{
+gameHearts.forEach((h,i)=>{
 if(Math.hypot(h.x-mx,h.y-my)<30){
-hearts.splice(i,1);
+gameHearts.splice(i,1);
 score++;
 document.getElementById("score").innerText=score;
 if(score>=10){
@@ -212,22 +305,26 @@ showPage("proposal");
 });
 });
 
-function animate(){
-ctx.clearRect(0,0,canvas.width,canvas.height);
-
-if(Math.random()<0.03) hearts.push(new Heart());
-
-hearts.forEach((h,i)=>{
+function animateGame(){
+gctx.clearRect(0,0,gc.width,gc.height);
+if(Math.random()<0.03) gameHearts.push(new GameHeart());
+gameHearts.forEach((h,i)=>{
 h.update();
 h.draw();
-if(h.y>canvas.height) hearts.splice(i,1);
+if(h.y>gc.height) gameHearts.splice(i,1);
 });
-
-requestAnimationFrame(animate);
+requestAnimationFrame(animateGame);
 }
-animate();
+animateGame();
+
+/* Celebration */
+function celebrate(){
+showPage("success");
+for(let i=0;i<100;i++){
+hearts.push(new Particle());
+}
+}
 
 </script>
-
 </body>
 </html>
