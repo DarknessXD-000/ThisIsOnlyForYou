@@ -41,6 +41,7 @@ background:linear-gradient(45deg,#ff2d75,#ff8fab);
 -webkit-background-clip:text;
 color:transparent;
 text-shadow:0 0 40px #ff2d75;
+margin-bottom:20px;
 }
 
 /* Button */
@@ -70,6 +71,7 @@ color:#ff2d75;
 font-size:20px;
 animation:float 6s linear infinite;
 opacity:.7;
+pointer-events:none;
 }
 @keyframes float{
 0%{transform:translateY(100vh) scale(.5);}
@@ -80,37 +82,66 @@ opacity:.7;
 .gallery{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-gap:20px;
+gap:25px;
 width:90%;
 max-width:1000px;
 margin-top:40px;
 }
+
 .card{
 border-radius:20px;
 overflow:hidden;
-box-shadow:0 0 20px #ff2d75;
+box-shadow:0 0 25px #ff2d75;
 transform:translateX(-100px);
 opacity:0;
 animation:slideIn .8s forwards;
 }
+
 .card:nth-child(2){animation-delay:.2s;}
 .card:nth-child(3){animation-delay:.4s;}
 .card:nth-child(4){animation-delay:.6s;}
 .card:nth-child(5){animation-delay:.8s;}
 .card:nth-child(6){animation-delay:1s;}
-.card:nth-child(7){animation-delay:1.2s;}
 
 @keyframes slideIn{
 to{transform:translateX(0);opacity:1;}
 }
 
-.card img{
+.gift-wrapper{
+position:relative;
+overflow:hidden;
+border-radius:20px;
+}
+
+.gift-wrapper img{
 width:100%;
 display:block;
-cursor:pointer;
-transition:.3s;
 }
-.card img:hover{transform:scale(1.1);}
+
+.gift-cover{
+position:absolute;
+inset:0;
+background:linear-gradient(45deg,#ff2d75,#ff8fab);
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:50px;
+color:white;
+cursor:pointer;
+z-index:2;
+transition:transform .8s ease-in;
+}
+
+.gift-cover::after{
+content:"🎀";
+position:absolute;
+top:10px;
+font-size:35px;
+}
+
+.gift-cover.open{
+transform:translateY(100%);
+}
 
 /* LIGHTBOX */
 #lightbox{
@@ -128,12 +159,13 @@ max-height:90%;
 border-radius:20px;
 }
 
-/* Surprise burst */
+/* Burst */
 .burst{
 position:absolute;
 font-size:30px;
 color:#ff2d75;
 animation:burst 1s ease-out forwards;
+pointer-events:none;
 }
 @keyframes burst{
 to{
@@ -149,27 +181,66 @@ opacity:0;
 <!-- PAGE 1 -->
 <div class="page active" id="home">
 <h1 class="title">Scanning for Soulmate... 💕</h1>
-<button class="btn" onclick="enterSite()">Enter</button>
+<button class="btn" onclick="enterSite(event)">Enter</button>
 </div>
 
 <!-- PAGE 2 -->
 <div class="page" id="photos">
 <h1 class="title">Our Memories 💖</h1>
+
 <div class="gallery">
-<div class="card"><img src="1.png" onclick="openImg(this.src)"></div>
-<div class="card"><img src="2.png" onclick="openImg(this.src)"></div>
-<div class="card"><img src="3.png" onclick="openImg(this.src)"></div>
-<div class="card"><img src="4.png" onclick="openImg(this.src)"></div>
-<div class="card"><img src="5.png" onclick="openImg(this.src)"></div>
-<div class="card"><img src="Love.jpeg" onclick="openImg(this.src)"></div>
+
+<div class="card">
+<div class="gift-wrapper">
+<img src="1.png" onclick="openImg(this.src)">
+<div class="gift-cover" onclick="openGift(this)">🎁</div>
 </div>
-<button class="btn" onclick="goProposal()">Next 💍</button>
+</div>
+
+<div class="card">
+<div class="gift-wrapper">
+<img src="2.png" onclick="openImg(this.src)">
+<div class="gift-cover" onclick="openGift(this)">🎁</div>
+</div>
+</div>
+
+<div class="card">
+<div class="gift-wrapper">
+<img src="3.png" onclick="openImg(this.src)">
+<div class="gift-cover" onclick="openGift(this)">🎁</div>
+</div>
+</div>
+
+<div class="card">
+<div class="gift-wrapper">
+<img src="4.png" onclick="openImg(this.src)">
+<div class="gift-cover" onclick="openGift(this)">🎁</div>
+</div>
+</div>
+
+<div class="card">
+<div class="gift-wrapper">
+<img src="5.png" onclick="openImg(this.src)">
+<div class="gift-cover" onclick="openGift(this)">🎁</div>
+</div>
+</div>
+
+<div class="card">
+<div class="gift-wrapper">
+<img src="Love.jpeg" onclick="openImg(this.src)">
+<div class="gift-cover" onclick="openGift(this)">🎁</div>
+</div>
+</div>
+
+</div>
+
+<button class="btn" onclick="goProposal(event)">Next 💍</button>
 </div>
 
 <!-- PAGE 3 -->
 <div class="page" id="proposal">
 <h1 class="title">Will You Be Mine Forever? 💍</h1>
-<button class="btn" onclick="sayYes()">YES 💖</button>
+<button class="btn" onclick="sayYes(event)">YES 💖</button>
 </div>
 
 <!-- LIGHTBOX -->
@@ -179,13 +250,13 @@ opacity:0;
 
 <script>
 
-/* PAGE SWITCH */
-function enterSite(){
-burstEffect(event);
+/* Page Switch */
+function enterSite(e){
+burstEffect(e);
 switchPage("photos");
 }
-function goProposal(){
-burstEffect(event);
+function goProposal(e){
+burstEffect(e);
 switchPage("proposal");
 }
 function switchPage(id){
@@ -193,13 +264,21 @@ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
 document.getElementById(id).classList.add("active");
 }
 
-/* LIGHTBOX */
+/* Gift Open */
+function openGift(el){
+el.classList.add("open");
+setTimeout(()=>{
+el.style.display="none";
+},800);
+}
+
+/* Lightbox */
 function openImg(src){
 document.getElementById("lightImg").src=src;
 document.getElementById("lightbox").style.display="flex";
 }
 
-/* HEART BACKGROUND */
+/* Background Hearts */
 function createHeart(){
 let heart=document.createElement("div");
 heart.className="heart";
@@ -212,14 +291,14 @@ setTimeout(()=>heart.remove(),6000);
 }
 setInterval(createHeart,300);
 
-/* BUTTON BURST */
+/* Button Burst */
 function burstEffect(e){
 for(let i=0;i<15;i++){
 let b=document.createElement("div");
 b.className="burst";
 b.innerHTML="❤";
-b.style.left=e.target.offsetLeft+e.target.offsetWidth/2+"px";
-b.style.top=e.target.offsetTop+e.target.offsetHeight/2+"px";
+b.style.left=e.target.getBoundingClientRect().left + e.target.offsetWidth/2+"px";
+b.style.top=e.target.getBoundingClientRect().top + e.target.offsetHeight/2+"px";
 b.style.setProperty("--x",(Math.random()*200-100)+"px");
 b.style.setProperty("--y",(Math.random()*200-100)+"px");
 document.body.appendChild(b);
@@ -227,8 +306,9 @@ setTimeout(()=>b.remove(),1000);
 }
 }
 
-/* YES SURPRISE */
-function sayYes(){
+/* YES Surprise */
+function sayYes(e){
+burstEffect(e);
 for(let i=0;i<60;i++){
 let b=document.createElement("div");
 b.className="burst";
