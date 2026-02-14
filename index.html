@@ -11,16 +11,16 @@
 :root{
 --pink:#ff2d75;
 --pink-light:#ff85a1;
---pink-glow:#ff0055;
+--glow:#ff0055;
 --dark:#0a0104;
 }
 
 body{
 margin:0;
-background:var(--dark);
-color:white;
 font-family:'Outfit',sans-serif;
+background:var(--dark);
 overflow:hidden;
+color:white;
 }
 
 /* Animated Gradient */
@@ -29,10 +29,10 @@ position:fixed;
 inset:0;
 background:linear-gradient(45deg,#0a0104,#2d0514,#1a0209,#3d0a1d);
 background-size:400% 400%;
-animation:grad 15s ease infinite;
-z-index:-2;
+animation:gradientMove 15s ease infinite;
+z-index:-3;
 }
-@keyframes grad{
+@keyframes gradientMove{
 0%,100%{background-position:0% 50%}
 50%{background-position:100% 50%}
 }
@@ -40,8 +40,8 @@ z-index:-2;
 canvas{
 position:fixed;
 inset:0;
-z-index:-1;
 pointer-events:none;
+z-index:-2;
 }
 
 /* Loader */
@@ -56,8 +56,7 @@ align-items:center;
 z-index:9999;
 transition:1s;
 }
-
-.scan-text{
+.scan{
 letter-spacing:5px;
 color:var(--pink-light);
 animation:blink 1s infinite alternate;
@@ -77,18 +76,29 @@ justify-content:center;
 align-items:center;
 text-align:center;
 opacity:0;
-transform:scale(.9);
-transition:.6s;
+transform:scale(.95);
+transition:.6s ease;
 pointer-events:none;
 }
-
 .page.active{
 opacity:1;
 transform:scale(1);
 pointer-events:auto;
 }
 
-/* Floating effect */
+/* Glow Text */
+.glow{
+text-shadow:0 0 10px var(--pink),
+0 0 20px var(--glow),
+0 0 30px var(--pink);
+animation:pulse 2s infinite alternate;
+}
+@keyframes pulse{
+from{text-shadow:0 0 10px var(--pink);}
+to{text-shadow:0 0 25px var(--glow),0 0 40px var(--pink);}
+}
+
+/* Floating */
 .float{
 animation:float 3s ease-in-out infinite;
 }
@@ -99,7 +109,7 @@ animation:float 3s ease-in-out infinite;
 
 /* Buttons */
 button{
-padding:18px 50px;
+padding:18px 60px;
 border:none;
 border-radius:100px;
 background:linear-gradient(45deg,var(--pink),var(--pink-light));
@@ -108,6 +118,11 @@ font-weight:bold;
 cursor:pointer;
 margin-top:30px;
 box-shadow:0 0 20px var(--pink);
+transition:.3s;
+}
+button:hover{
+box-shadow:0 0 40px var(--glow);
+transform:scale(1.05);
 }
 
 /* Gallery */
@@ -119,14 +134,22 @@ width:90%;
 max-width:900px;
 margin-top:40px;
 }
+
 .gallery img{
 width:100%;
 border-radius:20px;
-cursor:pointer;
-transition:.4s;
+opacity:0;
+transform:translateX(-50px);
+transition:.6s ease;
+box-shadow:0 0 20px rgba(255,45,117,.3);
+}
+.gallery img.show{
+opacity:1;
+transform:translateX(0);
 }
 .gallery img:hover{
 transform:scale(1.05);
+box-shadow:0 0 40px var(--glow);
 }
 
 /* Lightbox */
@@ -150,6 +173,7 @@ border-radius:20px;
 background:rgba(0,0,0,.6);
 border-radius:20px;
 margin-top:20px;
+box-shadow:0 0 30px rgba(255,45,117,.4);
 }
 </style>
 </head>
@@ -157,26 +181,27 @@ margin-top:20px;
 <body>
 
 <div class="bg"></div>
-<canvas id="particles"></canvas>
+<canvas id="bgParticles"></canvas>
+<canvas id="btnParticles"></canvas>
 
-<!-- LOADER -->
+<!-- Loader -->
 <div id="loader">
 <h1 style="font-size:80px;">💖</h1>
-<p class="scan-text">Scanning for soulmate...</p>
+<p class="scan">Scanning for soulmate...</p>
 </div>
 
 <!-- HOME -->
 <div class="page active" id="home">
-<h1 class="float" style="font-family:'Playfair Display';font-size:clamp(3rem,8vw,6rem);">
+<h1 class="glow float" style="font-family:'Playfair Display';font-size:clamp(3rem,8vw,6rem);">
 My Love 💖 <br> Akshi
 </h1>
-<button onclick="showPage('gallery')">Enter</button>
+<button onclick="burst(event); showPage('gallery')">Enter</button>
 </div>
 
 <!-- GALLERY -->
 <div class="page" id="gallery">
-<h1>Our Memories 💕</h1>
-<div class="gallery">
+<h1 class="glow">Our Memories 💕</h1>
+<div class="gallery" id="galleryGrid">
 <img src="Love.jpeg" onclick="openImg(this.src)">
 <img src="suar.png" onclick="openImg(this.src)">
 <img src="1.png" onclick="openImg(this.src)">
@@ -185,29 +210,29 @@ My Love 💖 <br> Akshi
 <img src="4.png" onclick="openImg(this.src)">
 <img src="5.png" onclick="openImg(this.src)">
 </div>
-<button onclick="showPage('game')">Next 💖</button>
+<button onclick="burst(event); showPage('game')">Next 💖</button>
 </div>
 
 <!-- GAME -->
 <div class="page" id="game">
-<h1>Catch 10 Hearts ❤️</h1>
+<h1 class="glow">Catch 10 Hearts ❤️</h1>
 <div>Score: <span id="score">0</span></div>
 <canvas id="gameCanvas" width="320" height="400"></canvas>
 </div>
 
 <!-- PROPOSAL -->
 <div class="page" id="proposal">
-<h1 style="font-size:3rem;">Will You Be Mine? 💍</h1>
-<button onclick="celebrate()">YES FOREVER ❤️</button>
+<h1 class="glow" style="font-size:3rem;">Will You Be Mine? 💍</h1>
+<button onclick="burst(event); celebrate()">YES FOREVER ❤️</button>
 </div>
 
 <!-- SUCCESS -->
 <div class="page" id="success">
-<h1 style="font-size:4rem;">YAAAY 💖</h1>
+<h1 class="glow" style="font-size:4rem;">YAAAY 💖</h1>
 <p>I LOVE YOU TO INFINITY</p>
 </div>
 
-<!-- LIGHTBOX -->
+<!-- Lightbox -->
 <div id="lightbox" onclick="closeImg()">
 <img id="lightImg">
 </div>
@@ -218,54 +243,93 @@ My Love 💖 <br> Akshi
 function showPage(id){
 document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
 document.getElementById(id).classList.add("active");
+
+if(id==="gallery"){
+let imgs=document.querySelectorAll("#galleryGrid img");
+imgs.forEach((img,i)=>{
+setTimeout(()=>img.classList.add("show"),i*200);
+});
+}
 }
 
 /* Loader */
 setTimeout(()=>{
-document.getElementById("loader").style.opacity=0;
-setTimeout(()=>document.getElementById("loader").style.display="none",1000);
+loader.style.opacity=0;
+setTimeout(()=>loader.style.display="none",1000);
 },2500);
 
-/* Background Heart Particles */
-const canvas=document.getElementById("particles");
-const ctx=canvas.getContext("2d");
-canvas.width=innerWidth;
-canvas.height=innerHeight;
+/* Background Hearts */
+const bg=document.getElementById("bgParticles");
+const ctx=bg.getContext("2d");
+bg.width=innerWidth;
+bg.height=innerHeight;
 
-let hearts=[];
-class Particle{
+let bgHearts=[];
+class BGHeart{
 constructor(){
-this.x=Math.random()*canvas.width;
-this.y=Math.random()*canvas.height;
-this.vy=Math.random()*1+0.3;
+this.x=Math.random()*bg.width;
+this.y=Math.random()*bg.height;
+this.vy=Math.random()*0.8+0.3;
 this.size=Math.random()*20+10;
 }
 update(){
 this.y-=this.vy;
-if(this.y<-20) this.y=canvas.height+20;
+if(this.y<-20)this.y=bg.height+20;
 }
 draw(){
 ctx.font=`${this.size}px Arial`;
 ctx.fillText("❤️",this.x,this.y);
 }
 }
-
-for(let i=0;i<40;i++) hearts.push(new Particle());
+for(let i=0;i<40;i++)bgHearts.push(new BGHeart());
 
 function animateBG(){
-ctx.clearRect(0,0,canvas.width,canvas.height);
-hearts.forEach(h=>{h.update();h.draw();});
+ctx.clearRect(0,0,bg.width,bg.height);
+bgHearts.forEach(h=>{h.update();h.draw();});
 requestAnimationFrame(animateBG);
 }
 animateBG();
 
+/* Button Burst Particles */
+const btnCanvas=document.getElementById("btnParticles");
+const bctx=btnCanvas.getContext("2d");
+btnCanvas.width=innerWidth;
+btnCanvas.height=innerHeight;
+
+let bursts=[];
+function burst(e){
+for(let i=0;i<40;i++){
+bursts.push({
+x:e.clientX,
+y:e.clientY,
+vx:(Math.random()-0.5)*8,
+vy:(Math.random()-0.5)*8,
+life:60
+});
+}
+}
+
+function animateBurst(){
+bctx.clearRect(0,0,btnCanvas.width,btnCanvas.height);
+bursts.forEach((p,i)=>{
+p.x+=p.vx;
+p.y+=p.vy;
+p.life--;
+bctx.font="20px Arial";
+bctx.fillText("✨",p.x,p.y);
+if(p.life<=0)bursts.splice(i,1);
+});
+requestAnimationFrame(animateBurst);
+}
+animateBurst();
+
 /* Lightbox */
 function openImg(src){
-document.getElementById("lightImg").src=src;
-document.getElementById("lightbox").style.display="flex";
+lightImg.src=src;
+lightbox.style.display="flex";
 }
 function closeImg(){
-document.getElementById("lightbox").style.display="none";
+lightbox.style.display="none";
 }
 
 /* Game */
@@ -297,7 +361,7 @@ gameHearts.forEach((h,i)=>{
 if(Math.hypot(h.x-mx,h.y-my)<30){
 gameHearts.splice(i,1);
 score++;
-document.getElementById("score").innerText=score;
+scoreSpan.innerText=score;
 if(score>=10){
 showPage("proposal");
 }
@@ -307,22 +371,20 @@ showPage("proposal");
 
 function animateGame(){
 gctx.clearRect(0,0,gc.width,gc.height);
-if(Math.random()<0.03) gameHearts.push(new GameHeart());
+if(Math.random()<0.03)gameHearts.push(new GameHeart());
 gameHearts.forEach((h,i)=>{
 h.update();
 h.draw();
-if(h.y>gc.height) gameHearts.splice(i,1);
+if(h.y>gc.height)gameHearts.splice(i,1);
 });
 requestAnimationFrame(animateGame);
 }
 animateGame();
 
-/* Celebration */
+/* Celebrate */
 function celebrate(){
 showPage("success");
-for(let i=0;i<100;i++){
-hearts.push(new Particle());
-}
+burst({clientX:innerWidth/2,clientY:innerHeight/2});
 }
 
 </script>
