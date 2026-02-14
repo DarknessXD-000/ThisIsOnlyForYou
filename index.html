@@ -28,31 +28,6 @@ background:var(--dark);
 color:white;
 }
 
-/* FIXED FULL HEIGHT FOR MOBILE */
-.page{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
-opacity:0;
-transform:scale(.95);
-transition:.6s ease;
-pointer-events:none;
-padding:20px;
-}
-
-.page.active{
-opacity:1;
-transform:scale(1);
-pointer-events:auto;
-}
-
 /* Background */
 .bg{
 position:fixed;
@@ -67,48 +42,34 @@ z-index:-3;
 50%{background-position:100% 50%}
 }
 
-canvas{
+.page{
 position:fixed;
-inset:0;
-pointer-events:none;
-z-index:-2;
-}
-
-/* Loader */
-#loader{
-position:fixed;
-inset:0;
-background:black;
+top:0;
+left:0;
+width:100%;
+height:100vh;
 display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
-z-index:9999;
-transition:1s;
-}
-.scan{
-letter-spacing:5px;
-color:var(--pink-light);
-animation:blink 1s infinite alternate;
-}
-@keyframes blink{
-from{opacity:.4}
-to{opacity:1}
+text-align:center;
+opacity:0;
+transition:.6s ease;
+pointer-events:none;
+padding:20px;
 }
 
-/* Glow */
+.page.active{
+opacity:1;
+pointer-events:auto;
+}
+
 .glow{
 text-shadow:0 0 10px var(--pink),
 0 0 20px var(--glow),
 0 0 30px var(--pink);
-animation:pulse 2s infinite alternate;
-}
-@keyframes pulse{
-from{text-shadow:0 0 10px var(--pink);}
-to{text-shadow:0 0 25px var(--glow),0 0 40px var(--pink);}
 }
 
-/* Buttons */
 button{
 padding:15px 40px;
 border:none;
@@ -137,7 +98,6 @@ border-radius:18px;
 opacity:0;
 transform:translateX(-40px);
 transition:.6s ease;
-box-shadow:0 0 15px rgba(255,45,117,.3);
 cursor:pointer;
 }
 .gallery img.show{
@@ -145,7 +105,7 @@ opacity:1;
 transform:translateX(0);
 }
 
-/* Lightbox FULL FIX */
+/* Lightbox */
 #lightbox{
 position:fixed;
 top:0;
@@ -158,7 +118,6 @@ justify-content:center;
 align-items:center;
 z-index:10000;
 }
-
 #lightbox img{
 max-width:95vw;
 max-height:90vh;
@@ -170,7 +129,6 @@ border-radius:20px;
 background:rgba(0,0,0,.6);
 border-radius:20px;
 margin-top:20px;
-box-shadow:0 0 25px rgba(255,45,117,.4);
 display:block;
 }
 
@@ -180,35 +138,33 @@ display:block;
 <body>
 
 <div class="bg"></div>
-<canvas id="bgParticles"></canvas>
-<canvas id="btnParticles"></canvas>
 
 <!-- Loader -->
-<div id="loader">
-<h1 style="font-size:70px;">💖</h1>
-<p class="scan">Scanning for soulmate...</p>
+<div id="loader" class="page active">
+<h1 style="font-size:60px;">💖</h1>
+<p>Scanning for soulmate...</p>
 </div>
 
 <!-- HOME -->
-<div class="page active" id="home">
+<div class="page" id="home">
 <h1 class="glow" style="font-family:'Playfair Display';font-size:clamp(2.5rem,8vw,5rem);">
 My Love 💖 <br> Akshi
 </h1>
-<button onclick="burst(event); showPage('gallery')">Enter</button>
+<button id="enterBtn">Enter</button>
 </div>
 
 <!-- GALLERY -->
 <div class="page" id="gallery">
 <h1 class="glow">Our Memories 💕</h1>
 <div class="gallery" id="galleryGrid">
-<img src="1.png" onclick="openImg(this.src)">
-<img src="suar.png" onclick="openImg(this.src)">
-<img src="2.png" onclick="openImg(this.src)">
-<img src="3.png" onclick="openImg(this.src)">
-<img src="4.png" onclick="openImg(this.src)">
-<img src="5.png" onclick="openImg(this.src)">
+<img src="1.png">
+<img src="suar.png">
+<img src="2.png">
+<img src="3.png">
+<img src="4.png">
+<img src="5.png">
 </div>
-<button onclick="burst(event); showPage('game')">Next 💖</button>
+<button id="toGameBtn">Next 💖</button>
 </div>
 
 <!-- GAME -->
@@ -220,53 +176,62 @@ My Love 💖 <br> Akshi
 
 <!-- PROPOSAL -->
 <div class="page" id="proposal">
-<h1 class="glow" style="font-size:2.5rem;">Will You Be My Valentine? 💍</h1>
-<button onclick="burst(event); celebrate()">YES FOREVER ❤️</button>
+<h1 class="glow">Will You Be My Valentine? 💍</h1>
+<button id="yesBtn">YES FOREVER ❤️</button>
 </div>
 
 <!-- SUCCESS -->
 <div class="page" id="success">
-<h1 class="glow" style="font-size:3rem;">YAAAY 💖</h1>
+<h1 class="glow">YAAAY 💖</h1>
 <p>I LOVE YOU SO MUCH</p>
 </div>
 
 <!-- Lightbox -->
-<div id="lightbox" onclick="closeImg()">
+<div id="lightbox">
 <img id="lightImg">
 </div>
 
 <script>
 
-/* Loader */
-setTimeout(()=>{
-loader.style.opacity=0;
-setTimeout(()=>loader.style.display="none",1000);
-},2500);
-
-/* Page Switch */
+/* PAGE SWITCH */
 function showPage(id){
 document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
 document.getElementById(id).classList.add("active");
+}
 
-if(id==="gallery"){
+/* Loader to Home */
+setTimeout(()=>{
+showPage("home");
+},2500);
+
+/* ENTER BUTTON FIX */
+document.getElementById("enterBtn").addEventListener("click",()=>{
+showPage("gallery");
+
 let imgs=document.querySelectorAll("#galleryGrid img");
 imgs.forEach((img,i)=>{
-img.classList.remove("show");
 setTimeout(()=>img.classList.add("show"),i*150);
 });
-}
-}
+});
+
+/* Next Button */
+document.getElementById("toGameBtn").addEventListener("click",()=>{
+showPage("game");
+});
 
 /* Lightbox */
-function openImg(src){
-document.getElementById("lightImg").src=src;
+document.querySelectorAll("#galleryGrid img").forEach(img=>{
+img.addEventListener("click",()=>{
+document.getElementById("lightImg").src=img.src;
 document.getElementById("lightbox").style.display="flex";
-}
-function closeImg(){
-document.getElementById("lightbox").style.display="none";
-}
+});
+});
 
-/* Game */
+document.getElementById("lightbox").addEventListener("click",()=>{
+document.getElementById("lightbox").style.display="none";
+});
+
+/* GAME */
 const gc=document.getElementById("gameCanvas");
 const gctx=gc.getContext("2d");
 const scoreSpan=document.getElementById("score");
@@ -289,7 +254,7 @@ gctx.fillText("💖",this.x,this.y);
 }
 
 gc.addEventListener("click",handleClick);
-gc.addEventListener("touchstart",function(e){
+gc.addEventListener("touchstart",e=>{
 let t=e.touches[0];
 handleClick({clientX:t.clientX,clientY:t.clientY});
 });
@@ -325,10 +290,10 @@ requestAnimationFrame(animateGame);
 }
 animateGame();
 
-/* Celebration */
-function celebrate(){
+/* YES BUTTON */
+document.getElementById("yesBtn").addEventListener("click",()=>{
 showPage("success");
-}
+});
 
 </script>
 
